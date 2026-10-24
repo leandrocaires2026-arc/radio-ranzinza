@@ -6,8 +6,8 @@
     <title>Rádio Ranzinza // Cyber Studio</title>
     <style>
         :root {
-            --bg-color: #09090c;
-            --card-bg: #141419;
+            --bg-color: #0b0b0e;
+            --card-bg: #15151a;
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
@@ -106,7 +106,6 @@
             margin-bottom: 12px;
             text-shadow: 0 0 5px rgba(0, 255, 102, 0.4);
         }
-        /* Visualizador Gráfico / Equalizador Falso em CSS */
         .equalizer {
             display: flex;
             justify-content: center;
@@ -139,7 +138,6 @@
             filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.3));
         }
 
-        /* Capa de Exibição Artística */
         .album-art-container {
             width: 100%;
             height: 180px;
@@ -167,7 +165,6 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Lista de Ciclos e Grade */
         .schedule-block {
             font-size: 0.85rem;
             border-left: 3px solid var(--neon-blue);
@@ -265,7 +262,7 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA: Grade de Programação por Ciclos -->
+        <!-- COLUNA ESQUERDA: Grade de Programação -->
         <div class="side-panel">
             <div class="card" style="border-color: var(--neon-green);">
                 <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
@@ -293,14 +290,12 @@
             <div class="card player-box">
                 <h2>🎙️ Emissão Oficial em Direto</h2>
                 
-                <!-- Capa Visual / Vinil Animado -->
                 <div class="album-art-container">
                     <div class="vinyl-icon">💽</div>
                 </div>
 
-                <p id="now-playing">A carregar programação automática...</p>
+                <p id="now-playing">Clique em Play para iniciar a transmissão...</p>
                 
-                <!-- Equalizador Gráfico Animado -->
                 <div class="equalizer">
                     <div class="bar"></div>
                     <div class="bar"></div>
@@ -310,11 +305,11 @@
                     <div class="bar"></div>
                 </div>
 
-                <audio id="audioPlayer" controls autoplay controlsList="nodownload">
+                <!-- Player de Áudio Atualizado com controles manuais e preload -->
+                <audio id="audioPlayer" controls preload="auto" controlsList="nodownload">
                     O seu navegador não suporta áudio HTML5.
                 </audio>
 
-                <!-- Links para Plataformas -->
                 <div class="external-platforms">
                     <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                     <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
@@ -342,14 +337,13 @@
             </div>
             <div class="card" style="border-color: var(--neon-blue);">
                 <h3 style="color: var(--neon-blue);">🔥 Lançamentos Diários</h3>
-                <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo sem interrupções.</p>
+                <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo.</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Grade cronológica automática com as 45 faixas oficiais
         const playlist = [
             // Manhã: New Age & Streamside
             { title: "Streamside Comfort", url: "https://docs.google.com/uc?export=download&id=1J4tOun9UKKt3XeXt6llQlNzEkZc2JpWI" },
@@ -416,12 +410,13 @@
             const track = playlist[currentTrackIndex];
             audioPlayer.src = track.url;
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong>`;
+            audioPlayer.load();
         }
 
         audioPlayer.addEventListener('ended', () => {
             currentTrackIndex++;
             loadTrack(currentTrackIndex);
-            audioPlayer.play().catch(e => console.log("Aguardando interação para próxima faixa:", e));
+            audioPlayer.play().catch(err => console.log("Erro ao avançar faixa:", err));
         });
 
         window.addEventListener('DOMContentLoaded', () => {
