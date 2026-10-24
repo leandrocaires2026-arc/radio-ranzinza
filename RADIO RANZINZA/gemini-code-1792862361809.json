@@ -1,0 +1,10 @@
+{
+  "name": "radio-ranzinza",
+  "version": "1.0.0",
+  "description": "Sistema de automação 24h da Rádio Ranzinza",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,23 @@
+{
+  "stationName": "Rádio Ranzinza",
+  "mode": "Linear 24h (Sem escolha do ouvinte)",
+  "blocks": [
+    {
+      "genre": "Electronic, House & Eurodance",
+      "timeSlot": "00:00 - 12:00",
+      "tracks": [
+        { "title": "WINGS OF DESTINY", "driveId": "1L5uV4bPu6fOqHntGHmfOaz2ee7pt-BWm" },
+        { "title": "RISING FROM THE FLOOR", "driveId": "10xQEpKZnG2_vYHF4drIbiFrq7tsxs8CM" },
+        { "title": "SOUL'S ESSENTIAL FOOD", "driveId": "1Ii05tKIouTw8U0pa8lgWG8dQFEyEeexG" },
+        { "title": "SPINNING THROUGH", "driveId": "1X2ZWSw4K46ox4AcyLbq-0AqpdMFCbshH" }
+      ]
+    },
+    {
+      "genre": "Sertanejo, Pagode & Catálogo Geral",
+      "timeSlot": "12:00 - 24:00",
+      "tracks": [
+        { "title": "Catálogo Ranzinza", "driveId": "1zj7SuUJ5xfXtnemHIDeRRyV5V3GvJjbD" }
+      ]
+    }
+  ]
+}
