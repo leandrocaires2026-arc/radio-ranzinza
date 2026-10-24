@@ -1,305 +1,150 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rádio Ranzinza // Cyber Studio</title>
-    <style>
-        :root {
-            --bg-color: #0b0b0e;
-            --card-bg: #15151a;
-            --neon-pink: #ff007f;
-            --neon-blue: #00f0ff;
-            --neon-orange: #ff5722;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--neon-pink);
-            padding-bottom: 15px;
-            width: 100%;
-            max-width: 1200px;
-            box-shadow: 0 5px 15px rgba(255, 0, 127, 0.2);
-        }
-        h1 {
-            color: var(--neon-blue);
-            margin: 0;
-            font-size: 2.8rem;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.4);
-            letter-spacing: 2px;
-        }
-        header p {
-            color: var(--text-muted);
-            margin-top: 5px;
-            font-size: 1.1rem;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-        }
-        /* Layout de 3 Colunas */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-        }
-        @media (max-width: 950px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
-        }
-        h3 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-        /* Colunas Laterais - Propaganda e Arte */
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .ad-banner {
-            border: 2px dashed var(--neon-orange);
-            background: rgba(255, 87, 34, 0.04);
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .ad-banner h3 {
-            color: var(--neon-orange);
-            text-shadow: 0 0 8px rgba(255, 87, 34, 0.4);
-        }
-        .artistic-panel {
-            background: linear-gradient(135deg, #15151a 0%, #221226 100%);
-            border: 1px solid var(--neon-pink);
-            box-shadow: inset 0 0 15px rgba(255, 0, 127, 0.15);
-            text-align: center;
-        }
-        .artistic-panel h3 {
-            color: var(--neon-pink);
-            text-shadow: 0 0 8px rgba(255, 0, 127, 0.5);
-        }
-        /* Centro - Player e Chat */
-        .center-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .player-box {
-            text-align: center;
-            background: radial-gradient(circle at center, #1c1c24 0%, #15151a 100%);
-        }
-        .player-box h2 {
-            color: var(--neon-blue);
-            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
-        }
-        audio {
-            width: 100%;
-            margin-top: 15px;
-            filter: drop-shadow(0 0 5px rgba(0,240,255,0.3));
-        }
-        .chat-box {
-            display: flex;
-            flex-direction: column;
-            height: 320px;
-        }
-        .chat-box h2 {
-            font-size: 1.2rem;
-            color: var(--neon-pink);
-            margin-top: 0;
-        }
-        .chat-messages {
-            flex: 1;
-            background: #0d0d10;
-            border-radius: 8px;
-            padding: 12px;
-            overflow-y: auto;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-        }
-        input, button {
-            padding: 10px 14px;
-            border-radius: 6px;
-            border: none;
-            font-size: 0.95rem;
-        }
-        input {
-            flex: 1;
-            background: #1c1c24;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-        }
-        button {
-            background: linear-gradient(135deg, var(--neon-pink), #ff2a5f);
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
-            transition: 0.2s;
-        }
-        button:hover {
-            opacity: 0.9;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
-        }
-        .social-links {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            font-size: 0.9rem;
-        }
-        .social-links a {
-            color: var(--neon-blue);
-            text-decoration: none;
-        }
-        .social-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+<div class="audio-player-container" style="background: #111; padding: 20px; border-radius: 8px; border: 1px solid #ff007f;">
+  <p style="color: #fff; font-family: sans-serif; margin-bottom: 8px;">No ar: <strong id="current-track-title">Aquele Sonho (Pop)</strong></p>
+  
+  <audio id="radio-audio" controls style="width: 100%;" onended="nextTrack()">
+    <source id="audio-source" src="https://docs.google.com/uc?export=download&id=1L5uV4bPu6fOqHntGHmfOaz2ee7pt-BWm" type="audio/mp3">
+    O seu navegador não suporta o elemento de áudio.
+  </audio>
 
-    <header>
-        <h1>RÁDIO RANZINZA</h1>
-        <p>⚡ O som autêntico e sem filtros direto do Google Drive ⚡</p>
-    </header>
-
-    <div class="main-layout">
-        <!-- COLUNA ESQUERDA: Propaganda & Patrocínios -->
-        <div class="side-panel">
-            <div class="card ad-banner">
-                <h3>📢 Patrocínio I</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Espaço reservado para marcas, produtos ou avisos da rádio.</p>
-            </div>
-            <div class="card ad-banner" style="border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.04);">
-                <h3 style="color: var(--neon-blue); text-shadow: 0 0 8px rgba(0,240,255,0.4);">🎯 Patrocínio II</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Destaque os seus lançamentos ou parceiros oficiais aqui.</p>
-            </div>
-        </div>
-
-        <!-- COLUNA CENTRAL: Leitor e Chat -->
-        <div class="center-panel">
-            <div class="card player-box">
-                <h2>🎙️ Emissão Oficial</h2>
-                <p id="now-playing" style="color: var(--text-muted); font-size: 0.9rem;">A carregar programação do Drive...</p>
-                <audio id="audioPlayer" controls autoplay controlsList="nodownload">
-                    O seu navegador não suporta áudio HTML5.
-                </audio>
-                <div class="social-links">
-                    <a href="mailto:leandrocaires2026@gmail.com">Contacto</a>
-                    <a href="https://soundcloud.com" target="_blank">SoundCloud</a>
-                    <a href="https://spotify.com" target="_blank">Spotify</a>
-                </div>
-            </div>
-
-            <div class="card chat-box">
-                <h2>💬 Chat & Mural ao Vivo</h2>
-                <div class="chat-messages" id="chatMessages">
-                    <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Bem-vindo ao estúdio virtual da Rádio Ranzinza!</p>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
-                    <button onclick="enviarMensagem()">Enviar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- COLUNA DIREITA: Elementos Artísticos & Propaganda Extra -->
-        <div class="side-panel">
-            <div class="card artistic-panel">
-                <h3>🌌 Estúdio Neon</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Arte, batidas imersivas e vibrações eletrónicas a 432Hz.</p>
-            </div>
-            <div class="card ad-banner" style="border-color: var(--neon-pink); background: rgba(255, 0, 127, 0.04);">
-                <h3 style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.4);">🔥 Destaque</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Anúncios relâmpago ou avisos importantes da programação.</p>
-            </div>
-        </div>
+  <!-- BLOCO 1: MANHÃ (NEW AGE & STREAMSIDE ATMOSPHERIC) -->
+  <div style="margin-top: 15px;">
+    <h4 style="color: #00ff66; font-family: sans-serif; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px;">🌅 Manhã: New Age & Streamside (Atmospheric)</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <button onclick="playTrack(33)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">34. Streamside Comfort</button>
+      <button onclick="playTrack(34)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">35. Streamside Comfort (2)</button>
+      <button onclick="playTrack(35)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">36. Streamside Glow</button>
+      <button onclick="playTrack(36)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">37. Streamside Relief (2)</button>
+      <button onclick="playTrack(37)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">38. Streamside Relief (3)</button>
+      <button onclick="playTrack(38)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">39. Streamside Rest</button>
+      <button onclick="playTrack(39)" style="background: #222; color: #fff; border: 1px solid #00ff66; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">40. Streamside Rest (2)</button>
     </div>
+  </div>
 
-    <script>
-        // Lista de reprodução com os links do Google Drive
-        const playlist = [
-            { title: "Wings of Destiny", url: "https://docs.google.com/uc?export=download&id=1L5uV4bPu6fOqHntGHmfOaz2ee7pt-BWm" },
-            { title: "Rising From The Floor", url: "https://docs.google.com/uc?export=download&id=10xQEpKZnG2_vYHF4drIbiFrq7tsxs8CM" },
-            { title: "Soul's Essential Food", url: "https://docs.google.com/uc?export=download&id=1Ii05tKIouTw8U0pa8lgWG8dQFEyEeexG" },
-            { title: "Spinning Through", url: "https://docs.google.com/uc?export=download&id=1X2ZWSw4K46ox4AcyLbq-0AqpdMFCbshH" }
-        ];
+  <!-- BLOCO 2: TARDE (POP, SERTANEJO & ROMÂNTICO) -->
+  <div style="margin-top: 15px;">
+    <h4 style="color: #ff007f; font-family: sans-serif; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px;">☀️ Tarde: Pop, Sertanejo & Vocal</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <button onclick="playTrack(0)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">1. Aquele Sonho (Pop)</button>
+      <button onclick="playTrack(1)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">2. Aquele Sonho 2</button>
+      <button onclick="playTrack(6)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">7. Entre O Te Amo E O Te Adoro</button>
+      <button onclick="playTrack(7)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">8. Eu Não Quero Ter Razão</button>
+      <button onclick="playTrack(8)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">9. Eu Te Dei O Melhor De Mim</button>
+      <button onclick="playTrack(21)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">22. Me Cansei Do Seu Tanto Faz</button>
+      <button onclick="playTrack(22)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">23. Meio Louco Por Você</button>
+      <button onclick="playTrack(23)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">24. Não Importa O Lugar</button>
+      <button onclick="playTrack(24)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">25. Não Me Olha Desse Jeito</button>
+      <button onclick="playTrack(41)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">42. Uma Aposta Ruim</button>
+      <button onclick="playTrack(42)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">43. Uma Mulher Fatal</button>
+      <button onclick="playTrack(43)" style="background: #222; color: #fff; border: 1px solid #ff007f; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">44. Volta Logo Pra Mim</button>
+    </div>
+  </div>
 
-        let currentTrackIndex = 0;
-        const audioPlayer = document.getElementById('audioPlayer');
-        const nowPlayingText = document.getElementById('now-playing');
+  <!-- BLOCO 3: INÍCIO DA NOITE (ELETRÔNICA, DANCE & CLUB) -->
+  <div style="margin-top: 15px;">
+    <h4 style="color: #00f0ff; font-family: sans-serif; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px;">🌙 Início da Noite: Eletrônica & Dance</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <button onclick="playTrack(2)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">3. Became Just One</button>
+      <button onclick="playTrack(3)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">4. Burning Fire</button>
+      <button onclick="playTrack(4)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">5. Diviny Made Flesh</button>
+      <button onclick="playTrack(5)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">6. Down In This Obsession</button>
+      <button onclick="playTrack(9)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">10. Forever We Glow</button>
+      <button onclick="playTrack(20)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">21. Masterpiece (Parte 2)</button>
+      <button onclick="playTrack(25)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">26. Nostalgia (Remix)</button>
+      <button onclick="playTrack(26)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">27. Nothing Can Hold (Deep House)</button>
+      <button onclick="playTrack(27)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">28. Rising From The Floor</button>
+      <button onclick="playTrack(28)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">29. Sem Limites Pra Amar</button>
+      <button onclick="playTrack(29)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">30. Soul's Essential Food</button>
+      <button onclick="playTrack(30)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">31. Spinning Through</button>
+      <button onclick="playTrack(31)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">32. Spinning Through (Disco)</button>
+      <button onclick="playTrack(32)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">33. Start The Joy (Uplifting)</button>
+      <button onclick="playTrack(40)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">41. The Price Is Paid</button>
+      <button onclick="playTrack(44)" style="background: #222; color: #fff; border: 1px solid #00f0ff; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">45. Wings of Destiny</button>
+    </div>
+  </div>
 
-        function playTrack(index) {
-            if (index >= playlist.length) {
-                currentTrackIndex = 0; // Loop contínuo
-            }
-            const track = playlist[currentTrackIndex];
-            audioPlayer.src = track.url;
-            nowPlayingText.innerHTML = `No ar: <strong>${track.title}</strong>`;
-            audioPlayer.play().catch(e => console.log("Autoplay bloqueado pelo browser:", e));
-        }
+  <!-- BLOCO 4: MADRUGADA (GENTELE STROM SAGA & EXPERIMENTAL) -->
+  <div style="margin-top: 15px;">
+    <h4 style="color: #ffaa00; font-family: sans-serif; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px;">🌌 Madrugada: Gentele Strom (Saga Imersiva)</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <button onclick="playTrack(10)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">11. Gentele Strom</button>
+      <button onclick="playTrack(11)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">12. Gentele Strom (2)</button>
+      <button onclick="playTrack(12)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">13. Gentele Strom (4)</button>
+      <button onclick="playTrack(13)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">14. Gentele Strom (5)</button>
+      <button onclick="playTrack(14)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">15. Gentele Strom (7)</button>
+      <button onclick="playTrack(15)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">16. Gentele Strom (8)</button>
+      <button onclick="playTrack(16)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">17. Gentele Strom (9)</button>
+      <button onclick="playTrack(17)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">18. Gentele Strom (11)</button>
+      <button onclick="playTrack(18)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">19. Gentele Strom (15)</button>
+      <button onclick="playTrack(19)" style="background: #222; color: #fff; border: 1px solid #ffaa00; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">20. Gentele Strom (Nova)</button>
+    </div>
+  </div>
+</div>
 
-        audioPlayer.addEventListener('ended', () => {
-            currentTrackIndex++;
-            playTrack(currentTrackIndex);
-        });
+<script>
+  const playlist = [
+    { title: "Aquele Sonho (Pop)", url: "https://docs.google.com/uc?export=download&id=1L5uV4bPu6fOqHntGHmfOaz2ee7pt-BWm" },
+    { title: "Aquele Sonho 2", url: "https://docs.google.com/uc?export=download&id=10xQEpKZnG2_vYHF4drIbiFrq7tsxs8CM" },
+    { title: "Became Just One", url: "https://docs.google.com/uc?export=download&id=1X2ZWSw4K46ox4AcyLbq-0AqpdMFCbshH" },
+    { title: "Burning Fire", url: "https://docs.google.com/uc?export=download&id=1j1yhdzlb2R7inOJByBZjN2LO2LW4SXtG" },
+    { title: "Diviny Made Flesh", url: "https://docs.google.com/uc?export=download&id=1llGeqI8pFRDgku5NEggmZNGCVA7d7JBV" },
+    { title: "Down In This Obsession", url: "https://docs.google.com/uc?export=download&id=1O2_czlOtObzbocKmDyF-V24_8aSZZg0A" },
+    { title: "Entre O Te Amo E O Te Adoro", url: "https://docs.google.com/uc?export=download&id=1wnpZf2v7AzodQYkQ8YTyopXDnlDlHziK" },
+    { title: "Eu Não Quero Ter Razão", url: "https://docs.google.com/uc?export=download&id=1Kc7ENo9d6SGraG5Eud2wZrUWJO5A4xaQ" },
+    { title: "Eu Te Dei O Melhor De Mim", url: "https://docs.google.com/uc?export=download&id=1msi6coVVwqPOVr1a8hnARRVOhdpHy5gn" },
+    { title: "Forever We Glow", url: "https://docs.google.com/uc?export=download&id=1k88LfNpLDLSfb3mgIzPIu1Gw-5jJRt7w" },
+    { title: "Gentele Strom", url: "https://docs.google.com/uc?export=download&id=1k23tVqq8wWrePJ22SZY14NmY42dvCLEH" },
+    { title: "Gentele Strom (2)", url: "https://docs.google.com/uc?export=download&id=1d6R5QzaYWx1QLeVYYTfRwvS5-mHZOV5F" },
+    { title: "Gentele Strom (4)", url: "https://docs.google.com/uc?export=download&id=1WJTJ2ylvojNUARFli3z74_IgzkmmSOOh" },
+    { title: "Gentele Strom (5)", url: "https://docs.google.com/uc?export=download&id=16uHuz3QUsfHj3y2Ikj5fGYTvytsJhHUs" },
+    { title: "Gentele Strom (7)", url: "https://docs.google.com/uc?export=download&id=1UVh6nqchdVz8SqgDVwc8dLFJyiZfym2f" },
+    { title: "Gentele Strom (8)", url: "https://docs.google.com/uc?export=download&id=1ldYVe-SfMwjSzs62E8pPve9hP5um1Vz7" },
+    { title: "Gentele Strom (9)", url: "https://docs.google.com/uc?export=download&id=1eH9oDOMJM4nTKX9ydAp9LoB1D_Fa8gg_" },
+    { title: "Gentele Strom (11)", url: "https://docs.google.com/uc?export=download&id=10fE_TYTywsbInqOqFcUCuN0LO4w51DG8" },
+    { title: "Gentele Strom (15)", url: "https://docs.google.com/uc?export=download&id=1Hqmp201b0t8uuX4Fh4bKRYFerycHJYmz" },
+    { title: "Gentele Strom (Nova)", url: "https://docs.google.com/uc?export=download&id=1WRqbcGnVKsX3bLuzpd6Ak9kW7C7Cra7P" },
+    { title: "Masterpiece (Parte 2)", url: "https://docs.google.com/uc?export=download&id=1R1EGB_cFom_jV59EIXn7nRJGxBoFXj20" },
+    { title: "Me Cansei Do Seu Tanto Faz", url: "https://docs.google.com/uc?export=download&id=1SNYIFmUa2NDVY7sNEw_vKQdNsKsgbxyc" },
+    { title: "Meio Louco Por Você", url: "https://docs.google.com/uc?export=download&id=1GPcAODRZPu9lREmgahjqMEb19qFZcvOZ" },
+    { title: "Não Importa O Lugar", url: "https://docs.google.com/uc?export=download&id=1yKFeXHtuYA_YjzM8bQ7KUHnilCdWdmPy" },
+    { title: "Não Me Olha Desse Jeito", url: "https://docs.google.com/uc?export=download&id=1bH_k6txFHzYahyvKTEug6HvbcOOwvOXh" },
+    { title: "Nostalgia (Remix)", url: "https://docs.google.com/uc?export=download&id=1znGQW0w2Hq4lLvpQx1alz8BmxVvggLKK" },
+    { title: "Nothing Can Hold (Deep House)", url: "https://docs.google.com/uc?export=download&id=1BYI_x_dMCcEGxsQpKpKwuMG8HPOGTUCO" },
+    { title: "Rising From The Floor", url: "https://docs.google.com/uc?export=download&id=10ICiH0LoSjxYbpaD7Up_y7hOi9jZ29pD" },
+    { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "https://docs.google.com/uc?export=download&id=1irCCRL7tDbNqSzfd5rjIHs1bo2_Ed1ZO" },
+    { title: "Soul's Essential Food", url: "https://docs.google.com/uc?export=download&id=1PzAEzcPI0A5KcejP5omws6Lk_Oj1R22L" },
+    { title: "Spinning Through", url: "https://docs.google.com/uc?export=download&id=1bFacea6LRydbZjXoEy7kOVRJPwkzid06" },
+    { title: "Spinning Through (Disco Version)", url: "https://docs.google.com/uc?export=download&id=1MRSmXrTlm23EDCTH50SILxEwi5nLd48B" },
+    { title: "Start The Joy (Uplifting)", url: "https://docs.google.com/uc?export=download&id=18yYojpUARpjljnc75M53ad0yagYC90rg" },
+    { title: "Streamside Comfort", url: "https://docs.google.com/uc?export=download&id=1J4tOun9UKKt3XeXt6llQlNzEkZc2JpWI" },
+    { title: "Streamside Comfort (2)", url: "https://docs.google.com/uc?export=download&id=1cTckvrZPrmjjfaKdfsA5SAkGrSBc1lFO" },
+    { title: "Streamside Glow", url: "https://docs.google.com/uc?export=download&id=1c-EWicOjifgDASiD_2B1JmrI0Yw_2Oht" },
+    { title: "Streamside Relief (2)", url: "https://docs.google.com/uc?export=download&id=1nCmP01e1mmd7hdRWIsgBdEDS2JcU5Q9F" },
+    { title: "Streamside Relief (3)", url: "https://docs.google.com/uc?export=download&id=1X8hm5Q0kOVfBE_aYqDm3dDbxTVgmvAjp" },
+    { title: "Streamside Rest", url: "https://docs.google.com/uc?export=download&id=1CysPD5sPLOtuQUljxfcvspr4FPakZfe6" },
+    { title: "Streamside Rest (2)", url: "https://docs.google.com/uc?export=download&id=1lP3xjT4Itl4sdI5aqVvx3CN_45R9SbwO" },
+    { title: "The Price Is Paid", url: "https://docs.google.com/uc?export=download&id=15JRLnE9N5LkA7s9AmusG33k1PFolD544" },
+    { title: "Uma Aposta Ruim", url: "https://docs.google.com/uc?export=download&id=18Q4hAORp_xlYhUbPmai4P5BDQ5JWSiNs" },
+    { title: "Uma Mulher Fatal", url: "https://docs.google.com/uc?export=download&id=1EGP0rgHbTAnsmwoQjQUg3Sy7bz9g1_v9" },
+    { title: "Volta Logo Pra Mim", url: "https://docs.google.com/uc?export=download&id=1q0limi6RWtJIGaEaHPUyf7QX3xMj_9kk" },
+    { title: "Wings of Destiny", url: "https://docs.google.com/uc?export=download&id=1FMwxnF0w1MvOEr42yyvmP7eCyLQloh_a" }
+  ];
+  
+  let currentIndex = 0;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            playTrack(currentTrackIndex);
-        });
+  function playTrack(index) {
+    currentIndex = index;
+    const audio = document.getElementById('radio-audio');
+    const source = document.getElementById('audio-source');
+    const title = document.getElementById('current-track-title');
+    
+    source.src = playlist[currentIndex].url;
+    title.textContent = playlist[currentIndex].title;
+    audio.load();
+    audio.play();
+  }
 
-        function enviarMensagem() {
-            const input = document.getElementById('chatInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-    </script>
-</body>
-</html>
+  function nextTrack() {
+    currentIndex = (currentIndex + 1) % playlist.length;
+    playTrack(currentIndex);
+  }
+</script>
