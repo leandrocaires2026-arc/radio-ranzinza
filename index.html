@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rádio Ranzinza</title>
+    <title>Rádio Ranzinza // Cyber Studio</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #181818;
-            --accent-green: #1db954;
+            --bg-color: #09090c;
+            --card-bg: #141419;
+            --neon-pink: #ff007f;
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffaa00;
             --text-main: #ffffff;
-            --text-muted: #b3b3b3;
-            --border-color: #282828;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 30px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,206 +29,327 @@
         }
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 15px;
             width: 100%;
-            max-width: 1100px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
+            max-width: 1200px;
+            box-shadow: 0 5px 20px rgba(255, 0, 127, 0.3);
         }
         h1 {
-            color: var(--text-main);
+            color: var(--neon-blue);
             margin: 0;
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.8rem;
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+            letter-spacing: 2px;
         }
         header p {
             color: var(--text-muted);
             margin-top: 6px;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
         }
         .main-layout {
             display: grid;
-            grid-template-columns: 260px 1fr 260px;
-            gap: 24px;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 20px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
         }
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .main-layout {
                 grid-template-columns: 1fr;
             }
         }
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
         h3 {
             margin-top: 0;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-main);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
         }
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .info-box {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-        .center-panel {
+        .side-panel, .center-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         .player-box {
+            background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
             text-align: center;
-            background: linear-gradient(145deg, #202020, #181818);
         }
         .player-box h2 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-            color: var(--text-main);
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+            margin-top: 0;
+            font-size: 1.3rem;
         }
         #now-playing {
-            color: var(--accent-green);
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
+            color: var(--neon-green);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.4);
         }
+        /* Visualizador Gráfico / Equalizador Falso em CSS */
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin: 15px 0;
+        }
+        .bar {
+            width: 6px;
+            background: var(--neon-pink);
+            border-radius: 3px;
+            animation: bounce 1.2s infinite ease-in-out alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; background: var(--neon-blue); }
+        .bar:nth-child(3) { animation-delay: 0.4s; background: var(--neon-green); }
+        .bar:nth-child(4) { animation-delay: 0.1s; background: var(--neon-yellow); }
+        .bar:nth-child(5) { animation-delay: 0.3s; background: var(--neon-pink); }
+        .bar:nth-child(6) { animation-delay: 0.5s; background: var(--neon-blue); }
+
+        @keyframes bounce {
+            0% { height: 8px; }
+            100% { height: 36px; }
+        }
+
         audio {
             width: 100%;
             margin-top: 10px;
             border-radius: 8px;
+            filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.3));
         }
+
+        /* Capa de Exibição Artística */
+        .album-art-container {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1f1f2e, #111116);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .album-art-container::after {
+            content: 'RANZINZA // 432Hz';
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .vinyl-icon {
+            font-size: 3.5rem;
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Lista de Ciclos e Grade */
+        .schedule-block {
+            font-size: 0.85rem;
+            border-left: 3px solid var(--neon-blue);
+            padding-left: 10px;
+            margin-top: 12px;
+            text-align: left;
+        }
+        .schedule-title {
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin-bottom: 3px;
+        }
+
         .chat-box {
             display: flex;
             flex-direction: column;
-            height: 280px;
+            height: 260px;
         }
         .chat-messages {
             flex: 1;
-            background: #121212;
+            background: #0a0a0e;
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
             margin-bottom: 10px;
             font-size: 0.85rem;
             border: 1px solid var(--border-color);
+            text-align: left;
         }
         .chat-input-area {
             display: flex;
             gap: 8px;
         }
-        input, button {
-            padding: 10px 12px;
+        input, button.chat-btn {
+            padding: 9px 12px;
             border-radius: 6px;
             border: none;
             font-size: 0.9rem;
-            font-family: inherit;
         }
         input {
             flex: 1;
-            background: #242424;
+            background: #1c1c24;
             color: white;
-            border: 1px solid transparent;
+            border: 1px solid var(--border-color);
         }
         input:focus {
             outline: none;
-            border-color: var(--accent-green);
+            border-color: var(--neon-blue);
         }
-        button {
-            background-color: var(--accent-green);
-            color: #121212;
+        button.chat-btn {
+            background: linear-gradient(135deg, var(--neon-pink), #ff2a5f);
+            color: white;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
         }
-        button:hover {
-            opacity: 0.9;
-        }
-        .social-links {
+        button.chat-btn:hover { opacity: 0.9; }
+
+        .external-platforms {
             margin-top: 15px;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            font-size: 0.85rem;
+            gap: 12px;
         }
-        .social-links a {
-            color: var(--text-muted);
+        .platform-btn {
+            background: #1f1f2b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
             text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .social-links a:hover {
-            color: var(--text-main);
+        .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
+        .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
+
+        .info-box {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Rádio Ranzinza</h1>
-        <p>Transmissão contínua de produções originais</p>
+        <h1>RÁDIO RANZINZA</h1>
+        <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
 
     <div class="main-layout">
-        <!-- COLUNA ESQUERDA -->
+        
+        <!-- COLUNA ESQUERDA: Grade de Programação por Ciclos -->
         <div class="side-panel">
-            <div class="card">
-                <h3>📅 Programação</h3>
-                <p class="info-box">Emissão automática em rotação contínua organizada cronologicamente.</p>
-            </div>
-            <div class="card">
-                <h3>📢 Anúncios</h3>
-                <p class="info-box">Espaço destinado a destaques e avisos da estação.</p>
+            <div class="card" style="border-color: var(--neon-green);">
+                <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
+                <div class="schedule-block" style="border-color: var(--neon-green);">
+                    <div class="schedule-title" style="color: var(--neon-green);">🌅 Manhã (Atmospheric)</div>
+                    <p class="info-box" style="margin: 0;">Série New Age & Streamside para relaxamento e foco.</p>
+                </div>
+                <div class="schedule-block" style="border-color: var(--neon-pink);">
+                    <div class="schedule-title" style="color: var(--neon-pink);">☀️ Tarde (Vocal & Sertanejo)</div>
+                    <p class="info-box" style="margin: 0;">Composições românticas e refrões marcantes.</p>
+                </div>
+                <div class="schedule-block" style="border-color: var(--neon-blue);">
+                    <div class="schedule-title" style="color: var(--neon-blue);">🌙 Noite (Eletrônica & Dance)</div>
+                    <p class="info-box" style="margin: 0;">Deep House, Eurodance e batidas de alta energia.</p>
+                </div>
+                <div class="schedule-block" style="border-color: var(--neon-yellow);">
+                    <div class="schedule-title" style="color: var(--neon-yellow);">🌌 Madrugada (Gentele Strom)</div>
+                    <p class="info-box" style="margin: 0;">Saga imersiva e arranjos conceituais estendidos.</p>
+                </div>
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL -->
+        <!-- COLUNA CENTRAL: Player Gráfico, Capa e Chat -->
         <div class="center-panel">
             <div class="card player-box">
-                <h2>🎙️ Emissão em Direto</h2>
+                <h2>🎙️ Emissão Oficial em Direto</h2>
+                
+                <!-- Capa Visual / Vinil Animado -->
+                <div class="album-art-container">
+                    <div class="vinyl-icon">💽</div>
+                </div>
+
                 <p id="now-playing">A carregar programação automática...</p>
+                
+                <!-- Equalizador Gráfico Animado -->
+                <div class="equalizer">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
                 <audio id="audioPlayer" controls autoplay controlsList="nodownload">
                     O seu navegador não suporta áudio HTML5.
                 </audio>
-                <div class="social-links">
-                    <a href="mailto:leandrocaires2026@gmail.com">Contacto</a>
-                    <a href="https://soundcloud.com" target="_blank">SoundCloud</a>
-                    <a href="https://spotify.com" target="_blank">Spotify</a>
+
+                <!-- Links para Plataformas -->
+                <div class="external-platforms">
+                    <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
+                    <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                 </div>
             </div>
 
+            <!-- CHAT AO VIVO -->
             <div class="card chat-box">
-                <h3>💬 Mural de Recados</h3>
+                <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
                 <div class="chat-messages" id="chatMessages">
-                    <p style="color: var(--text-muted);"><strong>Sistema:</strong> Chat conectado.</p>
+                    <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
-                    <button onclick="enviarMensagem()">Enviar</button>
+                    <button class="chat-btn" onclick="enviarMensagem()">Enviar</button>
                 </div>
             </div>
         </div>
 
-        <!-- COLUNA DIREITA -->
+        <!-- COLUNA DIREITA: Estúdio Neon & Destaques -->
         <div class="side-panel">
-            <div class="card">
-                <h3>🌌 Sobre o Projeto</h3>
-                <p class="info-box">Som autêntico, frequências calibradas e independência criativa total.</p>
+            <div class="card" style="border-color: var(--neon-pink);">
+                <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
+                <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
             </div>
-            <div class="card">
-                <h3>🔥 Destaque</h3>
-                <p class="info-box">Ouça as composições exclusivas gravadas e publicadas em alta definição.</p>
+            <div class="card" style="border-color: var(--neon-blue);">
+                <h3 style="color: var(--neon-blue);">🔥 Lançamentos Diários</h3>
+                <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo sem interrupções.</p>
             </div>
         </div>
+
     </div>
 
     <script>
-        // Grade cronológica automática (New Age de manhã, Pop/Sertanejo à tarde, Eletrônicas à noite e Gentele Strom na madrugada)
+        // Grade cronológica automática com as 45 faixas oficiais
         const playlist = [
             // Manhã: New Age & Streamside
             { title: "Streamside Comfort", url: "https://docs.google.com/uc?export=download&id=1J4tOun9UKKt3XeXt6llQlNzEkZc2JpWI" },
@@ -250,7 +374,7 @@
             { title: "Uma Mulher Fatal", url: "https://docs.google.com/uc?export=download&id=1EGP0rgHbTAnsmwoQjQUg3Sy7bz9g1_v9" },
             { title: "Volta Logo Pra Mim", url: "https://docs.google.com/uc?export=download&id=1q0limi6RWtJIGaEaHPUyf7QX3xMj_9kk" },
 
-            // Início da Noite: Eletrônica & Dance
+            // Noite: Eletrônica & Dance
             { title: "Became Just One", url: "https://docs.google.com/uc?export=download&id=1X2ZWSw4K46ox4AcyLbq-0AqpdMFCbshH" },
             { title: "Burning Fire", url: "https://docs.google.com/uc?export=download&id=1j1yhdzlb2R7inOJByBZjN2LO2LW4SXtG" },
             { title: "Diviny Made Flesh", url: "https://docs.google.com/uc?export=download&id=1llGeqI8pFRDgku5NEggmZNGCVA7d7JBV" },
@@ -309,7 +433,7 @@
             const messages = document.getElementById('chatMessages');
             if(input.value.trim() !== '') {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--accent-green);">Ouvinte:</strong> ${input.value}`;
+                p.innerHTML = `<strong style="color: var(--neon-green);">Ouvinte:</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
