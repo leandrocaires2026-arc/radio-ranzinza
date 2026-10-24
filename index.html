@@ -138,6 +138,23 @@
             filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.3));
         }
 
+        .start-btn {
+            background: linear-gradient(135deg, var(--neon-green), #00b347);
+            color: #0b0b0e;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+
         .album-art-container {
             width: 100%;
             height: 180px;
@@ -294,7 +311,10 @@
                     <div class="vinyl-icon">💽</div>
                 </div>
 
-                <p id="now-playing">Clique em Play para iniciar a transmissão...</p>
+                <!-- Botão de Ativação Manual para destravar o áudio no browser -->
+                <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
+
+                <p id="now-playing">Clique acima para sintonizar a rádio...</p>
                 
                 <div class="equalizer">
                     <div class="bar"></div>
@@ -305,8 +325,7 @@
                     <div class="bar"></div>
                 </div>
 
-                <!-- Player de Áudio Atualizado com controles manuais e preload -->
-                <audio id="audioPlayer" controls preload="auto" controlsList="nodownload">
+                <audio id="audioPlayer" controls controlsList="nodownload">
                     O seu navegador não suporta áudio HTML5.
                 </audio>
 
@@ -403,7 +422,12 @@
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
 
-        function loadTrack(index) {
+        function iniciarRadio() {
+            carregarFaixa(currentTrackIndex);
+            audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+        }
+
+        function carregarFaixa(index) {
             if (index >= playlist.length) {
                 currentTrackIndex = 0;
             }
@@ -415,12 +439,8 @@
 
         audioPlayer.addEventListener('ended', () => {
             currentTrackIndex++;
-            loadTrack(currentTrackIndex);
-            audioPlayer.play().catch(err => console.log("Erro ao avançar faixa:", err));
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadTrack(currentTrackIndex);
+            carregarFaixa(currentTrackIndex);
+            audioPlayer.play().catch(e => console.log("Erro ao passar para a próxima faixa:", e));
         });
 
         function enviarMensagem() {
