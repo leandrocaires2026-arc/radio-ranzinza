@@ -206,14 +206,14 @@
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-modal-card">
             <h3>🌐 Partilhar Rádio Ranzinza</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede para partilhar o som a 432Hz:</p>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
             
             <div class="share-grid">
                 <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
                 <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <button onclick="partilharNativoRedes('Instagram')" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
-                <button onclick="partilharNativoRedes('TikTok')" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
-                <button onclick="partilharNativoRedes('Kwai')" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <button onclick="partilharRedeSocial('Instagram')" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharRedeSocial('TikTok')" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharRedeSocial('Kwai')" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
                 <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
             </div>
             
@@ -400,7 +400,7 @@
                 </div>
 
                 <!-- ANÚNCIO / SLIDER -->
-                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
@@ -464,20 +464,27 @@
             document.getElementById('shareModal').style.display = 'flex';
         }
 
-        // Partilha nativa direta para Instagram, TikTok e Kwai (abre o menu de partilha do telemóvel/sistema)
-        function partilharNativoRedes(redeNome) {
-            const urlAtual = window.location.href;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Rádio Ranzinza',
-                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
-                    url: urlAtual,
-                }).then(() => {
-                    fecharModalPartilha();
-                }).catch((error) => console.log('Partilha cancelada', error));
-            } else {
-                copiarLinkRadio();
-            }
+        // Função de partilha otimizada para apps móveis (Instagram, TikTok, Kwai)
+        function partilharRedeSocial(rede) {
+            const linkRadio = window.location.href;
+            
+            // Copia o link e a mensagem para facilitar o colar no Story/Direct
+            navigator.clipboard.writeText(linkRadio).then(() => {
+                if (rede === 'Instagram') {
+                    alert('Link copiado! A abrir o Instagram (cole no seu Story ou Direct).');
+                    window.location.href = 'instagram://story-camera';
+                    setTimeout(() => { window.open('https://instagram.com', '_blank'); }, 1000);
+                } else if (rede === 'TikTok') {
+                    alert('Link copiado! A abrir o TikTok.');
+                    window.open('https://www.tiktok.com/', '_blank');
+                } else if (rede === 'Kwai') {
+                    alert('Link copiado! A abrir o Kwai.');
+                    window.open('https://www.kwai.com/', '_blank');
+                }
+                fecharModalPartilha();
+            }).catch(() => {
+                alert('Erro ao copiar link automaticamente.');
+            });
         }
 
         function fecharModalPartilha() {
