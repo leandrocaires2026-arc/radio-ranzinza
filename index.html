@@ -28,7 +28,7 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM A ARTE MATERIAL E INDUSTRIAL IDÊNTICA AO RODAPÉ */
+        /* CABEÇALHO COM ARTE MATERIAL E INDUSTRIAL */
         header {
             width: 100%;
             max-width: 1200px;
@@ -301,11 +301,6 @@
             align-items: center;
             justify-content: center;
         }
-        .ad-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
@@ -405,21 +400,24 @@
         }
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
+        
+        /* BLOCOS DE RODAPÉ COM O MESMO ESTILO INDUSTRIAL */
         .radio-banner {
             width: 100%;
             height: 200px;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid #2a2f3a;
             position: relative;
             margin-bottom: 20px;
-            background: #111;
+            background: #0f1115;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.1);
         }
-        .radio-banner img {
+        .banner-svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
         }
+
         .info-box {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -429,7 +427,7 @@
 </head>
 <body>
 
-    <!-- CABEÇALHO COM A ARTE MATERIAL IDÊNTICA À DO RODAPÉ -->
+    <!-- CABEÇALHO COM O MESMO PADRÃO INDUSTRIAL -->
     <header>
         <svg class="header-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -453,28 +451,23 @@
                 </filter>
             </defs>
 
-            <!-- Fundo Metálico -->
             <rect width="1200" height="200" fill="url(#metalBase)" />
             <line x1="0" y1="20" x2="1200" y2="20" stroke="#222831" stroke-width="1"/>
             <line x1="0" y1="180" x2="1200" y2="180" stroke="#050608" stroke-width="2"/>
 
-            <!-- Parafusos nos Cantos -->
             <circle cx="20" cy="20" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="20" cy="20" r="2" fill="#111"/>
             <circle cx="1180" cy="20" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="1180" cy="20" r="2" fill="#111"/>
             <circle cx="20" cy="180" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="20" cy="180" r="2" fill="#111"/>
             <circle cx="1180" cy="180" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="1180" cy="180" r="2" fill="#111"/>
 
-            <!-- Placa Central com Moldura Dourada e Relevo -->
             <rect x="210" y="25" width="780" height="150" rx="8" fill="url(#metalPlate)" stroke="url(#goldAcc)" stroke-width="1.5" filter="url(#dropShadow)" />
             
             <line x1="230" y1="50" x2="230" y2="150" stroke="#222" stroke-width="2" stroke-dasharray="3, 3"/>
             <line x1="970" y1="50" x2="970" y2="150" stroke="#222" stroke-width="2" stroke-dasharray="3, 3"/>
 
-            <!-- Textos e Informações Principais -->
             <text x="600" y="85" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3" filter="url(#dropShadow)">RÁDIO RANZINZA</text>
             <text x="600" y="125" font-family="'Courier New', Courier, monospace" font-size="13" font-weight="bold" fill="url(#goldAcc)" text-anchor="middle" letter-spacing="2">ESTÚDIO DE TRANSMISSÃO 432Hz</text>
 
-            <!-- Leds Indicadores -->
             <circle cx="260" cy="121" r="3.5" fill="#00ff66"/>
             <circle cx="940" cy="121" r="3.5" fill="#00ff66"/>
         </svg>
@@ -536,7 +529,12 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%230b0b0e\'/><text x=\'50%\' y=\'50%\' fill=\'%2300f0ff\' font-size=\'20\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Rádio Ranzinza</text></svg>'">
+                <svg class="banner-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="1200" height="200" fill="url(#metalBase)"/>
+                    <circle cx="20" cy="20" r="4" fill="#3a4252"/><circle cx="1180" cy="20" r="4" fill="#3a4252"/>
+                    <circle cx="20" cy="180" r="4" fill="#3a4252"/><circle cx="1180" cy="180" r="4" fill="#3a4252"/>
+                    <text x="600" y="105" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#94a3b8" text-anchor="middle" letter-spacing="2">RÁDIO RANZINZA // MASTER</text>
+                </svg>
             </div>
         </div>
 
@@ -608,4 +606,262 @@
                     <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
 
                     <div class="admin-panel" id="adminPanel">
-                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
+                        <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
+                        <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="radio-banner">
+                <svg class="banner-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="1200" height="200" fill="url(#metalBase)"/>
+                    <circle cx="20" cy="20" r="4" fill="#3a4252"/><circle cx="1180" cy="20" r="4" fill="#3a4252"/>
+                    <circle cx="20" cy="180" r="4" fill="#3a4252"/><circle cx="1180" cy="180" r="4" fill="#3a4252"/>
+                    <text x="600" y="105" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#94a3b8" text-anchor="middle" letter-spacing="2">ESTÚDIO DE TRANSMISSÃO // LIVE</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="card card-top" style="border-color: var(--neon-pink);">
+                    <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
+                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <div class="schedule-block" style="border-color: var(--neon-pink);">
+                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                        <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
+                    </div>
+                </div>
+
+                <!-- ANÚNCIO / SLIDER COM DESTAQUE E SPOTIFY -->
+                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                    <div class="ad-slide active">
+                        <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
+                        <div class="ad-img-container">
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#00f0ff" opacity="0.2" filter="blur(15px)"/>
+                                <polygon points="180,65 180,115 225,90" fill="#00f0ff"/>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#00f0ff" text-anchor="middle" letter-spacing="1">SoundCloud Tracks</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
+                    </div>
+                    <div class="ad-slide">
+                        <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
+                        <div class="ad-img-container">
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
+                                <g transform="translate(170, 50) scale(1.4)">
+                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
+                                </g>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Perfil no Spotify</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="radio-banner">
+                <svg class="banner-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="1200" height="200" fill="url(#metalBase)"/>
+                    <circle cx="20" cy="20" r="4" fill="#3a4252"/><circle cx="1180" cy="20" r="4" fill="#3a4252"/>
+                    <circle cx="20" cy="180" r="4" fill="#3a4252"/><circle cx="1180" cy="180" r="4" fill="#3a4252"/>
+                    <text x="600" y="105" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="bold" fill="#94a3b8" text-anchor="middle" letter-spacing="2">RÁDIO RANZINZA // 432HZ</text>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function criarMarcacoesRelogio(faceId) {
+            const face = document.getElementById(faceId);
+            for (let i = 0; i < 60; i++) {
+                const tick = document.createElement('div');
+                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
+                face.appendChild(tick);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            sincronizarTransmissaoEstrita();
+        });
+
+        const playlist = [
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
+        ];
+
+        const audio1 = document.getElementById('audioPlayer1');
+        const audio2 = document.getElementById('audioPlayer2');
+        const nowPlayingText = document.getElementById('now-playing');
+        
+        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
+        const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
+        
+        let playerAtivo = 1;
+        let faixaAtualIndex = -1;
+
+        setInterval(() => {
+            const agora = new Date();
+            
+            const hUTC = agora.getUTCHours();
+            const mUTC = agora.getUTCMinutes();
+            const sUTC = agora.getUTCSeconds();
+            
+            document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+            document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+            document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+            document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+
+            const diffMs = Date.now() - tempoInicioEmissao;
+            const totalSecs = Math.floor(diffMs / 1000);
+            const upH = Math.floor(totalSecs / 3600);
+            const upM = Math.floor((totalSecs % 3600) / 60);
+            const upS = totalSecs % 60;
+
+            document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+            document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+            document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+            document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+        }, 1000);
+
+        function calcularPontoGlobalUTC() {
+            const agora = new Date();
+            const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
+            let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
+
+            let faixaIndex = 0;
+            let tempoNaFaixa = 0;
+
+            for (let i = 0; i < playlist.length; i++) {
+                if (tempoNoCiclo < playlist[i].duration) {
+                    faixaIndex = i;
+                    tempoNaFaixa = tempoNoCiclo;
+                    break;
+                }
+                tempoNoCiclo -= playlist[i].duration;
+            }
+            return { faixaIndex, tempoNaFaixa };
+        }
+
+        function sincronizarTransmissaoEstrita() {
+            const ponto = calcularPontoGlobalUTC();
+            const track = playlist[ponto.faixaIndex];
+
+            if (faixaAtualIndex !== ponto.faixaIndex) {
+                faixaAtualIndex = ponto.faixaIndex;
+                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
+
+                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                const activePlayer = playerAtivo === 1 ? audio1 : audio2;
+
+                nextPlayer.src = track.url;
+                nextPlayer.volume = 0.0;
+                nextPlayer.load();
+
+                nextPlayer.onloadedmetadata = () => {
+                    nextPlayer.currentTime = ponto.tempoNaFaixa;
+                    nextPlayer.play().then(() => {
+                        let vol = 0.0;
+                        const fadeInterval = setInterval(() => {
+                            vol += 0.1;
+                            if (vol >= 1.0) {
+                                vol = 1.0;
+                                nextPlayer.volume = 1.0;
+                                activePlayer.pause();
+                                clearInterval(fadeInterval);
+                                playerAtivo = playerAtivo === 1 ? 2 : 1;
+                            } else {
+                                nextPlayer.volume = vol;
+                                if (!activePlayer.paused) {
+                                    activePlayer.volume = Math.max(0, 1.0 - vol);
+                                }
+                            }
+                        }, 150);
+                    }).catch(e => console.log("Aguardando interação:", e));
+                };
+            } else {
+                const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
+                    activeAudio.currentTime = ponto.tempoNaFaixa;
+                }
+            }
+        }
+
+        setInterval(sincronizarTransmissaoEstrita, 2000);
+
+        setInterval(() => {
+            const cards = document.querySelectorAll('.ad-slider-card');
+            cards.forEach(card => {
+                const slides = card.querySelectorAll('.ad-slide');
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+            });
+        }, 5000);
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
