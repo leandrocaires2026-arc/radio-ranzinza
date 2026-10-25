@@ -107,6 +107,21 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
+        /* Altura fixa idêntica para os quadros superiores e inferiores ficarem perfeitamente simétricos */
+        .card-top {
+            height: 310px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        .card-bottom {
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
         h3 {
             margin-top: 0;
             font-size: 1.1rem;
@@ -125,6 +140,7 @@
         .player-box {
             background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
             text-align: center;
+            height: auto;
         }
         .player-box h2 {
             color: var(--neon-blue);
@@ -216,26 +232,24 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .schedule-block {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border-left: 3px solid var(--neon-blue);
-            padding-left: 10px;
-            margin-top: 12px;
+            padding-left: 8px;
+            margin-top: 8px;
             text-align: left;
         }
         .schedule-title {
             font-weight: bold;
             color: var(--neon-blue);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
-        /* Estilos dos Slides de Anúncio com Imagem Garantida */
+        /* Estilos dos Slides de Anúncio */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: block;
-            min-height: 250px;
         }
         .ad-slide {
             display: none;
@@ -246,10 +260,10 @@
         }
         .ad-img-container {
             width: 100%;
-            height: 130px;
-            border-radius: 8px;
+            height: 110px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border: 1px solid var(--border-color);
             background: #000;
         }
@@ -267,7 +281,7 @@
             to { opacity: 1; transform: scale(1); }
         }
         .ad-tag {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             padding: 2px 6px;
@@ -275,7 +289,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
             display: inline-block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .chat-box {
@@ -378,9 +392,9 @@
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
 
         .info-box {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -403,43 +417,40 @@
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <div class="card" style="border-color: var(--neon-green);">
-                    <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
+                <!-- QUADRO SUPERIOR ESQUERDO: GRADE DE PROGRAMAÇÃO -->
+                <div class="card card-top" style="border-color: var(--neon-green);">
+                    <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title" style="color: var(--neon-green);">🌅 Manhã (Atmospheric)</div>
-                        <p class="info-box" style="margin: 0;">Série New Age & Streamside para relaxamento e foco.</p>
+                        <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
+                        <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title" style="color: var(--neon-pink);">☀️ Tarde (Vocal & Sertanejo)</div>
-                        <p class="info-box" style="margin: 0;">Composições românticas e refrões marcantes.</p>
+                        <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
+                        <p class="info-box" style="margin: 0;">Composições românticas.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title" style="color: var(--neon-blue);">🌙 Noite (Eletrônica & Dance)</div>
-                        <p class="info-box" style="margin: 0;">Deep House, Eurodance e batidas de alta energia.</p>
-                    </div>
-                    <div class="schedule-block" style="border-color: var(--neon-yellow);">
-                        <div class="schedule-title" style="color: var(--neon-yellow);">🌌 Madrugada (Gentele Strom)</div>
-                        <p class="info-box" style="margin: 0;">Saga imersiva e arranjos conceituais estendidos.</p>
+                        <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
+                        <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
                     </div>
                 </div>
 
-                <!-- SLIDE DE ANÚNCIO (ESQUERDA) -->
-                <a href="https://spotify.com" target="_blank" class="card ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
+                <!-- QUADRO INFERIOR ESQUERDO: SLIDE DE ANÚNCIO -->
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
                             <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
                         </div>
-                        <h3 style="color: var(--neon-pink); margin-bottom: 3px; font-size: 1rem;">Ouça no Spotify</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.8rem;">Lançamentos oficiais de RANZINZA em alta fidelidade.</p>
+                        <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.95rem;">Ouça no Spotify</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.75rem;">Lançamentos oficiais em alta fidelidade.</p>
                     </div>
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
                             <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                         </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">SoundCloud</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.8rem;">Catálogo completo de fonogramas independentes a 432Hz.</p>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.95rem;">SoundCloud</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.75rem;">Fonogramas independentes a 432Hz.</p>
                     </div>
                 </a>
             </div>
@@ -511,29 +522,33 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR DIREITO AMPLIADO PARA PREENCHER O ESPAÇO -->
-                <div class="card" style="border-color: var(--neon-pink); min-height: 255px; display: flex; flex-direction: column; justify-content: center;">
-                    <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
-                    <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total e máxima fidelidade acústica.</p>
+                <!-- QUADRO SUPERIOR DIREITO: ESTÚDIO NEON (EXATA MESMA ALTURA DO ESQUERDO) -->
+                <div class="card card-top" style="border-color: var(--neon-pink);">
+                    <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
+                    <p class="info-box" style="margin-bottom: 12px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <div class="schedule-block" style="border-color: var(--neon-pink);">
+                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                        <p class="info-box" style="margin: 0;">Frequências sintonizadas a 432Hz.</p>
+                    </div>
                 </div>
 
-                <!-- QUADRO INFERIOR DIREITO: SLIDE DE ANÚNCIO (IGUAL À ESQUERDA) -->
-                <a href="https://soundcloud.com" target="_blank" class="card ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                <!-- QUADRO INFERIOR DIREITO: SLIDE DE ANÚNCIO (EXATA MESMA ALTURA DO ESQUERDO) -->
+                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
                             <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                         </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">Canal SoundCloud</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.8rem;">Álbuns completos e versões estendidas sem interrupções.</p>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.95rem;">Canal SoundCloud</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.75rem;">Álbuns completos sem interrupções.</p>
                     </div>
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
                         <div class="ad-img-container">
                             <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
                         </div>
-                        <h3 style="color: var(--neon-green); margin-bottom: 3px; font-size: 1rem;">Perfil no Spotify</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.8rem;">Siga o artista RANZINZA nas suas playlists favoritas.</p>
+                        <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.95rem;">Perfil no Spotify</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.75rem;">Siga o artista nas suas playlists.</p>
                     </div>
                 </a>
             </div>
@@ -634,4 +649,17 @@
             if(input.value.trim() !== '') {
                 const p = document.createElement('p');
                 p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
+  
+  
+  
+  
+  
+
