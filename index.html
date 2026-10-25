@@ -56,12 +56,13 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
             position: relative;
-            background: linear-gradient(135deg, #12031a, #050b14);
+            margin-bottom: 20px;
         }
-        .radio-banner img, .radio-banner svg {
+        .radio-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: brightness(0.9) contrast(1.1);
         }
         .radio-banner::after {
             content: '';
@@ -178,7 +179,7 @@
             100% { height: 36px; }
         }
 
-        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT / TELEMETRIA) */
+        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT) */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -343,10 +344,14 @@
             border: 1px solid var(--border-color);
             background: #000;
         }
-        .ad-img-container svg {
+        .ad-img-container img {
             width: 100%;
             height: 100%;
-            display: block;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .ad-slider-card:hover .ad-img-container img {
+            transform: scale(1.05);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -479,20 +484,7 @@
 
     <div style="width: 100%; max-width: 1200px; margin-bottom: 25px;">
         <div class="radio-banner">
-            <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#0b0b14"/>
-                        <stop offset="50%" stop-color="#1a0826"/>
-                        <stop offset="100%" stop-color="#020813"/>
-                    </linearGradient>
-                </defs>
-                <rect width="1200" height="200" fill="url(#bgGrad)"/>
-                <circle cx="200" cy="100" r="80" fill="#ff007f" opacity="0.15" filter="blur(20px)"/>
-                <circle cx="1000" cy="100" r="90" fill="#00f0ff" opacity="0.15" filter="blur(20px)"/>
-                <text x="600" y="90" font-family="Segoe UI, sans-serif" font-size="32" font-weight="bold" fill="#00f0ff" text-anchor="middle" letter-spacing="4">RÁDIO RANZINZA // STUDIO</text>
-                <text x="600" y="130" font-family="Segoe UI, sans-serif" font-size="16" fill="#ffaa00" text-anchor="middle" letter-spacing="2">⚡ MASTERIZAÇÃO A 432Hz ⚡</text>
-            </svg>
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
         </div>
     </div>
 
@@ -520,14 +512,7 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#121216"/>
-                                <circle cx="200" cy="100" r="60" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
-                                <path d="M160 125 Q200 105 240 125" stroke="#1db954" stroke-width="6" fill="none" stroke-linecap="round"/>
-                                <path d="M170 110 Q200 95 230 110" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>
-                                <path d="M180 95 Q200 85 220 95" stroke="#1db954" stroke-width="4" fill="none" stroke-linecap="round"/>
-                                <text x="200" y="165" font-family="Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">SPOTIFY ARTIST</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
@@ -535,12 +520,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#121216"/>
-                                <circle cx="200" cy="100" r="60" fill="#ff5500" opacity="0.2" filter="blur(15px)"/>
-                                <path d="M150 120 L160 80 L170 120 L180 60 L190 120 L200 70 L210 120 L220 90 L230 120" stroke="#ff5500" stroke-width="4" fill="none" stroke-linecap="round"/>
-                                <text x="200" y="165" font-family="Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">SOUNDCLOUD STREAM</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -549,11 +529,7 @@
             </div>
             
             <div class="radio-banner">
-                <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="1200" height="200" fill="#080c14"/>
-                    <path d="M0 100 Q300 40 600 100 T1200 100" stroke="#00f0ff" stroke-width="2" fill="none" opacity="0.4"/>
-                    <text x="600" y="105" font-family="Segoe UI, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="3">RANZINZA MUSIC // 432Hz</text>
-                </svg>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
         </div>
 
@@ -634,11 +610,7 @@
             </div>
             
             <div class="radio-banner">
-                <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="1200" height="200" fill="#080c14"/>
-                    <circle cx="600" cy="100" r="50" fill="#ff007f" opacity="0.2" filter="blur(15px)"/>
-                    <text x="600" y="105" font-family="Segoe UI, sans-serif" font-size="20" fill="#00f0ff" text-anchor="middle" letter-spacing="3">TRANSMISSÃO AO VIVO // 24H</text>
-                </svg>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
@@ -657,12 +629,7 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#121216"/>
-                                <circle cx="200" cy="100" r="60" fill="#00f0ff" opacity="0.2" filter="blur(15px)"/>
-                                <polygon points="180,75 180,125 230,100" fill="#00f0ff"/>
-                                <text x="200" y="165" font-family="Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">SOUNDCLOUD TRACKS</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -670,12 +637,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#121216"/>
-                                <circle cx="200" cy="100" r="60" fill="#00ff66" opacity="0.2" filter="blur(15px)"/>
-                                <circle cx="200" cy="100" r="35" stroke="#00ff66" stroke-width="4" fill="none"/>
-                                <text x="200" y="165" font-family="Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">SPOTIFY PLAYLIST</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
                         </div>
                         <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
@@ -684,18 +646,13 @@
             </div>
             
             <div class="radio-banner">
-                <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="1200" height="200" fill="#080c14"/>
-                    <path d="M0 50 Q600 150 1200 50" stroke="#ff007f" stroke-width="2" fill="none" opacity="0.4"/>
-                    <text x="600" y="105" font-family="Segoe UI, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="3">ARTE & FREQUÊNCIA</text>
-                </svg>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
 
     </div>
 
     <script>
-        // Função para gerar as marcações dos relógios esportivos com precisão interna
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
             for (let i = 0; i < 60; i++) {
@@ -742,7 +699,6 @@
         let playerAtivo = 1;
         let faixaAtualIndex = -1;
 
-        // Atualização em tempo real dos relógios analógicos e digitais
         setInterval(() => {
             const agora = new Date();
             
@@ -832,7 +788,6 @@
 
         setInterval(sincronizarTransmissaoEstrita, 2000);
 
-        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
@@ -860,7 +815,8 @@
             if(input.value.trim() !== '') {
                 const p = document.createElement('p');
                 p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);Image = input.value = '';
+                messages.appendChild(p);
+                input.value = '';
                 messages.scrollTop = messages.scrollHeight;
             }
         }
