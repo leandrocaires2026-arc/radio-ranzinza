@@ -178,17 +178,17 @@
             100% { height: 36px; }
         }
 
-        /* Painel Cibernético de Relógios (Azul e Dourado Ouro) */
+        /* Painel Estilo Painel de Supercarro (Mustang GT Style) - Azul e Dourado Ouro */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            background: linear-gradient(135deg, #050b14, #0e1626);
-            border: 2px solid var(--neon-blue);
+            background: linear-gradient(135deg, #02060d, #091324);
+            border: 2px solid var(--neon-yellow);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.25), 0 0 15px rgba(0, 240, 255, 0.3);
+            box-shadow: inset 0 0 25px rgba(255, 170, 0, 0.2), 0 0 15px rgba(0, 240, 255, 0.25);
             align-items: center;
         }
         .telemetry-item {
@@ -196,56 +196,55 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(4, 10, 20, 0.7);
+            background: rgba(2, 6, 15, 0.85);
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(255, 170, 0, 0.4);
+            box-shadow: inset 0 0 12px rgba(0, 240, 255, 0.15);
         }
         .telemetry-label {
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--neon-blue);
+            color: var(--neon-yellow);
             margin-bottom: 10px;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(0, 240, 255, 0.6);
+            text-shadow: 0 0 6px rgba(255, 170, 0, 0.6);
         }
 
-        /* Mostrador Analógico Moderno Azul e Dourado */
+        /* Mostrador Estilo Painel de Carro Esportivo */
         .analog-clock {
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #0b192c 0%, #03070d 90%);
-            border: 4px solid var(--neon-blue);
+            width: 125px;
+            height: 125px;
+            background: radial-gradient(circle, #0a1b33 0%, #02050a 85%);
+            border: 5px solid #d4af37; /* Borda Dourada Ouro Metálica */
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), inset 0 0 12px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .clock-face {
-            width: 100px;
-            height: 100px;
+            width: 105px;
+            height: 105px;
             position: relative;
             border-radius: 50%;
         }
-        /* Marcações (Ticks) internas e refinadas */
         .tick {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 2px;
             height: 5px;
-            background: rgba(0, 240, 255, 0.5);
-            transform-origin: 0 -42px;
+            background: rgba(0, 240, 255, 0.6);
+            transform-origin: 0 -44px;
         }
         .tick.major {
-            width: 3px;
-            height: 8px;
+            width: 3.5px;
+            height: 9px;
             background: var(--neon-yellow);
-            box-shadow: 0 0 4px var(--neon-yellow);
+            box-shadow: 0 0 5px var(--neon-yellow);
         }
         .hand {
             position: absolute;
@@ -254,40 +253,37 @@
             transform-origin: bottom;
             border-radius: 4px;
         }
-        /* Ponteiro de Horas em Dourado Ouro */
         .hour-hand {
             width: 4px;
-            height: 24px;
+            height: 25px;
             background: var(--neon-yellow);
-            box-shadow: 0 0 6px var(--neon-yellow);
+            box-shadow: 0 0 8px var(--neon-yellow);
             transform: translateX(-50%) rotate(0deg);
         }
-        /* Ponteiro de Minutos em Dourado Ouro Brilhante */
         .minute-hand {
             width: 3px;
-            height: 34px;
-            background: #ffcc00;
-            box-shadow: 0 0 6px #ffcc00;
+            height: 36px;
+            background: #ffffff;
+            box-shadow: 0 0 8px #ffffff;
             transform: translateX(-50%) rotate(0deg);
         }
-        /* Ponteiro de Segundos em Neon Pink / Azul */
         .second-hand {
             width: 1.5px;
-            height: 38px;
-            background: var(--neon-pink);
-            box-shadow: 0 0 8px var(--neon-pink);
+            height: 42px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue);
             transform: translateX(-50%) rotate(0deg);
         }
         .clock-center {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 7px;
-            height: 7px;
-            background: #ffffff;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-yellow);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 6px #ffffff;
+            box-shadow: 0 0 8px var(--neon-yellow);
         }
         .digital-subtext {
             font-family: 'Courier New', Courier, monospace;
@@ -532,7 +528,7 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
-                    <!-- Painel Cibernético com Relógios Azuis e Dourados Perfeitamente Alinhados -->
+                    <!-- Painel de Relógios Estilo Painel Esportivo de Supercarro (Azul & Dourado Ouro) -->
                     <div class="racing-telemetry-panel">
                         <!-- Relógio 1: UTC (Greenwich) -->
                         <div class="telemetry-item">
@@ -647,13 +643,13 @@
     </div>
 
     <script>
-        // Função para gerar as marcações internas perfeitamente dentro do mostrador analógico
+        // Função para gerar as marcações dos relógios esportivos com precisão interna
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
             for (let i = 0; i < 60; i++) {
                 const tick = document.createElement('div');
                 tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-                tick.style.transform = `translate(50px, 50px) rotate(${i * 6}deg) translate(0, -42px)`;
+                tick.style.transform = `translate(52px, 52px) rotate(${i * 6}deg) translate(0, -42px)`;
                 face.appendChild(tick);
             }
         }
@@ -694,7 +690,7 @@
         let playerAtivo = 1;
         let faixaAtualIndex = -1;
 
-        // Atualização contínua dos relógios analógicos e digitais
+        // Atualização em tempo real dos relógios analógicos e digitais
         setInterval(() => {
             const agora = new Date();
             
