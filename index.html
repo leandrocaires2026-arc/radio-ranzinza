@@ -178,56 +178,44 @@
             100% { height: 36px; }
         }
 
+        /* Estilo dos Relógios de Automobilismo / Telemetria */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            background: #0d0d12;
-            border: 1px solid var(--neon-blue);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
+            gap: 12px;
+            background: #08080c;
+            border: 2px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.25), 0 0 10px rgba(0, 240, 255, 0.2);
         }
         .telemetry-item {
             text-align: center;
+            background: #040406;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .telemetry-label {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--text-muted);
-            margin-bottom: 3px;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            font-weight: bold;
         }
         .telemetry-value {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--neon-yellow);
-            text-shadow: 0 0 6px rgba(255, 170, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 170, 0, 0.7);
+            letter-spacing: 2px;
         }
 
         audio {
             display: none;
-        }
-
-        .album-art-container {
-            width: 100%;
-            height: 220px;
-            background: linear-gradient(135deg, #1f1f2e, #111116);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-            margin-bottom: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-        .album-art-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .schedule-block {
@@ -458,13 +446,8 @@
             <div class="center-panel">
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
-                    
-                    <!-- Imagem Central Corrigida (Substituída por link direto e estável) -->
-                    <div class="album-art-container">
-                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="Arte Rádio Ranzinza">
-                    </div>
 
-                    <!-- Relógios de Automobilismo -->
+                    <!-- Dois Relógios Estilo Automobilismo (Telemetria) posicionados no lugar da imagem -->
                     <div class="racing-telemetry-panel">
                         <div class="telemetry-item">
                             <div class="telemetry-label">🏁 Tempo UTC (Greenwich)</div>
@@ -586,10 +569,11 @@
         
         const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
+        
         let playerAtivo = 1;
-        let estadoAtualIndex = -1;
+        let faixaAtualIndex = -1;
 
-        // Relógios de Automobilismo (UTC e Uptime)
+        // Atualização dos Relógios de Automobilismo (UTC e Uptime) a cada segundo
         setInterval(() => {
             const agora = new Date();
             const utcHours = String(agora.getUTCHours()).padStart(2, '0');
@@ -605,6 +589,7 @@
             document.getElementById('uptimeClock').innerText = `${upH}:${upM}:${upS}`;
         }, 1000);
 
+        // Motor mestre UTC (Greenwich) para cálculo rigoroso do segundo exato na grade de 24h
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
@@ -624,39 +609,61 @@
             return { faixaIndex, tempoNaFaixa };
         }
 
-        function sincronizarTransmissao24h() {
+        // Sistema de Transmissão Contínua com Fade In / Fade Out e Troca Suave
+        function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
             const track = playlist[ponto.faixaIndex];
 
-            if (estadoAtualIndex !== ponto.faixaIndex) {
-                estadoAtualIndex = ponto.faixaIndex;
+            if (faixaAtualIndex !== ponto.faixaIndex) {
+                faixaAtualIndex = ponto.faixaIndex;
                 nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
 
-                const currentPlayer = playerAtivo === 1 ? audio1 : audio2;
-                currentPlayer.src = track.url;
-                currentPlayer.volume = 1.0;
-                currentPlayer.load();
+                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                const activePlayer = playerAtivo === 1 ? audio1 : audio2;
 
-                currentPlayer.onloadedmetadata = () => {
-                    currentPlayer.currentTime = ponto.tempoNaFaixa;
-                    currentPlayer.play().catch(e => console.log("Aguardando permissão de autoplay:", e));
+                nextPlayer.src = track.url;
+                nextPlayer.volume = 0.0;
+                nextPlayer.load();
+
+                nextPlayer.onloadedmetadata = () => {
+                    nextPlayer.currentTime = ponto.tempoNaFaixa;
+                    nextPlayer.play().then(() => {
+                        // Fade In na nova música e Fade Out na anterior
+                        let vol = 0.0;
+                        const fadeInterval = setInterval(() => {
+                            vol += 0.1;
+                            if (vol >= 1.0) {
+                                vol = 1.0;
+                                nextPlayer.volume = 1.0;
+                                activePlayer.pause();
+                                clearInterval(fadeInterval);
+                                playerAtivo = playerAtivo === 1 ? 2 : 1;
+                            } else {
+                                nextPlayer.volume = vol;
+                                if (!activePlayer.paused) {
+                                    activePlayer.volume = Math.max(0, 1.0 - vol);
+                                }
+                            }
+                        }, 150);
+                    }).catch(e => console.log("Bloqueio de autoplay do navegador:", e));
                 };
-
-                playerAtivo = playerAtivo === 1 ? 2 : 1;
             } else {
-                const activeAudio = playerAtivo === 1 ? audio2 : audio1;
-                if (Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
+                // Ajuste milimétrico de sincronia caso haja desvio
+                const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
                     activeAudio.currentTime = ponto.tempoNaFaixa;
                 }
             }
         }
 
-        setInterval(sincronizarTransmissao24h, 3000);
+        // Verificação contínua de sincronia exata a cada 2 segundos
+        setInterval(sincronizarTransmissaoEstrita, 2000);
 
         window.addEventListener('DOMContentLoaded', () => {
-            sincronizarTransmissao24h();
+            sincronizarTransmissaoEstrita();
         });
 
+        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
