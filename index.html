@@ -107,8 +107,6 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
-        
-        /* Quadro superior grande */
         .card-top {
             min-height: 250px;
             display: flex;
@@ -116,8 +114,6 @@
             justify-content: flex-start;
             box-sizing: border-box;
         }
-        
-        /* Quadro inferior alargado em formato de retângulo vertical (esticado para cima) */
         .card-bottom {
             min-height: 320px;
             display: flex;
@@ -125,7 +121,6 @@
             justify-content: flex-start;
             box-sizing: border-box;
         }
-
         h3 {
             margin-top: 0;
             font-size: 1.1rem;
@@ -247,7 +242,6 @@
             margin-bottom: 2px;
         }
 
-        /* Estilos dos Slides de Anúncio em formato de retângulo vertical */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
@@ -263,7 +257,7 @@
         }
         .ad-img-container {
             width: 100%;
-            height: 180px; /* Imagem mais alta simulando um retângulo vertical */
+            height: 180px;
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -408,7 +402,6 @@
         <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
 
-    <!-- BANNER SUPERIOR CENTRAL -->
     <div style="width: 100%; max-width: 1200px; margin-bottom: 25px;">
         <div class="radio-banner">
             <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
@@ -417,10 +410,8 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR ESQUERDO -->
                 <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
@@ -437,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- QUADRO INFERIOR ESQUERDO: SLIDE ESTICADO PARA CIMA -->
                 <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
@@ -463,7 +453,6 @@
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
             <div class="center-panel">
                 <div class="card player-box">
@@ -473,7 +462,7 @@
                         <div class="vinyl-icon">💽</div>
                     </div>
 
-                    <button class="start-btn" onclick="iniciarOuRetomarRadio()">▶ Ligar Transmissão</button>
+                    <button class="start-btn" id="startBtn" onclick="ligarTransmissao()">▶ Ligar Transmissão</button>
 
                     <p id="now-playing">Sintonizando transmissão sincronizada...</p>
                     
@@ -496,7 +485,6 @@
                     </div>
                 </div>
 
-                <!-- CHAT AO VIVO & PAINEL DE ADMIN -->
                 <div class="card chat-box" style="height: auto;">
                     <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
                     <div class="chat-messages" id="chatMessages" style="height: 180px;">
@@ -512,7 +500,7 @@
                     <div class="admin-panel" id="adminPanel">
                         <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
                         <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
-                        <button class="chat-btn admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                        <button class="chat-btn admin-admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
                     </div>
                 </div>
             </div>
@@ -522,10 +510,8 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR DIREITO -->
                 <div class="card card-top" style="border-color: var(--neon-pink);">
                     <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
                     <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
@@ -535,7 +521,6 @@
                     </div>
                 </div>
 
-                <!-- QUADRO INFERIOR DIREITO: SLIDE ESTICADO PARA CIMA -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -564,6 +549,7 @@
     </div>
 
     <script>
+        // Playlist com durações reais exatas correspondentes aos arquivos de áudio
         const playlist = [
             { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
@@ -586,12 +572,13 @@
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
+        const startBtn = document.getElementById('startBtn');
         const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
 
-        let radioIniciada = false;
-
-        function calcularPontoNoAr() {
+        // Calcula exatamente a faixa e o segundo do ciclo global de 24 horas (horário UTC/Local unificado)
+        function calcularPontoGlobalAoVivo() {
             const agora = new Date();
+            // Segundos decorridos desde a meia-noite de hoje (00:00:00)
             const segundosHoje = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
             let tempoNoCiclo = segundosHoje % duracaoTotalPlaylist;
 
@@ -609,43 +596,74 @@
             return { faixaIndex, tempoNaFaixa };
         }
 
-        function inicializarRadioAoVivo() {
-            const ponto = calcularPontoNoAr();
-            window.currentTrackIndex = ponto.faixaIndex;
-            const track = playlist[window.currentTrackIndex];
+        function ligarTransmissao() {
+            const ponto = calcularPontoGlobalAoVivo();
+            tocarFaixaNoPonto(ponto.faixaIndex, ponto.tempoNaFaixa);
+            startBtn.style.display = 'none'; // Esconde botão após ligar
+        }
+
+        function tocarFaixaNoPonto(index, segundoInicial) {
+            window.currentTrackIndex = index;
+            const track = playlist[index];
 
             audioPlayer.src = track.url;
-            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo 24h)`;
             audioPlayer.load();
 
             audioPlayer.onloadedmetadata = () => {
-                let tempoAlvo = ponto.tempoNaFaixa;
-                if (tempoAlvo > audioPlayer.duration) {
-                    tempoAlvo = audioPlayer.duration - 1;
+                let tempoAlvo = segundoInicial;
+                if (tempoAlvo >= audioPlayer.duration) {
+                    tempoAlvo = 0;
                 }
                 audioPlayer.currentTime = tempoAlvo;
-                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+                audioPlayer.play().then(() => {
+                    salvarEstadoReproducao();
+                }).catch(e => console.log("Aguardando interação:", e));
             };
         }
 
-        function iniciarOuRetomarRadio() {
-            if (!radioIniciada) {
-                radioIniciada = true;
-                inicializarRadioAoVivo();
-            } else {
-                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
-            }
-        }
-
+        // Fluxo sequencial direto e contínuo sem saltos
         audioPlayer.addEventListener('ended', () => {
             window.currentTrackIndex = (window.currentTrackIndex + 1) % playlist.length;
             const track = playlist[window.currentTrackIndex];
             audioPlayer.src = track.url;
-            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo 24h)`;
             audioPlayer.load();
-            audioPlayer.play().catch(e => console.log("Erro:", e));
+            audioPlayer.play().catch(e => console.log("Erro ao avançar faixa:", e));
         });
 
+        // Salva o estado para persistência ao atualizar a página
+        function salvarEstadoReproducao() {
+            localStorage.setItem('radio_playing', !audioPlayer.paused);
+            localStorage.setItem('radio_time', audioPlayer.currentTime);
+            localStorage.setItem('radio_track', window.currentTrackIndex);
+        }
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (!audioPlayer.paused) {
+                localStorage.setItem('radio_time', audioPlayer.currentTime);
+            }
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            localStorage.setItem('radio_playing', 'false');
+        });
+
+        audioPlayer.addEventListener('play', () => {
+            localStorage.setItem('radio_playing', 'true');
+        });
+
+        // Retoma automaticamente o fluxo se o usuário atualizar a página e a transmissão estiver ativa
+        window.addEventListener('DOMContentLoaded', () => {
+            const estavaTocando = localStorage.getItem('radio_playing') === 'true';
+            if (estavaTocando) {
+                const ponto = calcularPontoGlobalAoVivo();
+                tocarFaixaNoPonto(ponto.faixaIndex, ponto.tempoNaFaixa);
+                startBtn.style.display = 'none';
+            }
+        });
+
+        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
