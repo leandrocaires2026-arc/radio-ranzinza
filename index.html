@@ -517,17 +517,13 @@
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
-                    <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 1º Bloco (Eletrônica)</div>
-                        <p class="info-box" style="margin: 0;">Dance, Club & High Energy.</p>
-                    </div>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 2º Bloco (New Age)</div>
+                        <div class="schedule-title">🌅 06h - Bloco Matinal (New Age)</div>
                         <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
                     </div>
-                    <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">☀️ 3º Bloco (Sertanejo)</div>
-                        <p class="info-box" style="margin: 0;">Modões e românticas.</p>
+                    <div class="schedule-block" style="border-color: var(--neon-blue);">
+                        <div class="schedule-title">🌙 Resto do Dia (Ciclo Contínuo)</div>
+                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas.</p>
                     </div>
                 </div>
 
@@ -765,28 +761,8 @@
             });
         }
 
-        // ORDEM DO CICLO: 1º ELETRÔNICAS -> 2º NEW AGE -> 3º SERTANEJAS
-        const playlist = [
-            // --- 1. ELETRÔNICAS (INGLÊS) ---
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
-            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
-            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
-            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
-            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
-            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 },
-
-            // --- 2. NEW AGE (INSTRUMENTAIS) ---
+        // 1. BLOCO MATINAL: NEW AGE (Executado pontualmente às 06:00 UTC)
+        const playlistNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
@@ -810,9 +786,31 @@
             { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
             { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
             { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
-            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 }
+        ];
 
-            // --- 3. SERTANEJAS (PORTUGUÊS) ---
+        // 2. CICLO CONTÍNUO DO RESTO DO DIA: ELETRÔNICAS E SERTANEJAS
+        const playlistCicloResto = [
+            // --- ELETRÔNICAS (INGLÊS) ---
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 },
+
+            // --- SERTANEJAS (PORTUGUÊS) ---
             { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
             { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
             { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
@@ -837,7 +835,20 @@
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
-        playlist.forEach((faixa) => {
+        // 1. Insere o Bloco Matinal de New Age com jingles de 3 em 3
+        playlistNewAge.forEach((faixa) => {
+            itemProgramacao.push({ type: 'music', ...faixa });
+            contadorMusicas++;
+            if (contadorMusicas % 3 === 0) {
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
+            }
+        });
+
+        const duracaoBlocoNewAge = itemProgramacao.reduce((total, item) => total + item.duration, 0);
+
+        // 2. Insere o Ciclo Contínuo do Resto do Dia (Eletrônicas e Sertanejas) com jingles de 3 em 3
+        const indexInicioResto = itemProgramacao.length;
+        playlistCicloResto.forEach((faixa) => {
             itemProgramacao.push({ type: 'music', ...faixa });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
@@ -882,7 +893,21 @@
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let tempoNoCiclo = segundosUTC % duracaoTotalGrade;
+            let segundosDesdeAs6 = segundosUTC - 21600; // 06:00 UTC em segundos
+            if (segundosDesdeAs6 < 0) {
+                segundosDesdeAs6 += 86400; 
+            }
+
+            // Se estivermos dentro da duração do bloco New Age matinal, toca as New Ages.
+            // Após isso, o restante do dia faz looping infinito apenas entre Eletrônicas e Sertanejas.
+            let tempoNoCiclo = 0;
+            if (segundosDesdeAs6 < duracaoBlocoNewAge) {
+                tempoNoCiclo = segundosDesdeAs6;
+            } else {
+                let tempoAposManha = segundosDesdeAs6 - duracaoBlocoNewAge;
+                let duracaoResto = duracaoTotalGrade - duracaoBlocoNewAge;
+                tempoNoCiclo = duracaoBlocoNewAge + (tempoAposManha % duracaoResto);
+            }
 
             let itemIndex = 0;
             let tempoNoItem = 0;
