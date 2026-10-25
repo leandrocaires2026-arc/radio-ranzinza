@@ -35,7 +35,6 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM A MESMA IMAGEM DO RODAPÉ */
         header {
             width: 100%;
             max-width: 1200px;
@@ -187,7 +186,6 @@
             100% { height: 36px; }
         }
 
-        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -442,7 +440,6 @@
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
 
-        /* MODAL DE PARTILHA */
         .share-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
@@ -487,7 +484,6 @@
 </head>
 <body>
 
-    <!-- MODAL DE PARTILHA -->
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-modal-card">
             <h3>🌐 Partilhar Rádio Ranzinza</h3>
@@ -507,7 +503,6 @@
         </div>
     </div>
 
-    <!-- CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ -->
     <header>
         <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
         <div class="header-content">
@@ -518,26 +513,24 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
+                    <div class="schedule-block" style="border-color: var(--neon-blue);">
+                        <div class="schedule-title">🌙 1º Bloco (Eletrônica)</div>
+                        <p class="info-box" style="margin: 0;">Dance, Club & High Energy.</p>
+                    </div>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
-                        <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
+                        <div class="schedule-title">🌅 2º Bloco (New Age)</div>
+                        <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
-                        <p class="info-box" style="margin: 0;">Composições românticas.</p>
-                    </div>
-                    <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
-                        <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
+                        <div class="schedule-title">☀️ 3º Bloco (Sertanejo)</div>
+                        <p class="info-box" style="margin: 0;">Modões e românticas.</p>
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER COM SPOTIFY E NOME RANZINZA -->
                 <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
@@ -571,13 +564,11 @@
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
             <div class="center-panel">
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
-                    <!-- PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO -->
                     <div class="racing-telemetry-panel">
                         <div class="telemetry-item">
                             <div class="telemetry-label">🏁 UTC (Greenwich)</div>
@@ -625,7 +616,6 @@
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
 
-                    <!-- BOTÃO DE PARTILHA DA RÁDIO -->
                     <div style="margin-top: 15px; text-align: center;">
                         <button onclick="abrirModalPartilha()" style="
                             background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
@@ -672,7 +662,6 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-pink);">
@@ -684,7 +673,6 @@
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER COM DESTAQUE E SPOTIFY -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -737,7 +725,6 @@
             sincronizarTransmissaoEstrita();
         });
 
-        // Funções do Modal de Partilha
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
@@ -778,25 +765,72 @@
             });
         }
 
-        // PLAYLIST ORIGINAL INTACTA
+        // ORDEM DO CICLO: 1º ELETRÔNICAS -> 2º NEW AGE -> 3º SERTANEJAS
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            // --- 1. ELETRÔNICAS (INGLÊS) ---
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
             { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
             { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
             { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 },
+
+            // --- 2. NEW AGE (INSTRUMENTAIS) ---
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 220 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 200 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 200 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 },
+
+            // --- 3. SERTANEJAS (PORTUGUÊS) ---
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
             { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
             { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
             { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
             { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
             { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
+            { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", duration: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", duration: 220 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 },
+            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 }
         ];
 
         const DURACAO_JINGLE = 7;
@@ -905,7 +939,7 @@
                         nextPlayer.play().then(() => {
                             let vol = 0.0;
                             const fadeInterval = setInterval(() => {
-                                vol += 0.1;
+                                vol += 0.2;
                                 if (vol >= 1.0) {
                                     vol = 1.0;
                                     nextPlayer.volume = 1.0;
@@ -918,7 +952,7 @@
                                         prevPlayer.volume = Math.max(0, 1.0 - vol);
                                     }
                                 }
-                            }, 150);
+                            }, 100);
                         }).catch(e => console.log("Aguardando interação:", e));
                     };
                 }
