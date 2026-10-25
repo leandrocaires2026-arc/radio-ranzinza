@@ -178,17 +178,17 @@
             100% { height: 36px; }
         }
 
-        /* Painel Estilo Painel de Carro / Relógios Analógicos Estilo Automotivo */
+        /* Painel Cibernético / Futurista HUD */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            background: #08080c;
+            background: linear-gradient(135deg, #060609, #0f0f17);
             border: 2px solid var(--neon-blue);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.25), 0 0 10px rgba(0, 240, 255, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.2), 0 0 15px rgba(0, 240, 255, 0.3);
             align-items: center;
         }
         .telemetry-item {
@@ -196,30 +196,52 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 240, 255, 0.15);
         }
         .telemetry-label {
             font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: var(--neon-blue);
             margin-bottom: 8px;
             font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
         }
 
-        /* Estilo do Relógio Analógico Estilo Carro */
+        /* Relógio Analógico Futurista HUD (Estilo Sci-Fi) */
         .analog-clock {
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #1a1a24 0%, #0a0a0f 80%);
-            border: 5px solid #d0d0d8; /* Borda cromada/metálica */
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #0e0e16 0%, #030305 85%);
+            border: 3px solid var(--neon-blue);
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.9);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.3);
         }
         .clock-face {
             width: 100%;
             height: 100%;
             position: relative;
+        }
+        /* Marcações detalhadas do mostrador futurista (ticks) */
+        .tick {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 6px;
+            background: var(--neon-blue);
+            opacity: 0.6;
+            transform-origin: 0 -52px;
+        }
+        .tick.major {
+            width: 3px;
+            height: 10px;
+            background: #ffffff;
+            opacity: 0.9;
         }
         .hand {
             position: absolute;
@@ -230,20 +252,23 @@
         }
         .hour-hand {
             width: 4px;
-            height: 26px;
-            background: #ffffff;
+            height: 28px;
+            background: #00f0ff;
+            box-shadow: 0 0 6px #00f0ff;
             transform: translateX(-50%) rotate(0deg);
         }
         .minute-hand {
             width: 3px;
-            height: 36px;
-            background: #cccccc;
+            height: 40px;
+            background: #ffffff;
+            box-shadow: 0 0 6px #ffffff;
             transform: translateX(-50%) rotate(0deg);
         }
         .second-hand {
             width: 1.5px;
-            height: 40px;
+            height: 46px;
             background: var(--neon-pink);
+            box-shadow: 0 0 8px var(--neon-pink);
             transform: translateX(-50%) rotate(0deg);
         }
         .clock-center {
@@ -255,21 +280,16 @@
             background: var(--neon-yellow);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 4px var(--neon-yellow);
-        }
-        .clock-number {
-            position: absolute;
-            font-size: 0.65rem;
-            font-weight: bold;
-            color: #a0a0b0;
-            font-family: sans-serif;
+            box-shadow: 0 0 8px var(--neon-yellow);
         }
         .digital-subtext {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: var(--neon-yellow);
-            margin-top: 6px;
-            text-shadow: 0 0 4px rgba(255, 170, 0, 0.5);
+            margin-top: 8px;
+            text-shadow: 0 0 6px rgba(255, 170, 0, 0.7);
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         audio {
@@ -505,7 +525,7 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
-                    <!-- Dois Relógios Analógicos Estilo Painel Automotivo -->
+                    <!-- Painel Cibernético HUD com Relógios Analógicos Futuristas -->
                     <div class="racing-telemetry-panel">
                         <!-- Relógio 1: UTC (Greenwich) -->
                         <div class="telemetry-item">
@@ -620,6 +640,23 @@
     </div>
 
     <script>
+        // Função para gerar as marcações (ticks) nos relógios analógicos dinamicamente
+        function criarMarcacoesRelogio(faceId) {
+            const face = document.getElementById(faceId);
+            for (let i = 0; i < 60; i++) {
+                const tick = document.createElement('div');
+                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
+                tick.style.transform = `rotate(${i * 6}deg)`;
+                face.appendChild(tick);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            sincronizarTransmissaoEstrita();
+        });
+
         const playlist = [
             { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
@@ -650,11 +687,10 @@
         let playerAtivo = 1;
         let faixaAtualIndex = -1;
 
-        // Atualização dos Relógios Analógicos e Digitais (Automotivos)
+        // Atualização contínua dos relógios futuristas e dos ponteiros
         setInterval(() => {
             const agora = new Date();
             
-            // Relógio 1: UTC (Greenwich)
             const hUTC = agora.getUTCHours();
             const mUTC = agora.getUTCMinutes();
             const sUTC = agora.getUTCSeconds();
@@ -664,7 +700,6 @@
             document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
             document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
 
-            // Relógio 2: Tempo de Emissão (Uptime)
             const diffMs = Date.now() - tempoInicioEmissao;
             const totalSecs = Math.floor(diffMs / 1000);
             const upH = Math.floor(totalSecs / 3600);
@@ -677,7 +712,6 @@
             document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
         }, 1000);
 
-        // Motor mestre UTC para cálculo exato de 24h
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
@@ -697,7 +731,6 @@
             return { faixaIndex, tempoNaFaixa };
         }
 
-        // Sistema de Transmissão Contínua com Fade In / Fade Out e Troca Suave
         function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
             const track = playlist[ponto.faixaIndex];
@@ -743,10 +776,6 @@
         }
 
         setInterval(sincronizarTransmissaoEstrita, 2000);
-
-        window.addEventListener('DOMContentLoaded', () => {
-            sincronizarTransmissaoEstrita();
-        });
 
         // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
