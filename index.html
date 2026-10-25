@@ -28,7 +28,7 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM A ARTE MATERIAL E INDUSTRIAL IDÊNTICA AO RODAPÉ */
+        /* CABEÇALHO COM ARTE MATERIAL E INDUSTRIAL */
         header {
             width: 100%;
             max-width: 1200px;
@@ -429,7 +429,7 @@
 </head>
 <body>
 
-    <!-- CABEÇALHO COM A ARTE MATERIAL E INDUSTRIAL IDÊNTICA AO RODAPÉ -->
+    <!-- CABEÇALHO COM A ARTE MATERIAL E INDUSTRIAL -->
     <header>
         <svg class="header-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -798,46 +798,4 @@
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
                 const slides = card.querySelectorAll('.ad-slide');
-                let activeIndex = 0;
-                slides.forEach((slide, index) => {
-                    if (slide.classList.contains('active')) activeIndex = index;
-                    slide.classList.remove('active');
-                });
-                let nextIndex = (activeIndex + 1) % slides.length;
-                slides[nextIndex].classList.add('active');
-
-                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
-            });
-        }, 5000);
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function enviarMensagemOuvinte() {
-            const input = document.getElementById('chatInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-
-        function enviarMensagemAdmin() {
-            const input = document.getElementById('adminInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-    </script>
-</body>
-</html>
+                let
