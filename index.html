@@ -606,6 +606,27 @@
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
+
+                    <!-- BOTÃO DE PARTILHA DA RÁDIO -->
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="compartilharRadio()" style="
+                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+                            color: #ffffff;
+                            border: none;
+                            padding: 10px 18px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card chat-box" style="height: auto;">
@@ -697,6 +718,30 @@
             criarMarcacoesRelogio('faceUptime');
             sincronizarTransmissaoEstrita();
         });
+
+        // Função para partilhar o link da rádio
+        function compartilharRadio() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).catch(() => {
+                    copiarLinkFallback(urlAtual);
+                });
+            } else {
+                copiarLinkFallback(urlAtual);
+            }
+        }
+
+        function copiarLinkFallback(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
+        }
 
         const playlist = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
