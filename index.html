@@ -6,7 +6,7 @@
     <title>Rádio Ranzinza // Cyber Studio</title>
     <style>
         :root {
-            --bg-color: #050811; /* Fundo geral alterado para Azul Escuro Profundo */
+            --bg-color: #050811;
             --card-bg: #10141f;
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
@@ -731,19 +731,32 @@
             { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 }
         ];
 
+        // Adicionamos marcadores de Jingle a cada 3 músicas na grade global
+        const DURACAO_JINGLE = 7; // segundos estimados para a locução
+        const itemProgramacao = [];
+        let contadorMusicas = 0;
+
+        playlist.forEach((faixa) => {
+            itemProgramacao.push({ type: 'music', ...faixa });
+            contadorMusicas++;
+            if (contadorMusicas % 3 === 0) {
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
+            }
+        });
+
+        const duracaoTotalGrade = itemProgramacao.reduce((total, item) => total + item.duration, 0);
+
         const audio1 = document.getElementById('audioPlayer1');
         const audio2 = document.getElementById('audioPlayer2');
         const nowPlayingText = document.getElementById('now-playing');
         
-        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
-        
         let playerAtivo = 1;
-        let faixaAtualIndex = -1;
+        let itemAtualIndex = -1;
+        let executandoJingleVoz = false;
 
         setInterval(() => {
             const agora = new Date();
-            
             const hUTC = agora.getUTCHours();
             const mUTC = agora.getUTCMinutes();
             const sUTC = agora.getUTCSeconds();
@@ -768,62 +781,79 @@
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
+            let tempoNoCiclo = segundosUTC % duracaoTotalGrade;
 
-            let faixaIndex = 0;
-            let tempoNaFaixa = 0;
+            let itemIndex = 0;
+            let tempoNoItem = 0;
 
-            for (let i = 0; i < playlist.length; i++) {
-                if (tempoNoCiclo < playlist[i].duration) {
-                    faixaIndex = i;
-                    tempoNaFaixa = tempoNoCiclo;
+            for (let i = 0; i < itemProgramacao.length; i++) {
+                if (tempoNoCiclo < itemProgramacao[i].duration) {
+                    itemIndex = i;
+                    tempoNoItem = tempoNoCiclo;
                     break;
                 }
-                tempoNoCiclo -= playlist[i].duration;
+                tempoNoCiclo -= itemProgramacao[i].duration;
             }
-            return { faixaIndex, tempoNaFaixa };
+            return { itemIndex, tempoNoItem };
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95; // Tom de locutor profissional
+                frase.onend = () => { executandoJingleVoz = false; };
+                frase.onerror = () => { executandoJingleVoz = false; };
+                window.speechSynthesis.speak(frase);
+            }
         }
 
         function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
-            const track = playlist[ponto.faixaIndex];
+            const item = itemProgramacao[ponto.itemIndex];
 
-            if (faixaAtualIndex !== ponto.faixaIndex) {
-                faixaAtualIndex = ponto.faixaIndex;
-                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
+            if (itemAtualIndex !== ponto.itemIndex) {
+                itemAtualIndex = ponto.itemIndex;
 
-                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                const activePlayer = playerAtivo === 1 ? audio1 : audio2;
+                if (item.type === 'jingle') {
+                    nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
+                    // Pausa os players de música e dispara a voz do narrador
+                    audio1.pause();
+                    audio2.pause();
+                    falarJingleNarrador();
+                } else {
+                    nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
+                    const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                    const activePlayer = playerAtivo === 1 ? audio1 : audio2;
 
-                nextPlayer.src = track.url;
-                nextPlayer.volume = 0.0;
-                nextPlayer.load();
+                    nextPlayer.src = item.url;
+                    nextPlayer.volume = 0.0;
+                    nextPlayer.load();
 
-                nextPlayer.onloadedmetadata = () => {
-                    nextPlayer.currentTime = ponto.tempoNaFaixa;
-                    nextPlayer.play().then(() => {
-                        let vol = 0.0;
-                        const fadeInterval = setInterval(() => {
-                            vol += 0.1;
-                            if (vol >= 1.0) {
-                                vol = 1.0;
-                                nextPlayer.volume = 1.0;
-                                activePlayer.pause();
-                                clearInterval(fadeInterval);
-                                playerAtivo = playerAtivo === 1 ? 2 : 1;
-                            } else {
-                                nextPlayer.volume = vol;
-                                if (!activePlayer.paused) {
-                                    activePlayer.volume = Math.max(0, 1.0 - vol);
+                    nextPlayer.onloadedmetadata = () => {
+                        nextPlayer.currentTime = ponto.tempoNoItem;
+                        nextPlayer.play().then(() => {
+                            let vol = 0.0;
+                            const fadeInterval = setInterval(() => {
+                                vol += 0.1;
+                                if (vol >= 1.0) {
+                                    vol = 1.0;
+                                    nextPlayer.volume = 1.0;
+                                    activePlayer.pause();
+                                    clearInterval(fadeInterval);
+                                    playerAtivo = playerAtivo === 1 ? 2 : 1;
+                                } else {
+                                    nextPlayer.volume = vol;
+                                    if (!activePlayer.paused) {
+                                        activePlayer.volume = Math.max(0, 1.0 - vol);
+                                    }
                                 }
-                            }
-                        }, 150);
-                    }).catch(e => console.log("Aguardando interação:", e));
-                };
-            } else {
-                const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
-                    activeAudio.currentTime = ponto.tempoNaFaixa;
+                            }, 150);
+                        }).catch(e => console.log("Aguardando interação do navegador:", e));
+                    };
                 }
             }
         }
