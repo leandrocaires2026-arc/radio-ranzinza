@@ -119,7 +119,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            box-sizing: border-box;
+            box-sizing: data;
         }
         h3 {
             margin-top: 0;
@@ -178,56 +178,65 @@
             100% { height: 36px; }
         }
 
-        /* Painel Estilo Painel de Supercarro (Mustang GT Style) - Azul e Dourado Ouro */
+        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT / TELEMETRIA) */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            background: linear-gradient(135deg, #02060d, #091324);
-            border: 2px solid var(--neon-yellow);
-            border-radius: 12px;
-            padding: 15px;
+            gap: 20px;
+            background: linear-gradient(135deg, #02050b, #0a1120);
+            border: 2px solid #d4af37;
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 25px rgba(255, 170, 0, 0.2), 0 0 15px rgba(0, 240, 255, 0.25);
+            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.15), 0 0 25px rgba(0, 240, 255, 0.2);
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .racing-telemetry-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
         }
         .telemetry-item {
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(2, 6, 15, 0.85);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 170, 0, 0.4);
-            box-shadow: inset 0 0 12px rgba(0, 240, 255, 0.15);
+            background: rgba(3, 7, 16, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1), 0 5px 15px rgba(0,0,0,0.5);
         }
         .telemetry-label {
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--neon-yellow);
-            margin-bottom: 10px;
+            color: #d4af37;
+            margin-bottom: 12px;
             font-weight: bold;
-            text-shadow: 0 0 6px rgba(255, 170, 0, 0.6);
+            text-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
         }
 
-        /* Mostrador Estilo Painel de Carro Esportivo */
+        /* MOSTRADOR ANALÓGICO ESTILO CARRO ESPORTIVO */
         .analog-clock {
-            width: 125px;
-            height: 125px;
-            background: radial-gradient(circle, #0a1b33 0%, #02050a 85%);
-            border: 5px solid #d4af37; /* Borda Dourada Ouro Metálica */
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #09172c 0%, #010408 85%);
+            border: 6px solid #1a233a;
+            outline: 2px solid #d4af37; /* Anel externo dourado ouro */
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 18px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 18px rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .clock-face {
-            width: 105px;
-            height: 105px;
+            width: 120px;
+            height: 120px;
             position: relative;
             border-radius: 50%;
         }
@@ -236,15 +245,15 @@
             top: 50%;
             left: 50%;
             width: 2px;
-            height: 5px;
-            background: rgba(0, 240, 255, 0.6);
-            transform-origin: 0 -44px;
+            height: 6px;
+            background: rgba(0, 240, 255, 0.5);
+            transform-origin: 0 -50px;
         }
         .tick.major {
             width: 3.5px;
-            height: 9px;
-            background: var(--neon-yellow);
-            box-shadow: 0 0 5px var(--neon-yellow);
+            height: 10px;
+            background: #d4af37;
+            box-shadow: 0 0 5px #d4af37;
         }
         .hand {
             position: absolute;
@@ -254,44 +263,44 @@
             border-radius: 4px;
         }
         .hour-hand {
-            width: 4px;
-            height: 25px;
-            background: var(--neon-yellow);
-            box-shadow: 0 0 8px var(--neon-yellow);
+            width: 4.5px;
+            height: 30px;
+            background: #d4af37;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
             transform: translateX(-50%) rotate(0deg);
         }
         .minute-hand {
-            width: 3px;
-            height: 36px;
+            width: 3.5px;
+            height: 44px;
             background: #ffffff;
-            box-shadow: 0 0 8px #ffffff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
             transform: translateX(-50%) rotate(0deg);
         }
         .second-hand {
             width: 1.5px;
-            height: 42px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 8px var(--neon-blue);
+            height: 50px;
+            background: #00f0ff;
+            box-shadow: 0 0 8px #00f0ff;
             transform: translateX(-50%) rotate(0deg);
         }
         .clock-center {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 8px;
-            height: 8px;
-            background: var(--neon-yellow);
+            width: 9px;
+            height: 9px;
+            background: #d4af37;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px var(--neon-yellow);
+            box-shadow: 0 0 8px #d4af37;
         }
         .digital-subtext {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            color: var(--neon-yellow);
-            margin-top: 10px;
-            text-shadow: 0 0 6px rgba(255, 170, 0, 0.7);
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: #d4af37;
+            margin-top: 12px;
+            text-shadow: 0 0 6px rgba(212, 175, 55, 0.7);
+            letter-spacing: 1.5px;
             font-weight: bold;
         }
 
@@ -528,7 +537,7 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
-                    <!-- Painel de Relógios Estilo Painel Esportivo de Supercarro (Azul & Dourado Ouro) -->
+                    <!-- PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT) -->
                     <div class="racing-telemetry-panel">
                         <!-- Relógio 1: UTC (Greenwich) -->
                         <div class="telemetry-item">
@@ -649,7 +658,7 @@
             for (let i = 0; i < 60; i++) {
                 const tick = document.createElement('div');
                 tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-                tick.style.transform = `translate(52px, 52px) rotate(${i * 6}deg) translate(0, -42px)`;
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
                 face.appendChild(tick);
             }
         }
