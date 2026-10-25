@@ -178,7 +178,6 @@
             100% { height: 36px; }
         }
 
-        /* Estilo dos Relógios de Automobilismo / Telemetria */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -209,11 +208,7 @@
         }
 
         audio {
-            width: 100%;
-            margin-top: 10px;
-            border-radius: 8px;
-            filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.3));
-            display: none; /* Player oculto pois a rádio corre de forma autônoma e contínua */
+            display: none;
         }
 
         .album-art-container {
@@ -464,12 +459,12 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
                     
-                    <!-- Nova Imagem Centralizada solicitada -->
+                    <!-- Imagem Central Corrigida (Substituída por link direto e estável) -->
                     <div class="album-art-container">
-                        <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Arte Rádio Ranzinza">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="Arte Rádio Ranzinza">
                     </div>
 
-                    <!-- Dois Relógios Estilo Automobilismo (Telemetria) -->
+                    <!-- Relógios de Automobilismo -->
                     <div class="racing-telemetry-panel">
                         <div class="telemetry-item">
                             <div class="telemetry-label">🏁 Tempo UTC (Greenwich)</div>
@@ -492,7 +487,6 @@
                         <div class="bar"></div>
                     </div>
 
-                    <!-- Players duplos para transição suave com Fade In / Fade Out -->
                     <audio id="audioPlayer1" preload="auto"></audio>
                     <audio id="audioPlayer2" preload="auto"></audio>
 
@@ -591,22 +585,18 @@
         const nowPlayingText = document.getElementById('now-playing');
         
         const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
-        
-        // Momento base de início da rádio para o cronômetro de tempo no ar (Uptime)
-        const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000); // Exemplo configurado ativo
+        const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
         let playerAtivo = 1;
         let estadoAtualIndex = -1;
 
-        // Relógios de Automobilismo (Telemetry Clocks)
+        // Relógios de Automobilismo (UTC e Uptime)
         setInterval(() => {
             const agora = new Date();
-            // Relógio 1: Greenwich (UTC)
             const utcHours = String(agora.getUTCHours()).padStart(2, '0');
             const utcMinutes = String(agora.getUTCMinutes()).padStart(2, '0');
             const utcSeconds = String(agora.getUTCSeconds()).padStart(2, '0');
             document.getElementById('utcClock').innerText = `${utcHours}:${utcMinutes}:${utcSeconds}`;
 
-            // Relógio 2: Tempo no Ar (Uptime)
             const diffMs = Date.now() - tempoInicioEmissao;
             const totalSecs = Math.floor(diffMs / 1000);
             const upH = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
@@ -615,10 +605,8 @@
             document.getElementById('uptimeClock').innerText = `${upH}:${upM}:${upS}`;
         }, 1000);
 
-        // Motor Sincronizador Baseado estritamente em Greenwich (UTC)
         function calcularPontoGlobalUTC() {
             const agora = new Date();
-            // Segundos do dia baseados exclusivamente no Horário UTC (Greenwich)
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
             let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
 
@@ -645,8 +633,6 @@
                 nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
 
                 const currentPlayer = playerAtivo === 1 ? audio1 : audio2;
-                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-
                 currentPlayer.src = track.url;
                 currentPlayer.volume = 1.0;
                 currentPlayer.load();
@@ -658,7 +644,6 @@
 
                 playerAtivo = playerAtivo === 1 ? 2 : 1;
             } else {
-                // Mantém ajuste fino de derivação temporal caso ocorra leve defasagem
                 const activeAudio = playerAtivo === 1 ? audio2 : audio1;
                 if (Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
                     activeAudio.currentTime = ponto.tempoNaFaixa;
@@ -666,15 +651,12 @@
             }
         }
 
-        // Checa sincronia contínua a cada 3 segundos sem reiniciar a música do zero
         setInterval(sincronizarTransmissao24h, 3000);
 
-        // Inicialização imediata ao carregar a página
         window.addEventListener('DOMContentLoaded', () => {
             sincronizarTransmissao24h();
         });
 
-        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
