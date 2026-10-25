@@ -108,17 +108,18 @@
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
         
-        /* Quadro superior grande em ambas as laterais */
+        /* Quadro superior grande */
         .card-top {
-            min-height: 330px;
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             box-sizing: border-box;
         }
-        /* Quadro inferior compacto de anúncio em ambas as laterais */
+        
+        /* Quadro inferior alargado em formato de retângulo vertical (esticado para cima) */
         .card-bottom {
-            min-height: 230px;
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -237,7 +238,7 @@
             font-size: 0.8rem;
             border-left: 3px solid var(--neon-blue);
             padding-left: 8px;
-            margin-top: 8px;
+            margin-top: 6px;
             text-align: left;
         }
         .schedule-title {
@@ -246,7 +247,7 @@
             margin-bottom: 2px;
         }
 
-        /* Estilos dos Slides de Anúncio Compactos */
+        /* Estilos dos Slides de Anúncio em formato de retângulo vertical */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
@@ -262,10 +263,10 @@
         }
         .ad-img-container {
             width: 100%;
-            height: 90px;
+            height: 180px; /* Imagem mais alta simulando um retângulo vertical */
             border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             border: 1px solid var(--border-color);
             background: #000;
         }
@@ -291,7 +292,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
             display: inline-block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .chat-box {
@@ -419,7 +420,7 @@
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR ESQUERDO: GRANDE -->
+                <!-- QUADRO SUPERIOR ESQUERDO -->
                 <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
@@ -436,7 +437,7 @@
                     </div>
                 </div>
 
-                <!-- QUADRO INFERIOR ESQUERDO: PEQUENO DE ANÚNCIO -->
+                <!-- QUADRO INFERIOR ESQUERDO: SLIDE ESTICADO PARA CIMA -->
                 <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
@@ -474,7 +475,7 @@
 
                     <button class="start-btn" onclick="iniciarOuRetomarRadio()">▶ Ligar Transmissão</button>
 
-                    <p id="now-playing">Sintonizando transmissão contínua...</p>
+                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
                     
                     <div class="equalizer">
                         <div class="bar"></div>
@@ -524,7 +525,7 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR DIREITO: GRANDE -->
+                <!-- QUADRO SUPERIOR DIREITO -->
                 <div class="card card-top" style="border-color: var(--neon-pink);">
                     <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
                     <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
@@ -534,7 +535,7 @@
                     </div>
                 </div>
 
-                <!-- QUADRO INFERIOR DIREITO: PEQUENO DE ANÚNCIO -->
+                <!-- QUADRO INFERIOR DIREITO: SLIDE ESTICADO PARA CIMA -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -564,30 +565,133 @@
 
     <script>
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
         ];
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        let currentTrackIndex = 0;
+        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
+
         let radioIniciada = false;
 
-        // Prepara a primeira faixa sem tocar automaticamente
-        function inicializarPlayer() {
-            currentTrackIndex = Math.floor
+        // Calcula exatamente qual música está a tocar no horário atual (meio da programação)
+        function calcularPontoNoAr() {
+            const agora = new Date();
+            const segundosHoje = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            let tempoNoCiclo = segundosHoje % duracaoTotalPlaylist;
+
+            let faixaIndex = 0;
+            let tempoNaFaixa = 0;
+
+            for (let i = 0; i < playlist.length; i++) {
+                if (tempoNoCiclo < playlist[i].duration) {
+                    faixaIndex = i;
+                    tempoNaFaixa = tempoNoCiclo;
+                    break;
+                }
+                tempoNoCiclo -= playlist[i].duration;
+            }
+            return { faixaIndex, tempoNaFaixa };
+        }
+
+        function inicializarRadioAoVivo() {
+            const ponto = calcularPontoNoAr();
+            window.currentTrackIndex = ponto.faixaIndex;
+            const track = playlist[window.currentTrackIndex];
+
+            audioPlayer.src = track.url;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            audioPlayer.load();
+
+            audioPlayer.oncanplay = () => {
+                // Sintoniza exatamente no segundo correspondente ao horário real sem cortar
+                if (Math.abs(audioPlayer.currentTime - ponto.tempoNaFaixa) > 3) {
+                    audioPlayer.currentTime = ponto.tempoNaFaixa;
+                }
+                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+            };
+        }
+
+        function iniciarOuRetomarRadio() {
+            if (!radioIniciada) {
+                radioIniciada = true;
+                inicializarRadioAoVivo();
+            } else {
+                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+            }
+        }
+
+        // Quando uma música acaba, passa sequencialmente para a próxima da grade
+        audioPlayer.addEventListener('ended', () => {
+            window.currentTrackIndex = (window.currentTrackIndex + 1) % playlist.length;
+            const track = playlist[window.currentTrackIndex];
+            audioPlayer.src = track.url;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            audioPlayer.load();
+            audioPlayer.play().catch(e => console.log("Erro:", e));
+        });
+
+        // Automação dos Slides / Anúncios Laterais
+        setInterval(() => {
+            const cards = document.querySelectorAll('.ad-slider-card');
+            cards.forEach(card => {
+                const slides = card.querySelectorAll('.ad-slide');
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+            });
+        }, 5000);
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
