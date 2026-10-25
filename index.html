@@ -56,6 +56,7 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
             position: relative;
+            margin-bottom: 20px;
         }
         .radio-banner img {
             width: 100%;
@@ -107,29 +108,11 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
-        .card-top {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            box-sizing: border-box;
-        }
-        .card-bottom {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            box-sizing: border-box;
-        }
-        h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
         .side-panel, .center-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            height: 100%;
         }
         .column-wrapper {
             display: flex;
@@ -327,17 +310,24 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .ad-slide {
             display: none;
+            flex-direction: column;
+            height: 100%;
             animation: fadeIn 0.6s ease-in-out;
         }
         .ad-slide.active {
-            display: block;
+            display: flex;
         }
         .ad-img-container {
             width: 100%;
-            height: 180px;
+            flex: 1;
+            min-height: 240px;
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -482,7 +472,7 @@
         <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
 
-    <div style="width: 100%; max-width: 1200px; margin-bottom: 25px;">
+    <div style="width: 100%; max-width: 1200px;">
         <div class="radio-banner">
             <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
         </div>
@@ -490,49 +480,45 @@
 
     <div class="main-layout">
         
+        <!-- COLUNA ESQUERDA PREENCHIDA -->
         <div class="column-wrapper">
-            <div class="side-panel">
-                <div class="card card-top" style="border-color: var(--neon-green);">
-                    <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
-                    <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
-                        <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
-                    </div>
-                    <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
-                        <p class="info-box" style="margin: 0;">Composições românticas.</p>
-                    </div>
-                    <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
-                        <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
-                    </div>
+            <div class="card card-top" style="border-color: var(--neon-green);">
+                <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
+                <div class="schedule-block" style="border-color: var(--neon-green);">
+                    <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
+                    <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
                 </div>
+                <div class="schedule-block" style="border-color: var(--neon-pink);">
+                    <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
+                    <p class="info-box" style="margin: 0;">Composições românticas.</p>
+                </div>
+                <div class="schedule-block" style="border-color: var(--neon-blue);">
+                    <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
+                    <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
+                </div>
+            </div>
 
-                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
-                    <div class="ad-slide active">
-                        <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
-                        </div>
-                        <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
+            <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
+                <div class="ad-slide active">
+                    <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
+                    <div class="ad-img-container">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
                     </div>
-                    <div class="ad-slide">
-                        <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
-                        </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
+                    <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
+                    <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
+                </div>
+                <div class="ad-slide">
+                    <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
+                    <div class="ad-img-container">
+                        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                     </div>
-                </a>
-            </div>
-            
-            <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
-            </div>
+                    <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
+                    <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
+                </div>
+            </a>
         </div>
 
+        <!-- COLUNA CENTRAL (PLAYER E RELÓGIOS) -->
         <div class="column-wrapper">
             <div class="center-panel">
                 <div class="card player-box">
@@ -609,45 +595,40 @@
                 </div>
             </div>
             
-            <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
+            <div class="radio-banner" style="margin-bottom: 0;">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
+        <!-- COLUNA DIREITA PREENCHIDA -->
         <div class="column-wrapper">
-            <div class="side-panel">
-                <div class="card card-top" style="border-color: var(--neon-pink);">
-                    <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
-                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
-                    <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
-                        <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
-                    </div>
+            <div class="card card-top" style="border-color: var(--neon-pink);">
+                <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
+                <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                <div class="schedule-block" style="border-color: var(--neon-pink);">
+                    <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                    <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
                 </div>
+            </div>
 
-                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
-                    <div class="ad-slide active">
-                        <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
-                        </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
+            <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                <div class="ad-slide active">
+                    <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
+                    <div class="ad-img-container">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                     </div>
-                    <div class="ad-slide">
-                        <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
-                        </div>
-                        <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
-                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
+                    <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
+                    <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
+                </div>
+                <div class="ad-slide">
+                    <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
+                    <div class="ad-img-container">
+                        <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
                     </div>
-                </a>
-            </div>
-            
-            <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
-            </div>
+                    <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
+                    <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
+                </div>
+            </a>
         </div>
 
     </div>
@@ -811,27 +792,3 @@
 
         function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-
-        function enviarMensagemAdmin() {
-            const input = document.getElementById('adminInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-    </script>
-</body>
-</html>
