@@ -731,8 +731,7 @@
             { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 }
         ];
 
-        // Adicionamos marcadores de Jingle a cada 3 músicas na grade global
-        const DURACAO_JINGLE = 7; // segundos estimados para a locução
+        const DURACAO_JINGLE = 7;
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
@@ -804,7 +803,7 @@
                 const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
                 frase.lang = 'pt-BR';
                 frase.rate = 1.05;
-                frase.pitch = 0.95; // Tom de locutor profissional
+                frase.pitch = 0.95;
                 frase.onend = () => { executandoJingleVoz = false; };
                 frase.onerror = () => { executandoJingleVoz = false; };
                 window.speechSynthesis.speak(frase);
@@ -815,25 +814,39 @@
             const ponto = calcularPontoGlobalUTC();
             const item = itemProgramacao[ponto.itemIndex];
 
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+
+            // Monitoramento contínuo de fade-out nos últimos 3 segundos da faixa para evitar cortes secos
+            if (item.type === 'music' && !activeAudio.paused && !isNaN(activeAudio.duration)) {
+                const tempoRestante = activeAudio.duration - activeAudio.currentTime;
+                if (tempoRestante <= 3.0 && tempoRestante > 0) {
+                    activeAudio.volume = Math.max(0.05, (tempoRestante / 3.0));
+                }
+            }
+
             if (itemAtualIndex !== ponto.itemIndex) {
                 itemAtualIndex = ponto.itemIndex;
 
                 if (item.type === 'jingle') {
                     nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
-                    // Pausa os players de música e dispara a voz do narrador
                     audio1.pause();
                     audio2.pause();
                     falarJingleNarrador();
                 } else {
                     nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
                     const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                    const activePlayer = playerAtivo === 1 ? audio1 : audio2;
+                    const prevPlayer = activeAudio;
 
                     nextPlayer.src = item.url;
                     nextPlayer.volume = 0.0;
                     nextPlayer.load();
 
                     nextPlayer.onloadedmetadata = () => {
+                        // Atualiza a duração real da faixa no objeto para alinhar perfeitamente com o UTC
+                        if (nextPlayer.duration && isFinite(nextPlayer.duration)) {
+                            item.duration = nextPlayer.duration;
+                        }
+
                         nextPlayer.currentTime = ponto.tempoNoItem;
                         nextPlayer.play().then(() => {
                             let vol = 0.0;
@@ -842,23 +855,27 @@
                                 if (vol >= 1.0) {
                                     vol = 1.0;
                                     nextPlayer.volume = 1.0;
-                                    activePlayer.pause();
+                                    prevPlayer.pause();
                                     clearInterval(fadeInterval);
                                     playerAtivo = playerAtivo === 1 ? 2 : 1;
                                 } else {
                                     nextPlayer.volume = vol;
-                                    if (!activePlayer.paused) {
-                                        activePlayer.volume = Math.max(0, 1.0 - vol);
+                                    if (!prevPlayer.paused) {
+                                        prevPlayer.volume = Math.max(0, 1.0 - vol);
                                     }
                                 }
                             }, 150);
                         }).catch(e => console.log("Aguardando interação do navegador:", e));
                     };
                 }
+            } else {
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 4) {
+                    activeAudio.currentTime = ponto.tempoNoItem;
+                }
             }
         }
 
-        setInterval(sincronizarTransmissaoEstrita, 2000);
+        setInterval(sincronizarTransmissaoEstrita, 1500);
 
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
