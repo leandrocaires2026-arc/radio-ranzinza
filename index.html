@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rádio Ranzinza // Cyber Studio</title>
+    
+    <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
+    <meta property="og:title" content="Rádio Ranzinza // Cyber Studio">
+    <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="website">
+
     <style>
         :root {
             --bg-color: #0b0b0e;
@@ -434,6 +441,28 @@
         }
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
+
+        /* MODAL DE PARTILHA */
+        .share-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 999;
+        }
+        .share-modal-card {
+            background: rgba(16, 20, 31, 0.95); border: 2px solid var(--neon-blue); border-radius: 14px;
+            padding: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); animation: fadeIn 0.3s ease-in-out;
+        }
+        .share-modal-card h3 { color: var(--neon-blue); margin-top: 0; margin-bottom: 8px; }
+        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .share-option-btn {
+            background: #151b2c; color: white; border: 1px solid var(--border-color); padding: 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
+        }
+        .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
+        .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+
         .radio-banner {
             width: 100%;
             height: 200px;
@@ -457,6 +486,26 @@
     </style>
 </head>
 <body>
+
+    <!-- MODAL DE PARTILHA -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal-card">
+            <h3>🌐 Partilhar Rádio Ranzinza</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            
+            <div class="share-grid">
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
+            </div>
+            
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
+        </div>
+    </div>
 
     <!-- CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ -->
     <header>
@@ -509,7 +558,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%23ff5500\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Ranzinza</text></svg>'">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -575,6 +624,27 @@
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
+
+                    <!-- BOTÃO DE PARTILHA DA RÁDIO -->
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="abrirModalPartilha()" style="
+                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+                            color: #ffffff;
+                            border: none;
+                            padding: 10px 18px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card chat-box" style="height: auto;">
@@ -619,7 +689,7 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%2300f0ff\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Destaque</text></svg>'">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -667,6 +737,47 @@
             sincronizarTransmissaoEstrita();
         });
 
+        // Funções do Modal de Partilha
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
+
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).then(() => {
+                    fecharModalPartilha();
+                }).catch((error) => console.log('Partilha cancelada', error));
+            } else {
+                copiarLinkRadio();
+            }
+        }
+
+        function fecharModalPartilha() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copiarLinkRadio() {
+            const urlAtual = window.location.href;
+            navigator.clipboard.writeText(urlAtual).then(() => {
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
+                fecharModalPartilha();
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
+        }
+
         // PLAYLIST ORIGINAL INTACTA
         const playlist = [
             { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
@@ -688,19 +799,31 @@
             { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
         ];
 
+        const DURACAO_JINGLE = 7;
+        const itemProgramacao = [];
+        let contadorMusicas = 0;
+
+        playlist.forEach((faixa) => {
+            itemProgramacao.push({ type: 'music', ...faixa });
+            contadorMusicas++;
+            if (contadorMusicas % 3 === 0) {
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
+            }
+        });
+
+        const duracaoTotalGrade = itemProgramacao.reduce((total, item) => total + item.duration, 0);
+
         const audio1 = document.getElementById('audioPlayer1');
         const audio2 = document.getElementById('audioPlayer2');
         const nowPlayingText = document.getElementById('now-playing');
         
-        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
-        
         let playerAtivo = 1;
-        let faixaAtualIndex = -1;
+        let itemAtualIndex = -1;
+        let executandoJingleVoz = false;
 
         setInterval(() => {
             const agora = new Date();
-            
             const hUTC = agora.getUTCHours();
             const mUTC = agora.getUTCMinutes();
             const sUTC = agora.getUTCSeconds();
@@ -725,63 +848,83 @@
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
+            let tempoNoCiclo = segundosUTC % duracaoTotalGrade;
 
-            let faixaIndex = 0;
-            let tempoNaFaixa = 0;
+            let itemIndex = 0;
+            let tempoNoItem = 0;
 
-            for (let i = 0; i < playlist.length; i++) {
-                if (tempoNoCiclo < playlist[i].duration) {
-                    faixaIndex = i;
-                    tempoNaFaixa = tempoNoCiclo;
+            for (let i = 0; i < itemProgramacao.length; i++) {
+                if (tempoNoCiclo < itemProgramacao[i].duration) {
+                    itemIndex = i;
+                    tempoNoItem = tempoNoCiclo;
                     break;
                 }
-                tempoNoCiclo -= playlist[i].duration;
+                tempoNoCiclo -= itemProgramacao[i].duration;
             }
-            return { faixaIndex, tempoNaFaixa };
+            return { itemIndex, tempoNoItem };
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { executandoJingleVoz = false; };
+                frase.onerror = () => { executandoJingleVoz = false; };
+                window.speechSynthesis.speak(frase);
+            }
         }
 
         function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
-            const track = playlist[ponto.faixaIndex];
+            const item = itemProgramacao[ponto.itemIndex];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
 
-            if (faixaAtualIndex !== ponto.faixaIndex) {
-                faixaAtualIndex = ponto.faixaIndex;
-                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
+            if (itemAtualIndex !== ponto.itemIndex) {
+                itemAtualIndex = ponto.itemIndex;
 
-                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                const prevPlayer = activeAudio;
+                if (item.type === 'jingle') {
+                    nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
+                    audio1.pause();
+                    audio2.pause();
+                    falarJingleNarrador();
+                } else {
+                    nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
+                    const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                    const prevPlayer = activeAudio;
 
-                nextPlayer.src = track.url;
-                nextPlayer.volume = 0.0;
-                nextPlayer.load();
+                    nextPlayer.src = item.url;
+                    nextPlayer.volume = 0.0;
+                    nextPlayer.load();
 
-                nextPlayer.onloadedmetadata = () => {
-                    nextPlayer.currentTime = ponto.tempoNaFaixa;
-                    nextPlayer.play().then(() => {
-                        let vol = 0.0;
-                        const fadeInterval = setInterval(() => {
-                            vol += 0.1;
-                            if (vol >= 1.0) {
-                                vol = 1.0;
-                                nextPlayer.volume = 1.0;
-                                prevPlayer.pause();
-                                clearInterval(fadeInterval);
-                                playerAtivo = playerAtivo === 1 ? 2 : 1;
-                            } else {
-                                nextPlayer.volume = vol;
-                                if (!prevPlayer.paused) {
-                                    prevPlayer.volume = Math.max(0, 1.0 - vol);
+                    nextPlayer.onloadedmetadata = () => {
+                        nextPlayer.currentTime = ponto.tempoNoItem;
+                        nextPlayer.play().then(() => {
+                            let vol = 0.0;
+                            const fadeInterval = setInterval(() => {
+                                vol += 0.1;
+                                if (vol >= 1.0) {
+                                    vol = 1.0;
+                                    nextPlayer.volume = 1.0;
+                                    prevPlayer.pause();
+                                    clearInterval(fadeInterval);
+                                    playerAtivo = playerAtivo === 1 ? 2 : 1;
+                                } else {
+                                    nextPlayer.volume = vol;
+                                    if (!prevPlayer.paused) {
+                                        prevPlayer.volume = Math.max(0, 1.0 - vol);
+                                    }
                                 }
-                            }
-                        }, 150);
-                    }).catch(e => console.log("Aguardando interação:", e));
-                };
+                            }, 150);
+                        }).catch(e => console.log("Aguardando interação:", e));
+                    };
+                }
             } else {
-                // Apenas corrige o tempo se houver uma distorção muito grande (ex: mais de 8 segundos), evitando saltos constantes
-                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 8) {
-                    activeAudio.currentTime = ponto.tempoNaFaixa;
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 8) {
+                    activeAudio.currentTime = ponto.tempoNoItem;
                 }
             }
         }
