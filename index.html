@@ -46,8 +46,9 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--neon-pink);
             background: #111;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
         }
         header img {
             width: 100%;
@@ -57,23 +58,23 @@
             top: 0;
             left: 0;
             z-index: 1;
-            filter: brightness(0.6);
+            filter: brightness(0.95) saturate(1.4);
         }
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: rgba(11, 11, 14, 0.6);
+            background: rgba(11, 11, 14, 0.75);
             padding: 15px 30px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(6px);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
             font-size: 2rem;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
             letter-spacing: 2px;
         }
         .header-content p {
@@ -460,21 +461,23 @@
         .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
         .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
 
+        /* BANNER COM A SUA IMAGEM DE ALTIFALANTES E CORES ACENTUADAS */
         .radio-banner {
             width: 100%;
             height: 200px;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--neon-blue);
             position: relative;
             margin-top: 20px;
             background: #111;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
         }
         .radio-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7);
+            filter: brightness(1.1) saturate(1.6);
         }
         .info-box {
             font-size: 0.8rem;
@@ -504,8 +507,9 @@
         </div>
     </div>
 
+    <!-- CABEÇALHO COM A IMAGEM DE ALTIFALANTES ACENTUADA -->
     <header>
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
+        <img src="radiofoto.jpg" alt="Estúdio de Transmissão Altifalantes">
         <div class="header-content">
             <h1>RÁDIO RANZINZA</h1>
             <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
@@ -514,6 +518,7 @@
 
     <div class="main-layout">
         
+        <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div>
                 <div class="card card-top" style="border-color: var(--neon-green);">
@@ -548,7 +553,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
+                            <img src="radiofoto.jpg" alt="SoundCloud Ranzinza Altifalantes">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -557,10 +562,11 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão Rodapé">
+                <img src="radiofoto.jpg" alt="Rodapé Esquerdo Altifalantes">
             </div>
         </div>
 
+        <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
             <div>
                 <div class="card player-box">
@@ -655,10 +661,11 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão Rodapé Central">
+                <img src="radiofoto.jpg" alt="Rodapé Central Altifalantes">
             </div>
         </div>
 
+        <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div>
                 <div class="card card-top" style="border-color: var(--neon-pink);">
@@ -674,7 +681,7 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
+                            <img src="radiofoto.jpg" alt="SoundCloud Destaque Altifalantes">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -699,7 +706,7 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão Rodapé Direito">
+                <img src="radiofoto.jpg" alt="Rodapé Direito Altifalantes">
             </div>
         </div>
 
@@ -727,7 +734,7 @@
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
 
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
 
             document.getElementById('shareModal').style.display = 'flex';
@@ -955,7 +962,6 @@
                     nextPlayer.load();
 
                     nextPlayer.onloadedmetadata = () => {
-                        // Sincroniza o segundo exato UTC obtido no momento do carregamento
                         const pontoAtualizado = calcularPontoGlobalUTC();
                         nextPlayer.currentTime = pontoAtualizado.tempoNoItem;
                         
@@ -984,7 +990,6 @@
                     };
                 }
             } else {
-                // Mantém o ajuste fino apenas se houver desvio superior a 5 segundos e não estiver em transição
                 if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 5) {
                     activeAudio.currentTime = ponto.tempoNoItem;
                 }
