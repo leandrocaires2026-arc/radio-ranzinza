@@ -28,7 +28,7 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM A MESMA IMAGEM DO RODAPÉ */
+        /* CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ */
         header {
             width: 100%;
             max-width: 1200px;
@@ -291,6 +291,22 @@
             color: #d4af37;
             margin-top: 12px;
         }
+        .play-btn-control {
+            background: linear-gradient(135deg, var(--neon-green), #00b347);
+            color: #0b0b0e;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            transition: 0.2s;
+        }
+        .play-btn-control:hover {
+            transform: scale(1.05);
+        }
         audio {
             display: none;
         }
@@ -528,6 +544,9 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
+                    <!-- BOTÃO DE INICIALIZAÇÃO OBRIGATÓRIA PARA LIBERAR O ÁUDIO NO NAVEGADOR -->
+                    <button class="play-btn-control" id="playTriggerBtn" onclick="iniciarTransmissaoRadio()">▶ Ligar Transmissão</button>
+
                     <!-- PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO -->
                     <div class="racing-telemetry-panel">
                         <div class="telemetry-item">
@@ -557,7 +576,7 @@
                         </div>
                     </div>
 
-                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
+                    <p id="now-playing">Clique em "Ligar Transmissão" para iniciar o som...</p>
                     
                     <div class="equalizer">
                         <div class="bar"></div>
@@ -568,8 +587,7 @@
                         <div class="bar"></div>
                     </div>
 
-                    <audio id="audioPlayer1" preload="auto"></audio>
-                    <audio id="audioPlayer2" preload="auto"></audio>
+                    <audio id="audioPlayer" preload="auto"></audio>
 
                     <div class="external-platforms">
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
@@ -664,39 +682,58 @@
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
             criarMarcacoesRelogio('faceUptime');
-            sincronizarTransmissaoEstrita();
         });
 
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
-            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
+            { title: "Escolha", url: "ESCOLHA.mp3" },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
         ];
 
-        const audio1 = document.getElementById('audioPlayer1');
-        const audio2 = document.getElementById('audioPlayer2');
+        const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
+        const playTriggerBtn = document.getElementById('playTriggerBtn');
         
-        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
+        let indiceAtual = 0;
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
-        
-        let playerAtivo = 1;
-        let faixaAtualIndex = -1;
 
+        function iniciarTransmissaoRadio() {
+            playTriggerBtn.style.display = 'none';
+            tocarFaixa(indiceAtual);
+        }
+
+        function tocarFaixa(index) {
+            const faixa = playlist[index];
+            nowPlayingText.innerHTML = `No ar agora: <strong>${faixa.title}</strong>`;
+            audioPlayer.src = faixa.url;
+            audioPlayer.load();
+            audioPlayer.play().catch(e => {
+                console.log("Erro ao reproduzir:", e);
+                playTriggerBtn.style.display = 'block';
+            });
+        }
+
+        // Evento nativo disparado exatamente quando a música termina, passando para a próxima sem cortes
+        audioPlayer.addEventListener('ended', () => {
+            indiceAtual = (indiceAtual + 1) % playlist.length;
+            tocarFaixa(indiceAtual);
+        });
+
+        // Relógios de Telemetria
         setInterval(() => {
             const agora = new Date();
             
@@ -721,71 +758,7 @@
             document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
         }, 1000);
 
-        function calcularPontoGlobalUTC() {
-            const agora = new Date();
-            const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
-
-            let faixaIndex = 0;
-            let tempoNaFaixa = 0;
-
-            for (let i = 0; i < playlist.length; i++) {
-                if (tempoNoCiclo < playlist[i].duration) {
-                    faixaIndex = i;
-                    tempoNaFaixa = tempoNoCiclo;
-                    break;
-                }
-                tempoNoCiclo -= playlist[i].duration;
-            }
-            return { faixaIndex, tempoNaFaixa };
-        }
-
-        function sincronizarTransmissaoEstrita() {
-            const ponto = calcularPontoGlobalUTC();
-            const track = playlist[ponto.faixaIndex];
-
-            if (faixaAtualIndex !== ponto.faixaIndex) {
-                faixaAtualIndex = ponto.faixaIndex;
-                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
-
-                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                const activePlayer = playerAtivo === 1 ? audio1 : audio2;
-
-                nextPlayer.src = track.url;
-                nextPlayer.volume = 0.0;
-                nextPlayer.load();
-
-                nextPlayer.onloadedmetadata = () => {
-                    nextPlayer.currentTime = ponto.tempoNaFaixa;
-                    nextPlayer.play().then(() => {
-                        let vol = 0.0;
-                        const fadeInterval = setInterval(() => {
-                            vol += 0.1;
-                            if (vol >= 1.0) {
-                                vol = 1.0;
-                                nextPlayer.volume = 1.0;
-                                activePlayer.pause();
-                                clearInterval(fadeInterval);
-                                playerAtivo = playerAtivo === 1 ? 2 : 1;
-                            } else {
-                                nextPlayer.volume = vol;
-                                if (!activePlayer.paused) {
-                                    activePlayer.volume = Math.max(0, 1.0 - vol);
-                                }
-                            }
-                        }, 150);
-                    }).catch(e => console.log("Aguardando interação:", e));
-                };
-            } else {
-                const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
-                    activeAudio.currentTime = ponto.tempoNaFaixa;
-                }
-            }
-        }
-
-        setInterval(sincronizarTransmissaoEstrita, 2000);
-
+        // Slider de Anúncios
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
