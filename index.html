@@ -6,20 +6,20 @@
     <title>Rádio Ranzinza // Cyber Studio</title>
     <style>
         :root {
-            --card-bg: rgba(16, 20, 31, 0.88);
+            --card-bg: rgba(16, 20, 31, 0.82);
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
             --neon-yellow: #ffaa00;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --border-color: rgba(0, 240, 255, 0.25);
+            --border-color: rgba(0, 240, 255, 0.35);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
-            background-color: #020409;
+            background-color: #050811;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -30,7 +30,7 @@
             position: relative;
         }
 
-        /* Camada escura bem mais densa para escurecer a imagem de fundo */
+        /* Camada com filtro de saturação e contraste para reforçar e nitidificar as cores da imagem de fundo */
         body::before {
             content: '';
             position: fixed;
@@ -38,7 +38,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(2, 4, 9, 0.92);
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            filter: contrast(135%) saturate(160%) brightness(0.85);
+            z-index: -2;
+        }
+
+        /* Camada leve de cobertura translúcida escura para manter o contraste elegante */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 17, 0.55);
             z-index: -1;
         }
         
@@ -66,7 +80,7 @@
             top: 0;
             left: 0;
             z-index: 1;
-            filter: brightness(0.5);
+            filter: brightness(0.6);
         }
         .header-content {
             position: relative;
@@ -155,7 +169,7 @@
             justify-content: space-between;
         }
         .player-box {
-            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.95) 0%, rgba(13, 18, 29, 0.98) 100%);
+            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.92) 0%, rgba(13, 18, 29, 0.96) 100%);
             text-align: center;
         }
         .player-box h2 {
@@ -201,7 +215,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: linear-gradient(135deg, rgba(2, 5, 11, 0.98), rgba(10, 17, 32, 0.98));
+            background: linear-gradient(135deg, rgba(2, 5, 11, 0.95), rgba(10, 17, 32, 0.95));
             border: 2px solid var(--neon-blue);
             border-radius: 16px;
             padding: 20px;
@@ -216,7 +230,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(3, 7, 16, 0.95);
+            background: rgba(3, 7, 16, 0.9);
             padding: 15px;
             border-radius: 12px;
             border: 1px solid rgba(0, 240, 255, 0.3);
@@ -373,7 +387,7 @@
         }
         .chat-messages {
             flex: 1;
-            background: rgba(7, 10, 18, 0.95);
+            background: rgba(7, 10, 18, 0.9);
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
@@ -830,7 +844,6 @@
             const item = itemProgramacao[ponto.itemIndex];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
 
-            // Fade-out suave de 3 segundos no final para eliminar cortes bruscos
             if (item.type === 'music' && !activeAudio.paused && !isNaN(activeAudio.duration)) {
                 const tempoRestante = activeAudio.duration - activeAudio.currentTime;
                 if (tempoRestante <= 3.0 && tempoRestante > 0) {
@@ -882,7 +895,6 @@
                     };
                 }
             } else {
-                // Prevenção estrita de saltos: só corrige se a distorção temporal for superior a 8 segundos
                 if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 8) {
                     activeAudio.currentTime = ponto.tempoNoItem;
                 }
