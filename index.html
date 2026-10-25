@@ -270,6 +270,38 @@
         }
         button.chat-btn:hover { opacity: 0.9; }
 
+        /* Painel de Administração Oculto */
+        .admin-panel {
+            background: #1a1018;
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        .admin-panel input {
+            margin-bottom: 8px;
+        }
+        .admin-btn {
+            background: var(--neon-pink);
+            color: white;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .admin-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+            width: 100%;
+        }
+        .admin-toggle:hover { color: var(--neon-pink); }
+
         .external-platforms {
             margin-top: 15px;
             display: flex;
@@ -368,15 +400,25 @@
                 </div>
             </div>
 
-            <!-- CHAT AO VIVO -->
-            <div class="card chat-box">
+            <!-- CHAT AO VIVO & PAINEL DE ADMIN -->
+            <div class="card chat-box" style="height: auto;">
                 <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
-                <div class="chat-messages" id="chatMessages">
+                <div class="chat-messages" id="chatMessages" style="height: 180px;">
                     <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
                 </div>
-                <div class="chat-input-area">
+                <div class="chat-input-area" id="listenerInputArea">
                     <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
-                    <button class="chat-btn" onclick="enviarMensagem()">Enviar</button>
+                    <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
+                </div>
+
+                <!-- Botão discreto para abrir o painel de controlo (só para si) -->
+                <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
+
+                <!-- Painel Oculto da Rádio Ranzinza -->
+                <div class="admin-panel" id="adminPanel">
+                    <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
+                    <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
+                    <button class="chat-btn admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
                 </div>
             </div>
         </div>
@@ -418,8 +460,6 @@
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        
-        // Calcula a duração total de todas as músicas da playlist em segundos
         const totalPlaylistDuration = playlist.reduce((acc, track) => acc + track.duration, 0);
 
         function iniciarRadio() {
@@ -428,17 +468,13 @@
         }
 
         function sincronizarTempoReal() {
-            // Pega os segundos passados desde a meia-noite de hoje (horário real do relógio)
             const now = new Date();
             const segundosDesdeMeiaNoite = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-            
-            // Faz o ciclo repetir ao longo do dia inteiro usando o resto da divisão
             let tempoAtualNaPlaylist = segundosDesdeMeiaNoite % totalPlaylistDuration;
 
             let faixaEncontrada = 0;
             let tempoNaFaixa = 0;
 
-            // Descobre em qual música do dia a rádio deveria estar agora
             for (let i = 0; i < playlist.length; i++) {
                 if (tempoAtualNaPlaylist < playlist[i].duration) {
                     faixaEncontrada = i;
@@ -448,7 +484,6 @@
                 tempoAtualNaPlaylist -= playlist[i].duration;
             }
 
-            // Configura e posiciona a música exatamente no segundo correspondente
             const track = playlist[faixaEncontrada];
             audioPlayer.src = track.url;
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
@@ -458,11 +493,9 @@
                 audioPlayer.currentTime = tempoNaFaixa;
             };
 
-            // Guarda qual é a faixa atual para quando acabar passar para a próxima sequencialmente
             window.currentTrackIndex = faixaEncontrada;
         }
 
-        // Quando uma música acaba, passa naturalmente para a próxima da lista
         audioPlayer.addEventListener('ended', () => {
             window.currentTrackIndex = (window.currentTrackIndex + 1) % playlist.length;
             const track = playlist[window.currentTrackIndex];
@@ -472,12 +505,32 @@
             audioPlayer.play().catch(e => console.log("Erro:", e));
         });
 
-        function enviarMensagem() {
+        // Controlo do Painel Admin Oculto
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Envio de mensagem pelo ouvinte comum
+        function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
             if(input.value.trim() !== '') {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-green);">Ouvinte:</strong> ${input.value}`;
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Envio de mensagem oficial como Rádio Ranzinza (Aparece destacada)
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
