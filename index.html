@@ -108,18 +108,18 @@
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
         .card-top {
-            min-height: 250px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             box-sizing: border-box;
         }
         .card-bottom {
-            min-height: 320px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            box-sizing: data;
+            box-sizing: border-box;
         }
         h3 {
             margin-top: 0;
@@ -135,6 +135,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            height: 100%;
         }
         .player-box {
             background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
@@ -178,7 +179,7 @@
             100% { height: 36px; }
         }
 
-        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT / TELEMETRIA) */
+        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO (MUSTANG GT) */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -226,7 +227,7 @@
             height: 140px;
             background: radial-gradient(circle, #09172c 0%, #010408 85%);
             border: 6px solid #1a233a;
-            outline: 2px solid #d4af37; /* Anel externo dourado ouro */
+            outline: 2px solid #d4af37;
             border-radius: 50%;
             position: relative;
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 18px rgba(0, 0, 0, 0.9);
@@ -624,7 +625,7 @@
                     </div>
                 </div>
 
-                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
@@ -652,7 +653,6 @@
     </div>
 
     <script>
-        // Função para gerar as marcações dos relógios esportivos com precisão interna
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
             for (let i = 0; i < 60; i++) {
@@ -699,7 +699,6 @@
         let playerAtivo = 1;
         let faixaAtualIndex = -1;
 
-        // Atualização em tempo real dos relógios analógicos e digitais
         setInterval(() => {
             const agora = new Date();
             
@@ -789,7 +788,6 @@
 
         setInterval(sincronizarTransmissaoEstrita, 2000);
 
-        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
