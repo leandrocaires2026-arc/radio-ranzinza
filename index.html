@@ -228,7 +228,7 @@
             margin-bottom: 3px;
         }
 
-        /* Estilos originais dos Slides de Anúncio com Imagem Corrigida */
+        /* Estilos dos Slides de Anúncio com Imagem Garantida */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
@@ -511,13 +511,13 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- QUADRO SUPERIOR DIREITO -->
-                <div class="card" style="border-color: var(--neon-pink);">
+                <!-- QUADRO SUPERIOR DIREITO AMPLIADO PARA PREENCHER O ESPAÇO -->
+                <div class="card" style="border-color: var(--neon-pink); min-height: 255px; display: flex; flex-direction: column; justify-content: center;">
                     <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
-                    <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total e máxima fidelidade acústica.</p>
                 </div>
 
-                <!-- QUADRO INFERIOR DIREITO: SLIDE DE ANÚNCIO (CORRIGIDO E SIMÉTRICO) -->
+                <!-- QUADRO INFERIOR DIREITO: SLIDE DE ANÚNCIO (IGUAL À ESQUERDA) -->
                 <a href="https://soundcloud.com" target="_blank" class="card ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -634,11 +634,4 @@
             if(input.value.trim() !== '') {
                 const p = document.createElement('p');
                 p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-    </script>
-</body>
-</html>
+                messages.appendChild(
