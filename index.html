@@ -6,7 +6,7 @@
     <title>Rádio Ranzinza // Cyber Studio</title>
     <style>
         :root {
-            --card-bg: rgba(16, 20, 31, 0.85); /* Fundo dos cards translúcidos para destacar a imagem */
+            --card-bg: rgba(16, 20, 31, 0.88);
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
@@ -17,10 +17,9 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Fundo estruturado com a imagem enviada, cobrindo toda a tela em alta qualidade */
-            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
-            background-color: #050811;
+            background-color: #020409;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -31,7 +30,7 @@
             position: relative;
         }
 
-        /* Camada escura translúcida sobre a imagem de fundo para dar contraste aos elementos */
+        /* Camada escura bem mais densa para escurecer a imagem de fundo */
         body::before {
             content: '';
             position: fixed;
@@ -39,7 +38,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 8, 17, 0.78);
+            background: rgba(2, 4, 9, 0.92);
             z-index: -1;
         }
         
@@ -67,13 +66,13 @@
             top: 0;
             left: 0;
             z-index: 1;
-            filter: brightness(0.6);
+            filter: brightness(0.5);
         }
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: rgba(11, 11, 14, 0.8);
+            background: rgba(11, 11, 14, 0.85);
             padding: 15px 30px;
             border-radius: 8px;
             border: 1px solid var(--neon-blue);
@@ -156,7 +155,7 @@
             justify-content: space-between;
         }
         .player-box {
-            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.9) 0%, rgba(13, 18, 29, 0.95) 100%);
+            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.95) 0%, rgba(13, 18, 29, 0.98) 100%);
             text-align: center;
         }
         .player-box h2 {
@@ -202,7 +201,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: linear-gradient(135deg, rgba(2, 5, 11, 0.95), rgba(10, 17, 32, 0.95));
+            background: linear-gradient(135deg, rgba(2, 5, 11, 0.98), rgba(10, 17, 32, 0.98));
             border: 2px solid var(--neon-blue);
             border-radius: 16px;
             padding: 20px;
@@ -217,7 +216,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(3, 7, 16, 0.9);
+            background: rgba(3, 7, 16, 0.95);
             padding: 15px;
             border-radius: 12px;
             border: 1px solid rgba(0, 240, 255, 0.3);
@@ -374,7 +373,7 @@
         }
         .chat-messages {
             flex: 1;
-            background: rgba(7, 10, 18, 0.9);
+            background: rgba(7, 10, 18, 0.95);
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
@@ -829,13 +828,13 @@
         function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
             const item = itemProgramacao[ponto.itemIndex];
-
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
 
+            // Fade-out suave de 3 segundos no final para eliminar cortes bruscos
             if (item.type === 'music' && !activeAudio.paused && !isNaN(activeAudio.duration)) {
                 const tempoRestante = activeAudio.duration - activeAudio.currentTime;
                 if (tempoRestante <= 3.0 && tempoRestante > 0) {
-                    activeAudio.volume = Math.max(0.05, (tempoRestante / 3.0));
+                    activeAudio.volume = Math.max(0.02, (tempoRestante / 3.0));
                 }
             }
 
@@ -883,13 +882,14 @@
                     };
                 }
             } else {
-                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 4) {
+                // Prevenção estrita de saltos: só corrige se a distorção temporal for superior a 8 segundos
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 8) {
                     activeAudio.currentTime = ponto.tempoNoItem;
                 }
             }
         }
 
-        setInterval(sincronizarTransmissaoEstrita, 1500);
+        setInterval(sincronizarTransmissaoEstrita, 3000);
 
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
