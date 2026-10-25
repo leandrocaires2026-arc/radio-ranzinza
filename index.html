@@ -178,40 +178,98 @@
             100% { height: 36px; }
         }
 
-        /* Estilo dos Relógios de Automobilismo / Telemetria */
+        /* Painel Estilo Painel de Carro / Relógios Analógicos Estilo Automotivo */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
             background: #08080c;
             border: 2px solid var(--neon-blue);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 15px;
             margin-bottom: 20px;
             box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.25), 0 0 10px rgba(0, 240, 255, 0.2);
+            align-items: center;
         }
         .telemetry-item {
             text-align: center;
-            background: #040406;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .telemetry-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--neon-blue);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
         }
-        .telemetry-value {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.4rem;
+
+        /* Estilo do Relógio Analógico Estilo Carro */
+        .analog-clock {
+            width: 110px;
+            height: 110px;
+            background: radial-gradient(circle, #1a1a24 0%, #0a0a0f 80%);
+            border: 5px solid #d0d0d8; /* Borda cromada/metálica */
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.9);
+        }
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 4px;
+        }
+        .hour-hand {
+            width: 4px;
+            height: 26px;
+            background: #ffffff;
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .minute-hand {
+            width: 3px;
+            height: 36px;
+            background: #cccccc;
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .second-hand {
+            width: 1.5px;
+            height: 40px;
+            background: var(--neon-pink);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-yellow);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 4px var(--neon-yellow);
+        }
+        .clock-number {
+            position: absolute;
+            font-size: 0.65rem;
             font-weight: bold;
+            color: #a0a0b0;
+            font-family: sans-serif;
+        }
+        .digital-subtext {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.75rem;
             color: var(--neon-yellow);
-            text-shadow: 0 0 8px rgba(255, 170, 0, 0.7);
-            letter-spacing: 2px;
+            margin-top: 6px;
+            text-shadow: 0 0 4px rgba(255, 170, 0, 0.5);
         }
 
         audio {
@@ -447,15 +505,34 @@
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
-                    <!-- Dois Relógios Estilo Automobilismo (Telemetria) posicionados no lugar da imagem -->
+                    <!-- Dois Relógios Analógicos Estilo Painel Automotivo -->
                     <div class="racing-telemetry-panel">
+                        <!-- Relógio 1: UTC (Greenwich) -->
                         <div class="telemetry-item">
-                            <div class="telemetry-label">🏁 Tempo UTC (Greenwich)</div>
-                            <div class="telemetry-value" id="utcClock">00:00:00</div>
+                            <div class="telemetry-label">🏁 UTC (Greenwich)</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUTC">
+                                    <div class="hand hour-hand" id="utcHour"></div>
+                                    <div class="hand minute-hand" id="utcMin"></div>
+                                    <div class="hand second-hand" id="utcSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="utcDigital">00:00:00</div>
                         </div>
+
+                        <!-- Relógio 2: Tempo de Emissão (Uptime) -->
                         <div class="telemetry-item">
                             <div class="telemetry-label">⏱️ Tempo de Emissão</div>
-                            <div class="telemetry-value" id="uptimeClock">00:00:00</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUptime">
+                                    <div class="hand hour-hand" id="upHour"></div>
+                                    <div class="hand minute-hand" id="upMin"></div>
+                                    <div class="hand second-hand" id="upSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="uptimeDigital">00:00:00</div>
                         </div>
                     </div>
 
@@ -573,23 +650,34 @@
         let playerAtivo = 1;
         let faixaAtualIndex = -1;
 
-        // Atualização dos Relógios de Automobilismo (UTC e Uptime) a cada segundo
+        // Atualização dos Relógios Analógicos e Digitais (Automotivos)
         setInterval(() => {
             const agora = new Date();
-            const utcHours = String(agora.getUTCHours()).padStart(2, '0');
-            const utcMinutes = String(agora.getUTCMinutes()).padStart(2, '0');
-            const utcSeconds = String(agora.getUTCSeconds()).padStart(2, '0');
-            document.getElementById('utcClock').innerText = `${utcHours}:${utcMinutes}:${utcSeconds}`;
+            
+            // Relógio 1: UTC (Greenwich)
+            const hUTC = agora.getUTCHours();
+            const mUTC = agora.getUTCMinutes();
+            const sUTC = agora.getUTCSeconds();
+            
+            document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+            document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+            document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+            document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
 
+            // Relógio 2: Tempo de Emissão (Uptime)
             const diffMs = Date.now() - tempoInicioEmissao;
             const totalSecs = Math.floor(diffMs / 1000);
-            const upH = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
-            const upM = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
-            const upS = String(totalSecs % 60).padStart(2, '0');
-            document.getElementById('uptimeClock').innerText = `${upH}:${upM}:${upS}`;
+            const upH = Math.floor(totalSecs / 3600);
+            const upM = Math.floor((totalSecs % 3600) / 60);
+            const upS = totalSecs % 60;
+
+            document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+            document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+            document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+            document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
         }, 1000);
 
-        // Motor mestre UTC (Greenwich) para cálculo rigoroso do segundo exato na grade de 24h
+        // Motor mestre UTC para cálculo exato de 24h
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
@@ -628,7 +716,6 @@
                 nextPlayer.onloadedmetadata = () => {
                     nextPlayer.currentTime = ponto.tempoNaFaixa;
                     nextPlayer.play().then(() => {
-                        // Fade In na nova música e Fade Out na anterior
                         let vol = 0.0;
                         const fadeInterval = setInterval(() => {
                             vol += 0.1;
@@ -645,10 +732,9 @@
                                 }
                             }
                         }, 150);
-                    }).catch(e => console.log("Bloqueio de autoplay do navegador:", e));
+                    }).catch(e => console.log("Aguardando interação:", e));
                 };
             } else {
-                // Ajuste milimétrico de sincronia caso haja desvio
                 const activeAudio = playerAtivo === 1 ? audio1 : audio2;
                 if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 3) {
                     activeAudio.currentTime = ponto.tempoNaFaixa;
@@ -656,7 +742,6 @@
             }
         }
 
-        // Verificação contínua de sincronia exata a cada 2 segundos
         setInterval(sincronizarTransmissaoEstrita, 2000);
 
         window.addEventListener('DOMContentLoaded', () => {
