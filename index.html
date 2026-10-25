@@ -27,57 +27,52 @@
             align-items: center;
             min-height: 100vh;
         }
-        
-        /* CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ */
         header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 15px;
             width: 100%;
             max-width: 1200px;
+            box-shadow: 0 5px 20px rgba(255, 0, 127, 0.3);
+        }
+        h1 {
+            color: var(--neon-blue);
+            margin: 0;
+            font-size: 2.8rem;
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+            letter-spacing: 2px;
+        }
+        header p {
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-size: 1.05rem;
+        }
+        .radio-banner {
+            width: 100%;
             height: 200px;
-            margin-bottom: 25px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 14px;
             overflow: hidden;
             border: 1px solid var(--border-color);
-            background: #111;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            position: relative;
         }
-        header img {
+        .radio-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: brightness(0.9) contrast(1.1);
+        }
+        .radio-banner::after {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1;
-            filter: brightness(0.6);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 60%, rgba(11, 11, 14, 0.8));
+            pointer-events: none;
         }
-        .header-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            background: rgba(11, 11, 14, 0.6);
-            padding: 15px 30px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
-        }
-        .header-content h1 {
-            margin: 0 0 5px 0;
-            font-size: 2rem;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
-            letter-spacing: 2px;
-        }
-        .header-content p {
-            margin: 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: var(--neon-yellow);
-            letter-spacing: 1.5px;
-        }
-
         .main-layout {
             display: grid;
             grid-template-columns: 280px 1fr 280px;
@@ -88,6 +83,9 @@
         @media (max-width: 950px) {
             .main-layout {
                 grid-template-columns: 1fr;
+            }
+            .radio-banner {
+                height: 140px;
             }
         }
         .card {
@@ -109,6 +107,7 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
+        
         .card-top {
             min-height: 250px;
             display: flex;
@@ -116,6 +115,7 @@
             justify-content: flex-start;
             box-sizing: border-box;
         }
+        
         .card-bottom {
             min-height: 320px;
             display: flex;
@@ -123,6 +123,7 @@
             justify-content: flex-start;
             box-sizing: border-box;
         }
+
         h3 {
             margin-top: 0;
             font-size: 1.1rem;
@@ -180,136 +181,57 @@
             100% { height: 36px; }
         }
 
-        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO */
-        .racing-telemetry-panel {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            background: linear-gradient(135deg, #02050b, #0a1120);
-            border: 2px solid #d4af37;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.15), 0 0 25px rgba(0, 240, 255, 0.2);
-            align-items: center;
-            position: relative;
-            overflow: hidden;
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 8px;
+            filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.3));
         }
-        .telemetry-item {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(3, 7, 16, 0.9);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(212, 175, 55, 0.35);
-        }
-        .telemetry-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #d4af37;
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
-        .analog-clock {
-            width: 140px;
-            height: 140px;
-            background: radial-gradient(circle, #09172c 0%, #010408 85%);
-            border: 6px solid #1a233a;
-            outline: 2px solid #d4af37;
-            border-radius: 50%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .clock-face {
-            width: 120px;
-            height: 120px;
-            position: relative;
-            border-radius: 50%;
-        }
-        .tick {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 6px;
-            background: rgba(0, 240, 255, 0.5);
-            transform-origin: 0 -50px;
-        }
-        .tick.major {
-            width: 3.5px;
-            height: 10px;
-            background: #d4af37;
-            box-shadow: 0 0 5px #d4af37;
-        }
-        .hand {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom;
-            border-radius: 4px;
-        }
-        .hour-hand {
-            width: 4.5px;
-            height: 30px;
-            background: #d4af37;
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
-            transform: translateX(-50%) rotate(0deg);
-        }
-        .minute-hand {
-            width: 3.5px;
-            height: 44px;
-            background: #ffffff;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-            transform: translateX(-50%) rotate(0deg);
-        }
-        .second-hand {
-            width: 1.5px;
-            height: 50px;
-            background: #00f0ff;
-            box-shadow: 0 0 8px #00f0ff;
-            transform: translateX(-50%) rotate(0deg);
-        }
-        .clock-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 9px;
-            height: 9px;
-            background: #d4af37;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px #d4af37;
-        }
-        .digital-subtext {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: #d4af37;
-            margin-top: 12px;
-        }
-        .play-btn-control {
+
+        .start-btn {
             background: linear-gradient(135deg, var(--neon-green), #00b347);
             color: #0b0b0e;
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 12px 24px;
             font-size: 1rem;
             font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 15px;
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
-            transition: 0.2s;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
         }
-        .play-btn-control:hover {
+        .start-btn:hover {
             transform: scale(1.05);
         }
-        audio {
-            display: none;
+
+        .album-art-container {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1f1f2e, #111116);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
+        .album-art-container::after {
+            content: 'RANZINZA // 432Hz';
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .vinyl-icon {
+            font-size: 3.5rem;
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         .schedule-block {
             font-size: 0.8rem;
             border-left: 3px solid var(--neon-blue);
@@ -322,9 +244,11 @@
             color: var(--neon-blue);
             margin-bottom: 2px;
         }
+
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
+            transition: all 0.3s ease;
             text-decoration: none;
         }
         .ad-slide {
@@ -341,15 +265,16 @@
             overflow: hidden;
             margin-bottom: 10px;
             border: 1px solid var(--border-color);
-            background: #09090c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #000;
         }
         .ad-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .ad-slider-card:hover .ad-img-container img {
+            transform: scale(1.05);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -366,6 +291,7 @@
             display: inline-block;
             margin-bottom: 6px;
         }
+
         .chat-box {
             display: flex;
             flex-direction: column;
@@ -407,8 +333,10 @@
             color: white;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
         }
         button.chat-btn:hover { opacity: 0.9; }
+
         .admin-panel {
             background: #1a1018;
             border: 1px solid var(--neon-pink);
@@ -416,6 +344,16 @@
             padding: 12px;
             margin-top: 10px;
             display: none;
+        }
+        .admin-panel input {
+            margin-bottom: 8px;
+        }
+        .admin-btn {
+            background: var(--neon-pink);
+            color: white;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
         }
         .admin-toggle {
             background: transparent;
@@ -429,6 +367,7 @@
             width: 100%;
         }
         .admin-toggle:hover { color: var(--neon-pink); }
+
         .external-platforms {
             margin-top: 15px;
             display: flex;
@@ -444,27 +383,14 @@
             font-size: 0.82rem;
             font-weight: bold;
             border: 1px solid var(--border-color);
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
-        .radio-banner {
-            width: 100%;
-            height: 200px;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            position: relative;
-            margin-bottom: 20px;
-            background: #111;
-        }
-        .radio-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
         .info-box {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -474,14 +400,17 @@
 </head>
 <body>
 
-    <!-- CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ -->
     <header>
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
-        <div class="header-content">
-            <h1>RÁDIO RANZINZA</h1>
-            <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
-        </div>
+        <h1>RÁDIO RANZINZA</h1>
+        <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
+
+    <!-- BANNER SUPERIOR CENTRAL -->
+    <div style="width: 100%; max-width: 1200px; margin-bottom: 25px;">
+        <div class="radio-banner">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
+        </div>
+    </div>
 
     <div class="main-layout">
         
@@ -491,33 +420,24 @@
                 <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
-                        <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
+                        <div class="schedule-title">🌅 New Age (Instrumentais)</div>
+                        <p class="info-box" style="margin: 0;">Sessão imersiva e relaxamento.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
-                        <p class="info-box" style="margin: 0;">Composições românticas.</p>
+                        <div class="schedule-title">☀️ Sertanejas (Português)</div>
+                        <p class="info-box" style="margin: 0;">Modões e composições românticas.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
-                        <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
+                        <div class="schedule-title">🌙 Eletrônicas (Inglês)</div>
+                        <p class="info-box" style="margin: 0;">Dance, Club & High Energy.</p>
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER COM SPOTIFY E NOME RANZINZA -->
                 <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#0d1117"/>
-                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
-                                <g transform="translate(170, 50) scale(1.4)">
-                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
-                                </g>
-                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
-                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Ouça no Spotify</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
@@ -525,7 +445,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%23ff5500\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Ranzinza</text></svg>'">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -543,40 +463,14 @@
             <div class="center-panel">
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
-
-                    <!-- BOTÃO DE INICIALIZAÇÃO OBRIGATÓRIA PARA LIBERAR O ÁUDIO NO NAVEGADOR -->
-                    <button class="play-btn-control" id="playTriggerBtn" onclick="iniciarTransmissaoRadio()">▶ Ligar Transmissão</button>
-
-                    <!-- PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO -->
-                    <div class="racing-telemetry-panel">
-                        <div class="telemetry-item">
-                            <div class="telemetry-label">🏁 UTC (Greenwich)</div>
-                            <div class="analog-clock">
-                                <div class="clock-face" id="faceUTC">
-                                    <div class="hand hour-hand" id="utcHour"></div>
-                                    <div class="hand minute-hand" id="utcMin"></div>
-                                    <div class="hand second-hand" id="utcSec"></div>
-                                    <div class="clock-center"></div>
-                                </div>
-                            </div>
-                            <div class="digital-subtext" id="utcDigital">00:00:00</div>
-                        </div>
-
-                        <div class="telemetry-item">
-                            <div class="telemetry-label">⏱️ Tempo de Emissão</div>
-                            <div class="analog-clock">
-                                <div class="clock-face" id="faceUptime">
-                                    <div class="hand hour-hand" id="upHour"></div>
-                                    <div class="hand minute-hand" id="upMin"></div>
-                                    <div class="hand second-hand" id="upSec"></div>
-                                    <div class="clock-center"></div>
-                                </div>
-                            </div>
-                            <div class="digital-subtext" id="uptimeDigital">00:00:00</div>
-                        </div>
+                    
+                    <div class="album-art-container">
+                        <div class="vinyl-icon">💽</div>
                     </div>
 
-                    <p id="now-playing">Clique em "Ligar Transmissão" para iniciar o som...</p>
+                    <button class="start-btn" onclick="iniciarOuRetomarRadio()">▶ Ligar Transmissão</button>
+
+                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
                     
                     <div class="equalizer">
                         <div class="bar"></div>
@@ -587,7 +481,9 @@
                         <div class="bar"></div>
                     </div>
 
-                    <audio id="audioPlayer" preload="auto"></audio>
+                    <audio id="audioPlayer" controls controlsList="nodownload">
+                        O seu navegador não suporta áudio HTML5.
+                    </audio>
 
                     <div class="external-platforms">
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
@@ -595,6 +491,7 @@
                     </div>
                 </div>
 
+                <!-- CHAT AO VIVO & PAINEL DE ADMIN -->
                 <div class="card chat-box" style="height: auto;">
                     <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
                     <div class="chat-messages" id="chatMessages" style="height: 180px;">
@@ -610,7 +507,7 @@
                     <div class="admin-panel" id="adminPanel">
                         <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
                         <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
-                        <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                        <button class="chat-btn admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
                     </div>
                 </div>
             </div>
@@ -632,12 +529,11 @@
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER COM DESTAQUE E SPOTIFY -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%2300f0ff\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Destaque</text></svg>'">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -645,15 +541,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
                         <div class="ad-img-container">
-                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="200" fill="#0d1117"/>
-                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
-                                <g transform="translate(170, 50) scale(1.4)">
-                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
-                                </g>
-                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
-                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Perfil no Spotify</text>
-                            </svg>
+                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
                         </div>
                         <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
@@ -669,168 +557,80 @@
     </div>
 
     <script>
-        function criarMarcacoesRelogio(faceId) {
-            const face = document.getElementById(faceId);
-            for (let i = 0; i < 60; i++) {
-                const tick = document.createElement('div');
-                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
-                face.appendChild(tick);
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            criarMarcacoesRelogio('faceUTC');
-            criarMarcacoesRelogio('faceUptime');
-        });
-
+        // Playlist completa rigorosamente na ordem fornecida por categorias
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
+            // New Age (Instrumentais)
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 220 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 200 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 200 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 },
+
+            // Sertanejas (Português)
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
+            { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", duration: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", duration: 220 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 },
+            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 },
+
+            // Eletrônicas (Inglês)
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 }
         ];
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        const playTriggerBtn = document.getElementById('playTriggerBtn');
-        
-        let indiceAtual = 0;
-        let TocandoJingle = false;
-        const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
+        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
 
-        function iniciarTransmissaoRadio() {
-            playTriggerBtn.style.display = 'none';
-            tocarProximaNaOrdem();
-        }
+        let radioIniciada = false;
 
-        function tocarProximaNaOrdem() {
-            TocandoJingle = false;
-            const faixa = playlist[indiceAtual];
-            nowPlayingText.innerHTML = `No ar agora: <strong>${faixa.title}</strong>`;
-            audioPlayer.src = faixa.url;
-            audioPlayer.load();
-            audioPlayer.play().catch(e => console.log("Aguardando permissão:", e));
-        }
-
-        function tocarJingleTransicao() {
-            TocandoJingle = true;
-            nowPlayingText.innerHTML = `⚡ <em>Rádio Ranzinza, Uma nova forma de conexão!</em>`;
-            
-            // Criação de um sintetizador de voz nativo do navegador para o Jingle (fala a frase com clareza)
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Limpa filas anteriores
-                const msg = new SpeechSynthesisUtterance("Rádio Ranzinza, Uma nova forma de conexão!");
-                msg.lang = 'pt-BR';
-                msg.rate = 1.0; // Velocidade natural
-                msg.pitch = 1.0;
-                
-                msg.onend = () => {
-                    // Assim que o jingle termina de falar, avança para a próxima música da ordem
-                    indiceAtual = (indiceAtual + 1) % playlist.length;
-                    tocarProximaNaOrdem();
-                };
-                
-                window.speechSynthesis.speak(msg);
-            } else {
-                // Fallback caso o navegador não suporte síntese de voz: aguarda 4 segundos de pausa e prossegue
-                setTimeout(() => {
-                    indiceAtual = (indiceAtual + 1) % playlist.length;
-                    tocarProximaNaOrdem();
-                }, 4000);
-            }
-        }
-
-        // Quando uma música acaba, em vez de pular direto, toca o Jingle institucional
-        audioPlayer.addEventListener('ended', () => {
-            if (!TocandoJingle) {
-                tocarJingleTransicao();
-            }
-        });
-
-        // Relógios de Telemetria
-        setInterval(() => {
+        function calcularPontoNoAr() {
             const agora = new Date();
-            
-            const hUTC = agora.getUTCHours();
-            const mUTC = agora.getUTCMinutes();
-            const sUTC = agora.getUTCSeconds();
-            
-            document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
-            document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
-            document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
-            document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
-
-            const diffMs = Date.now() - tempoInicioEmissao;
-            const totalSecs = Math.floor(diffMs / 1000);
-            const upH = Math.floor(totalSecs / 3600);
-            const upM = Math.floor((totalSecs % 3600) / 60);
-            const upS = totalSecs % 60;
-
-            document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
-            document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
-            document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
-            document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
-        }, 1000);
-
-        // Slider de Anúncios
-        setInterval(() => {
-            const cards = document.querySelectorAll('.ad-slider-card');
-            cards.forEach(card => {
-                const slides = card.querySelectorAll('.ad-slide');
-                let activeIndex = 0;
-                slides.forEach((slide, index) => {
-                    if (slide.classList.contains('active')) activeIndex = index;
-                    slide.classList.remove('active');
-                });
-                let nextIndex = (activeIndex + 1) % slides.length;
-                slides[nextIndex].classList.add('active');
-
-                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
-            });
-        }, 5000);
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function enviarMensagemOuvinte() {
-            const input = document.getElementById('chatInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-
-        function enviarMensagemAdmin() {
-            const input = document.getElementById('adminInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-    </script>
-</body>
-</html>
+            const segundosHoje = (agora.getHours() *
