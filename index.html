@@ -28,7 +28,7 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM ARTE MATERIAL E INDUSTRIAL */
+        /* CABEÇALHO COM A MESMA IMAGEM DO RODAPÉ */
         header {
             width: 100%;
             max-width: 1200px;
@@ -40,13 +40,42 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            background: #0f1115;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.1);
-            border: 1px solid #2a2f3a;
+            border: 1px solid var(--border-color);
+            background: #111;
         }
-        .header-svg {
+        header img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            filter: brightness(0.6);
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(11, 11, 14, 0.6);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+        .header-content h1 {
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            letter-spacing: 2px;
+        }
+        .header-content p {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--neon-yellow);
+            letter-spacing: 1.5px;
         }
 
         .main-layout {
@@ -429,50 +458,13 @@
 </head>
 <body>
 
-    <!-- CABEÇALHO COM A ARTE MATERIAL E INDUSTRIAL -->
+    <!-- CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ -->
     <header>
-        <svg class="header-svg" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="metalBase" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#181b22" />
-                    <stop offset="50%" stop-color="#0f1115" />
-                    <stop offset="100%" stop-color="#07080a" />
-                </linearGradient>
-                <linearGradient id="metalPlate" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#2a303c" />
-                    <stop offset="50%" stop-color="#15181f" />
-                    <stop offset="100%" stop-color="#0d0f13" />
-                </linearGradient>
-                <linearGradient id="goldAcc" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#c5a059" />
-                    <stop offset="50%" stop-color="#f3e5ab" />
-                    <stop offset="100%" stop-color="#997a38" />
-                </linearGradient>
-                <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.7"/>
-                </filter>
-            </defs>
-
-            <rect width="1200" height="200" fill="url(#metalBase)" />
-            <line x1="0" y1="20" x2="1200" y2="20" stroke="#222831" stroke-width="1"/>
-            <line x1="0" y1="180" x2="1200" y2="180" stroke="#050608" stroke-width="2"/>
-
-            <circle cx="20" cy="20" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="20" cy="20" r="2" fill="#111"/>
-            <circle cx="1180" cy="20" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="1180" cy="20" r="2" fill="#111"/>
-            <circle cx="20" cy="180" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="20" cy="180" r="2" fill="#111"/>
-            <circle cx="1180" cy="180" r="5" fill="#3a4252" stroke="#111" stroke-width="1.5"/><circle cx="1180" cy="180" r="2" fill="#111"/>
-
-            <rect x="210" y="25" width="780" height="150" rx="8" fill="url(#metalPlate)" stroke="url(#goldAcc)" stroke-width="1.5" filter="url(#dropShadow)" />
-            
-            <line x1="230" y1="50" x2="230" y2="150" stroke="#222" stroke-width="2" stroke-dasharray="3, 3"/>
-            <line x1="970" y1="50" x2="970" y2="150" stroke="#222" stroke-width="2" stroke-dasharray="3, 3"/>
-
-            <text x="600" y="85" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3" filter="url(#dropShadow)">RÁDIO RANZINZA</text>
-            <text x="600" y="125" font-family="'Courier New', Courier, monospace" font-size="13" font-weight="bold" fill="url(#goldAcc)" text-anchor="middle" letter-spacing="2">ESTÚDIO DE TRANSMISSÃO 432Hz</text>
-
-            <circle cx="260" cy="121" r="3.5" fill="#00ff66"/>
-            <circle cx="940" cy="121" r="3.5" fill="#00ff66"/>
-        </svg>
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
+        <div class="header-content">
+            <h1>RÁDIO RANZINZA</h1>
+            <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
+        </div>
     </header>
 
     <div class="main-layout">
@@ -526,7 +518,7 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%230b0b0e\'/><text x=\'50%\' y=\'50%\' fill=\'%2300f0ff\' font-size=\'20\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Rádio Ranzinza</text></svg>'">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
         </div>
 
@@ -606,7 +598,7 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%230b0b0e\'/><text x=\'50%\' y=\'50%\' fill=\'%23ff007f\' font-size=\'20\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Rádio Ranzinza Live</text></svg>'">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
@@ -652,7 +644,7 @@
             </div>
             
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%230b0b0e\'/><text x=\'50%\' y=\'50%\' fill=\'%23ffaa00\' font-size=\'20\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Estúdio Ranzinza</text></svg>'">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
 
@@ -798,4 +790,46 @@
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
                 const slides = card.querySelectorAll('.ad-slide');
-                let
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+            });
+        }, 5000);
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
