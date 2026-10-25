@@ -50,13 +50,11 @@
         }
         .radio-banner {
             width: 100%;
-            max-width: 1200px;
-            height: 240px;
+            height: 200px;
             border-radius: 14px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
-            margin-bottom: 25px;
             position: relative;
         }
         .radio-banner img {
@@ -87,7 +85,7 @@
                 grid-template-columns: 1fr;
             }
             .radio-banner {
-                height: 160px;
+                height: 140px;
             }
         }
         .card {
@@ -118,6 +116,11 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+        .column-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .player-box {
             background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
@@ -270,7 +273,6 @@
         }
         button.chat-btn:hover { opacity: 0.9; }
 
-        /* Painel de Administração Oculto */
         .admin-panel {
             background: #1a1018;
             border: 1px solid var(--neon-pink);
@@ -339,107 +341,121 @@
         <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
 
-    <div class="radio-banner">
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
+    <!-- BANNER SUPERIOR CENTRAL -->
+    <div style="width: 100%; max-width: 1200px; margin-bottom: 25px;">
+        <div class="radio-banner">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
+        </div>
     </div>
 
     <div class="main-layout">
         
         <!-- COLUNA ESQUERDA -->
-        <div class="side-panel">
-            <div class="card" style="border-color: var(--neon-green);">
-                <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
-                <div class="schedule-block" style="border-color: var(--neon-green);">
-                    <div class="schedule-title" style="color: var(--neon-green);">🌅 Manhã (Atmospheric)</div>
-                    <p class="info-box" style="margin: 0;">Série New Age & Streamside para relaxamento e foco.</p>
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="card" style="border-color: var(--neon-green);">
+                    <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
+                    <div class="schedule-block" style="border-color: var(--neon-green);">
+                        <div class="schedule-title" style="color: var(--neon-green);">🌅 Manhã (Atmospheric)</div>
+                        <p class="info-box" style="margin: 0;">Série New Age & Streamside para relaxamento e foco.</p>
+                    </div>
+                    <div class="schedule-block" style="border-color: var(--neon-pink);">
+                        <div class="schedule-title" style="color: var(--neon-pink);">☀️ Tarde (Vocal & Sertanejo)</div>
+                        <p class="info-box" style="margin: 0;">Composições românticas e refrões marcantes.</p>
+                    </div>
+                    <div class="schedule-block" style="border-color: var(--neon-blue);">
+                        <div class="schedule-title" style="color: var(--neon-blue);">🌙 Noite (Eletrônica & Dance)</div>
+                        <p class="info-box" style="margin: 0;">Deep House, Eurodance e batidas de alta energia.</p>
+                    </div>
+                    <div class="schedule-block" style="border-color: var(--neon-yellow);">
+                        <div class="schedule-title" style="color: var(--neon-yellow);">🌌 Madrugada (Gentele Strom)</div>
+                        <p class="info-box" style="margin: 0;">Saga imersiva e arranjos conceituais estendidos.</p>
+                    </div>
                 </div>
-                <div class="schedule-block" style="border-color: var(--neon-pink);">
-                    <div class="schedule-title" style="color: var(--neon-pink);">☀️ Tarde (Vocal & Sertanejo)</div>
-                    <p class="info-box" style="margin: 0;">Composições românticas e refrões marcantes.</p>
-                </div>
-                <div class="schedule-block" style="border-color: var(--neon-blue);">
-                    <div class="schedule-title" style="color: var(--neon-blue);">🌙 Noite (Eletrônica & Dance)</div>
-                    <p class="info-box" style="margin: 0;">Deep House, Eurodance e batidas de alta energia.</p>
-                </div>
-                <div class="schedule-block" style="border-color: var(--neon-yellow);">
-                    <div class="schedule-title" style="color: var(--neon-yellow);">🌌 Madrugada (Gentele Strom)</div>
-                    <p class="info-box" style="margin: 0;">Saga imersiva e arranjos conceituais estendidos.</p>
-                </div>
+            </div>
+            <!-- PAINEL INFERIOR ESQUERDO -->
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
         </div>
 
         <!-- COLUNA CENTRAL -->
-        <div class="center-panel">
-            <div class="card player-box">
-                <h2>🎙️ Emissão Oficial em Direto</h2>
-                
-                <div class="album-art-container">
-                    <div class="vinyl-icon">💽</div>
+        <div class="column-wrapper">
+            <div class="center-panel">
+                <div class="card player-box">
+                    <h2>🎙️ Emissão Oficial em Direto</h2>
+                    
+                    <div class="album-art-container">
+                        <div class="vinyl-icon">💽</div>
+                    </div>
+
+                    <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
+
+                    <p id="now-playing">Sintonizando transmissão contínua...</p>
+                    
+                    <div class="equalizer">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+
+                    <audio id="audioPlayer" controls controlsList="nodownload">
+                        O seu navegador não suporta áudio HTML5.
+                    </audio>
+
+                    <div class="external-platforms">
+                        <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
+                        <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
+                    </div>
                 </div>
 
-                <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
+                <!-- CHAT AO VIVO & PAINEL DE ADMIN -->
+                <div class="card chat-box" style="height: auto;">
+                    <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
+                    <div class="chat-messages" id="chatMessages" style="height: 180px;">
+                        <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
+                    </div>
+                    <div class="chat-input-area" id="listenerInputArea">
+                        <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
+                        <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
+                    </div>
 
-                <p id="now-playing">Sintonizando transmissão contínua...</p>
-                
-                <div class="equalizer">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
+                    <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
 
-                <audio id="audioPlayer" controls controlsList="nodownload">
-                    O seu navegador não suporta áudio HTML5.
-                </audio>
-
-                <div class="external-platforms">
-                    <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
-                    <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
+                    <div class="admin-panel" id="adminPanel">
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
+                        <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
+                        <button class="chat-btn admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                    </div>
                 </div>
             </div>
-
-            <!-- CHAT AO VIVO & PAINEL DE ADMIN -->
-            <div class="card chat-box" style="height: auto;">
-                <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
-                <div class="chat-messages" id="chatMessages" style="height: 180px;">
-                    <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
-                </div>
-                <div class="chat-input-area" id="listenerInputArea">
-                    <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
-                    <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
-                </div>
-
-                <!-- Botão discreto para abrir o painel de controlo (só para si) -->
-                <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
-
-                <!-- Painel Oculto da Rádio Ranzinza -->
-                <div class="admin-panel" id="adminPanel">
-                    <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
-                    <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
-                    <button class="chat-btn admin-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
-                </div>
+            <!-- PAINEL INFERIOR CENTRAL -->
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
         <!-- COLUNA DIREITA -->
-        <div class="side-panel">
-            <div class="card" style="border-color: var(--neon-pink);">
-                <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
-                <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="card" style="border-color: var(--neon-pink);">
+                    <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
+                    <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                </div>
+                <div class="card" style="border-color: var(--neon-blue);">
+                    <h3 style="color: var(--neon-blue);">🔥 Lançamentos Diários</h3>
+                    <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo.</p>
+                </div>
             </div>
-            <div class="card" style="border-color: var(--neon-blue);">
-                <h3 style="color: var(--neon-blue);">🔥 Lançamentos Diários</h3>
-                <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo.</p>
+            <!-- PAINEL INFERIOR DIREITO -->
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
 
-    </div>
-
-    <!-- PAINEL INFERIOR ESPELHADO -->
-    <div class="radio-banner" style="margin-top: 25px; margin-bottom: 0;">
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza - Painel Inferior">
     </div>
 
     <script>
@@ -510,13 +526,11 @@
             audioPlayer.play().catch(e => console.log("Erro:", e));
         });
 
-        // Controlo do Painel Admin Oculto
         function toggleAdminPanel() {
             const panel = document.getElementById('adminPanel');
             panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
         }
 
-        // Envio de mensagem pelo ouvinte comum
         function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
@@ -529,7 +543,6 @@
             }
         }
 
-        // Envio de mensagem oficial como Rádio Ranzinza (Aparece destacada)
         function enviarMensagemAdmin() {
             const input = document.getElementById('adminInput');
             const messages = document.getElementById('chatMessages');
