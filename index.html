@@ -211,9 +211,9 @@
             <div class="share-grid">
                 <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
                 <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <button onclick="partilharRedeSocial('Instagram')" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
-                <button onclick="partilharRedeSocial('TikTok')" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
-                <button onclick="partilharRedeSocial('Kwai')" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
                 <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
             </div>
             
@@ -458,33 +458,26 @@
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
 
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
 
             document.getElementById('shareModal').style.display = 'flex';
         }
 
-        // Função de partilha otimizada para apps móveis (Instagram, TikTok, Kwai)
-        function partilharRedeSocial(rede) {
-            const linkRadio = window.location.href;
-            
-            // Copia o link e a mensagem para facilitar o colar no Story/Direct
-            navigator.clipboard.writeText(linkRadio).then(() => {
-                if (rede === 'Instagram') {
-                    alert('Link copiado! A abrir o Instagram (cole no seu Story ou Direct).');
-                    window.location.href = 'instagram://story-camera';
-                    setTimeout(() => { window.open('https://instagram.com', '_blank'); }, 1000);
-                } else if (rede === 'TikTok') {
-                    alert('Link copiado! A abrir o TikTok.');
-                    window.open('https://www.tiktok.com/', '_blank');
-                } else if (rede === 'Kwai') {
-                    alert('Link copiado! A abrir o Kwai.');
-                    window.open('https://www.kwai.com/', '_blank');
-                }
-                fecharModalPartilha();
-            }).catch(() => {
-                alert('Erro ao copiar link automaticamente.');
-            });
+        // Partilha nativa universal para Instagram, TikTok e Kwai (abre o menu do sistema para escolher Story ou Direct)
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).then(() => {
+                    fecharModalPartilha();
+                }).catch((error) => console.log('Partilha cancelada', error));
+            } else {
+                copiarLinkRadio();
+            }
         }
 
         function fecharModalPartilha() {
@@ -501,7 +494,7 @@
             });
         }
 
-        // PLAYLIST ORIGINAL INTACTA NA ORDEM EXATA
+        // PLAYLIST ORIGINAL EXATA (MANTIDA RIGOROSAMENTE NA ORDEM)
         const playlist = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
