@@ -709,28 +709,56 @@
         const playTriggerBtn = document.getElementById('playTriggerBtn');
         
         let indiceAtual = 0;
+        let TocandoJingle = false;
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
 
         function iniciarTransmissaoRadio() {
             playTriggerBtn.style.display = 'none';
-            tocarFaixa(indiceAtual);
+            tocarProximaNaOrdem();
         }
 
-        function tocarFaixa(index) {
-            const faixa = playlist[index];
+        function tocarProximaNaOrdem() {
+            TocandoJingle = false;
+            const faixa = playlist[indiceAtual];
             nowPlayingText.innerHTML = `No ar agora: <strong>${faixa.title}</strong>`;
             audioPlayer.src = faixa.url;
             audioPlayer.load();
-            audioPlayer.play().catch(e => {
-                console.log("Erro ao reproduzir:", e);
-                playTriggerBtn.style.display = 'block';
-            });
+            audioPlayer.play().catch(e => console.log("Aguardando permissão:", e));
         }
 
-        // Evento nativo disparado exatamente quando a música termina, passando para a próxima sem cortes
+        function tocarJingleTransicao() {
+            TocandoJingle = true;
+            nowPlayingText.innerHTML = `⚡ <em>Rádio Ranzinza, Uma nova forma de conexão!</em>`;
+            
+            // Criação de um sintetizador de voz nativo do navegador para o Jingle (fala a frase com clareza)
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Limpa filas anteriores
+                const msg = new SpeechSynthesisUtterance("Rádio Ranzinza, Uma nova forma de conexão!");
+                msg.lang = 'pt-BR';
+                msg.rate = 1.0; // Velocidade natural
+                msg.pitch = 1.0;
+                
+                msg.onend = () => {
+                    // Assim que o jingle termina de falar, avança para a próxima música da ordem
+                    indiceAtual = (indiceAtual + 1) % playlist.length;
+                    tocarProximaNaOrdem();
+                };
+                
+                window.speechSynthesis.speak(msg);
+            } else {
+                // Fallback caso o navegador não suporte síntese de voz: aguarda 4 segundos de pausa e prossegue
+                setTimeout(() => {
+                    indiceAtual = (indiceAtual + 1) % playlist.length;
+                    tocarProximaNaOrdem();
+                }, 4000);
+            }
+        }
+
+        // Quando uma música acaba, em vez de pular direto, toca o Jingle institucional
         audioPlayer.addEventListener('ended', () => {
-            indiceAtual = (indiceAtual + 1) % playlist.length;
-            tocarFaixa(indiceAtual);
+            if (!TocandoJingle) {
+                tocarJingleTransicao();
+            }
         });
 
         // Relógios de Telemetria
