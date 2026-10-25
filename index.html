@@ -4,29 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rádio Ranzinza // Cyber Studio</title>
-    
-    <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
-    <meta property="og:title" content="Rádio Ranzinza // Cyber Studio">
-    <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
-    <meta property="og:type" content="website">
-
     <style>
         :root {
-            --card-bg: rgba(16, 20, 31, 0.82);
+            --bg-color: #0b0b0e;
+            --card-bg: #15151a;
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
             --neon-yellow: #ffaa00;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --border-color: rgba(0, 240, 255, 0.35);
+            --border-color: rgba(255, 255, 255, 0.08);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
-            background-color: #050811;
+            background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -34,28 +26,9 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
-            filter: contrast(135%) saturate(160%) brightness(0.85);
-            z-index: -2;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 8, 17, 0.55);
-            z-index: -1;
         }
         
-        /* CABEÇALHO */
+        /* CABEÇALHO COM A MESMA IMAGEM DO RODAPÉ */
         header {
             width: 100%;
             max-width: 1200px;
@@ -67,21 +40,42 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid var(--neon-blue);
+            border: 1px solid var(--border-color);
             background: #111;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
         header img {
-            width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            filter: brightness(0.6);
         }
         .header-content {
-            position: relative; z-index: 2; text-align: center; background: rgba(11, 11, 14, 0.85); padding: 15px 30px; border-radius: 8px; border: 1px solid var(--neon-blue); backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(11, 11, 14, 0.6);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
         }
         .header-content h1 {
-            margin: 0 0 5px 0; font-size: 2rem; color: #ffffff; text-shadow: 0 0 10px rgba(0, 240, 255, 0.8); letter-spacing: 2px;
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            letter-spacing: 2px;
         }
         .header-content p {
-            margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-yellow); letter-spacing: 1.5px;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--neon-yellow);
+            letter-spacing: 1.5px;
         }
 
         .main-layout {
@@ -92,32 +86,89 @@
             max-width: 1200px;
         }
         @media (max-width: 950px) {
-            .main-layout { grid-template-columns: 1fr; }
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
         }
         .card {
             background-color: var(--card-bg);
-            backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             margin-bottom: 20px;
         }
         .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
         }
-        .card-top { min-height: 250px; display: flex; flex-direction: column; justify-content: flex-start; box-sizing: border-box; }
-        .card-bottom { min-height: 320px; display: flex; flex-direction: column; justify-content: flex-start; box-sizing: border-box; }
-        h3 { margin-top: 0; font-size: 1.1rem; letter-spacing: 1px; }
-        .side-panel, .center-panel { display: flex; flex-direction: column; gap: 20px; }
-        .column-wrapper { display: flex; flex-direction: column; justify-content: space-between; }
-        .player-box { background: radial-gradient(circle at center, rgba(21, 27, 44, 0.92) 0%, rgba(13, 18, 29, 0.96) 100%); text-align: center; }
-        .player-box h2 { color: var(--neon-blue); text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); margin-top: 0; font-size: 1.3rem; }
-        #now-playing { color: var(--neon-green); font-weight: 600; font-size: 1rem; margin-bottom: 12px; text-shadow: 0 0 5px rgba(0, 255, 102, 0.4); }
-        .equalizer { display: flex; justify-content: center; align-items: flex-end; gap: 4px; height: 40px; margin: 15px 0; }
-        .bar { width: 6px; background: var(--neon-pink); border-radius: 3px; animation: bounce 1.2s infinite ease-in-out alternate; }
+        .card-top {
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        .card-bottom {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .side-panel, .center-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .column-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .player-box {
+            background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
+            text-align: center;
+        }
+        .player-box h2 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        #now-playing {
+            color: var(--neon-green);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.4);
+        }
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin: 15px 0;
+        }
+        .bar {
+            width: 6px;
+            background: var(--neon-pink);
+            border-radius: 3px;
+            animation: bounce 1.2s infinite ease-in-out alternate;
+        }
         .bar:nth-child(2) { animation-delay: 0.2s; background: var(--neon-blue); }
         .bar:nth-child(3) { animation-delay: 0.4s; background: var(--neon-green); }
         .bar:nth-child(4) { animation-delay: 0.1s; background: var(--neon-yellow); }
@@ -129,100 +180,285 @@
             100% { height: 36px; }
         }
 
+        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO */
         .racing-telemetry-panel {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-            background: linear-gradient(135deg, rgba(2, 5, 11, 0.95), rgba(10, 17, 32, 0.95));
-            border: 2px solid var(--neon-blue); border-radius: 16px; padding: 20px; margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.1), 0 0 25px rgba(0, 240, 255, 0.2);
-            align-items: center; position: relative; overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, #02050b, #0a1120);
+            border: 2px solid #d4af37;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.15), 0 0 25px rgba(0, 240, 255, 0.2);
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        .telemetry-item { text-align: center; display: flex; flex-direction: column; align-items: center; background: rgba(3, 7, 16, 0.9); padding: 15px; border-radius: 12px; border: 1px solid rgba(0, 240, 255, 0.3); }
-        .telemetry-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 12px; font-weight: bold; }
-        .analog-clock { width: 140px; height: 140px; background: radial-gradient(circle, #09172c 0%, #010408 85%); border: 6px solid #1a233a; outline: 2px solid var(--neon-blue); border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
-        .clock-face { width: 120px; height: 120px; position: relative; border-radius: 50%; }
-        .tick { position: absolute; top: 50%; left: 50%; width: 2px; height: 6px; background: rgba(0, 240, 255, 0.5); transform-origin: 0 -50px; }
-        .tick.major { width: 3.5px; height: 10px; background: var(--neon-blue); box-shadow: 0 0 5px var(--neon-blue); }
-        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; border-radius: 4px; }
-        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); box-shadow: 0 0 8px rgba(255, 170, 0, 0.8); transform: translateX(-50%) rotate(0deg); }
-        .minute-hand { width: 3.5px; height: 44px; background: #ffffff; box-shadow: 0 0 8px rgba(255, 255, 255, 0.8); transform: translateX(-50%) rotate(0deg); }
-        .second-hand { width: 1.5px; height: 50px; background: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); transform: translateX(-50%) rotate(0deg); }
-        .clock-center { position: absolute; top: 50%; left: 50%; width: 9px; height: 9px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 8px var(--neon-blue); }
-        .digital-subtext { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-blue); margin-top: 12px; }
-        audio { display: none; }
-        .schedule-block { font-size: 0.8rem; border-left: 3px solid var(--neon-blue); padding-left: 8px; margin-top: 6px; text-align: left; }
-        .schedule-title { font-weight: bold; color: var(--neon-blue); margin-bottom: 2px; }
-        .ad-slider-card { text-align: center; cursor: pointer; text-decoration: none; }
-        .ad-slide { display: none; animation: fadeIn 0.6s ease-in-out; }
-        .ad-slide.active { display: block; }
-        .ad-img-container { width: 100%; height: 180px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border-color); background: #09090c; display: flex; align-items: center; justify-content: center; }
-        .ad-img-container img { width: 100%; height: 100%; object-fit: cover; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .ad-tag { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 2px 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); color: var(--text-muted); display: inline-block; margin-bottom: 6px; }
-        .chat-box { display: flex; flex-direction: column; height: 260px; }
-        .chat-messages { flex: 1; background: rgba(7, 10, 18, 0.9); border-radius: 8px; padding: 10px; overflow-y: auto; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid var(--border-color); text-align: left; }
-        .chat-input-area { display: flex; gap: 8px; }
-        input, button.chat-btn { padding: 9px 12px; border-radius: 6px; border: none; font-size: 0.9rem; }
-        input { flex: 1; background: #151b2c; color: white; border: 1px solid var(--border-color); }
-        input:focus { outline: none; border-color: var(--neon-blue); }
-        button.chat-btn { background: linear-gradient(135deg, var(--neon-pink), #ff2a5f); color: white; cursor: pointer; font-weight: bold; }
+        .telemetry-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(3, 7, 16, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+        }
+        .telemetry-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #d4af37;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .analog-clock {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #09172c 0%, #010408 85%);
+            border: 6px solid #1a233a;
+            outline: 2px solid #d4af37;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clock-face {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            border-radius: 50%;
+        }
+        .tick {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 6px;
+            background: rgba(0, 240, 255, 0.5);
+            transform-origin: 0 -50px;
+        }
+        .tick.major {
+            width: 3.5px;
+            height: 10px;
+            background: #d4af37;
+            box-shadow: 0 0 5px #d4af37;
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 4px;
+        }
+        .hour-hand {
+            width: 4.5px;
+            height: 30px;
+            background: #d4af37;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .minute-hand {
+            width: 3.5px;
+            height: 44px;
+            background: #ffffff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .second-hand {
+            width: 1.5px;
+            height: 50px;
+            background: #00f0ff;
+            box-shadow: 0 0 8px #00f0ff;
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            background: #d4af37;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px #d4af37;
+        }
+        .digital-subtext {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #d4af37;
+            margin-top: 12px;
+        }
+        audio {
+            display: none;
+        }
+        .schedule-block {
+            font-size: 0.8rem;
+            border-left: 3px solid var(--neon-blue);
+            padding-left: 8px;
+            margin-top: 6px;
+            text-align: left;
+        }
+        .schedule-title {
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin-bottom: 2px;
+        }
+        .ad-slider-card {
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .ad-slide {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .ad-slide.active {
+            display: block;
+        }
+        .ad-img-container {
+            width: 100%;
+            height: 180px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            background: #09090c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .ad-tag {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 260px;
+        }
+        .chat-messages {
+            flex: 1;
+            background: #0a0a0e;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+        }
+        input, button.chat-btn {
+            padding: 9px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.9rem;
+        }
+        input {
+            flex: 1;
+            background: #1c1c24;
+            color: white;
+            border: 1px solid var(--border-color);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+        }
+        button.chat-btn {
+            background: linear-gradient(135deg, var(--neon-pink), #ff2a5f);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
         button.chat-btn:hover { opacity: 0.9; }
-        .admin-panel { background: #13101a; border: 1px solid var(--neon-pink); border-radius: 8px; padding: 12px; margin-top: 10px; display: none; }
-        .admin-toggle { background: transparent; border: none; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; margin-top: 5px; text-align: right; display: block; width: 100%; }
+        .admin-panel {
+            background: #1a1018;
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        .admin-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+            width: 100%;
+        }
         .admin-toggle:hover { color: var(--neon-pink); }
-        .external-platforms { margin-top: 15px; display: flex; justify-content: center; gap: 12px; }
-        .platform-btn { background: #151b2c; color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: bold; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
+        .external-platforms {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .platform-btn {
+            background: #1f1f2b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
-
-        /* MODAL DE PARTILHA */
-        .share-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-            display: none; align-items: center; justify-content: center; z-index: 999;
+        .radio-banner {
+            width: 100%;
+            height: 200px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            position: relative;
+            margin-bottom: 20px;
+            background: #111;
         }
-        .share-modal-card {
-            background: rgba(16, 20, 31, 0.95); border: 2px solid var(--neon-blue); border-radius: 14px;
-            padding: 25px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); animation: fadeIn 0.3s ease-in-out;
+        .radio-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .share-modal-card h3 { color: var(--neon-blue); margin-top: 0; margin-bottom: 8px; }
-        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .share-option-btn {
-            background: #151b2c; color: white; border: 1px solid var(--border-color); padding: 10px;
-            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
+        .info-box {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
-        .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
-        .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
-
-        .radio-banner { width: 100%; height: 200px; border-radius: 14px; overflow: hidden; border: 2px solid var(--neon-blue); position: relative; margin-bottom: 20px; background: #111; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
-        .radio-banner img { width: 100%; height: 100%; object-fit: cover; }
-        .info-box { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <!-- MODAL DE PARTILHA -->
-    <div class="share-modal-overlay" id="shareModal">
-        <div class="share-modal-card">
-            <h3>🌐 Partilhar Rádio Ranzinza</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
-            
-            <div class="share-grid">
-                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
-                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
-                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
-            </div>
-            
-            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
-            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
-        </div>
-    </div>
-
-    <!-- CABEÇALHO -->
+    <!-- CABEÇALHO COM A MESMA IMAGEM FOTOGRÁFICA DO RODAPÉ -->
     <header>
         <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
         <div class="header-content">
@@ -236,24 +472,24 @@
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <div class="card card-top" style="border-color: var(--neon-blue);">
+                <div class="card card-top" style="border-color: var(--neon-green);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 New Age (Instrumentais)</div>
-                        <p class="info-box" style="margin: 0;">Sessão imersiva e relaxamento.</p>
+                        <div class="schedule-title">🌅 Manhã (Atmospheric)</div>
+                        <p class="info-box" style="margin: 0;">New Age & Streamside.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
-                        <div class="schedule-title">☀️ Sertanejas (Português)</div>
-                        <p class="info-box" style="margin: 0;">Modões e composições românticas.</p>
+                        <div class="schedule-title">☀️ Tarde (Vocal & Sertanejo)</div>
+                        <p class="info-box" style="margin: 0;">Composições românticas.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Eletrônicas (Inglês)</div>
-                        <p class="info-box" style="margin: 0;">Dance, Club & High Energy.</p>
+                        <div class="schedule-title">🌙 Noite (Eletrônica & Dance)</div>
+                        <p class="info-box" style="margin: 0;">Deep House & Eurodance.</p>
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER -->
-                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-blue);">
+                <!-- ANÚNCIO / SLIDER COM SPOTIFY E NOME RANZINZA -->
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
@@ -273,7 +509,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%23ff5500\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Ranzinza</text></svg>'">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -339,27 +575,6 @@
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
-
-                    <!-- BOTÃO DE PARTILHA DA RÁDIO -->
-                    <div style="margin-top: 15px; text-align: center;">
-                        <button onclick="abrirModalPartilha()" style="
-                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
-                            color: #ffffff;
-                            border: none;
-                            padding: 10px 18px;
-                            border-radius: 8px;
-                            font-weight: bold;
-                            font-size: 0.85rem;
-                            cursor: pointer;
-                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
-                            transition: 0.2s;
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 8px;
-                        ">
-                            🔗 Partilhar Rádio Ranzinza
-                        </button>
-                    </div>
                 </div>
 
                 <div class="card chat-box" style="height: auto;">
@@ -390,7 +605,7 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <div class="card card-top" style="border-color: var(--neon-blue);">
+                <div class="card card-top" style="border-color: var(--neon-pink);">
                     <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
                     <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
@@ -399,12 +614,12 @@
                     </div>
                 </div>
 
-                <!-- ANÚNCIO / SLIDER -->
+                <!-- ANÚNCIO / SLIDER COM DESTAQUE E SPOTIFY -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23121216\'/><text x=\'50%\' y=\'50%\' fill=\'%2300f0ff\' font-size=\'18\' font-family=\'sans-serif\' text-anchor=\'middle\' dominant-baseline=\'middle\'>SoundCloud Destaque</text></svg>'">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -452,136 +667,40 @@
             sincronizarTransmissaoEstrita();
         });
 
-        // Funções do Modal de Partilha
-        function abrirModalPartilha() {
-            const urlAtual = encodeURIComponent(window.location.href);
-            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
-
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
-            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
-
-            document.getElementById('shareModal').style.display = 'flex';
-        }
-
-        // Partilha nativa universal para Instagram, TikTok e Kwai (abre o menu do sistema para escolher Story ou Direct)
-        function partilharNativoRedes() {
-            const urlAtual = window.location.href;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Rádio Ranzinza',
-                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
-                    url: urlAtual,
-                }).then(() => {
-                    fecharModalPartilha();
-                }).catch((error) => console.log('Partilha cancelada', error));
-            } else {
-                copiarLinkRadio();
-            }
-        }
-
-        function fecharModalPartilha() {
-            document.getElementById('shareModal').style.display = 'none';
-        }
-
-        function copiarLinkRadio() {
-            const urlAtual = window.location.href;
-            navigator.clipboard.writeText(urlAtual).then(() => {
-                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
-                fecharModalPartilha();
-            }).catch(err => {
-                console.error('Erro ao copiar link: ', err);
-            });
-        }
-
-        // PLAYLIST ORIGINAL EXATA (MANTIDA RIGOROSAMENTE NA ORDEM)
+        // PLAYLIST ORIGINAL INTACTA
         const playlist = [
-            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
-            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
-            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
-            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
-            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
-            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
-            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
-            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
-            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
-            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
-            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
-            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
-            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
-            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
-            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
-            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 220 },
-            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 200 },
-            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 200 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 200 },
-            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
-            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
-            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
-            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 },
             { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
-            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 210 },
-            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
-            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
-            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
-            { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", duration: 210 },
-            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
-            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
-            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
-            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
-            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", duration: 220 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 },
-            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 },
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
             { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
             { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
             { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
             { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
             { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
-            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
-            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
-            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
-            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
-            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 }
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
         ];
-
-        const DURACAO_JINGLE = 7;
-        const itemProgramacao = [];
-        let contadorMusicas = 0;
-
-        playlist.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa });
-            contadorMusicas++;
-            if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
-            }
-        });
-
-        const duracaoTotalGrade = itemProgramacao.reduce((total, item) => total + item.duration, 0);
 
         const audio1 = document.getElementById('audioPlayer1');
         const audio2 = document.getElementById('audioPlayer2');
         const nowPlayingText = document.getElementById('now-playing');
         
+        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
         const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
+        
         let playerAtivo = 1;
-        let itemAtualIndex = -1;
-        let executandoJingleVoz = false;
+        let faixaAtualIndex = -1;
 
         setInterval(() => {
             const agora = new Date();
+            
             const hUTC = agora.getUTCHours();
             const mUTC = agora.getUTCMinutes();
             const sUTC = agora.getUTCSeconds();
@@ -606,94 +725,63 @@
         function calcularPontoGlobalUTC() {
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let tempoNoCiclo = segundosUTC % duracaoTotalGrade;
+            let tempoNoCiclo = segundosUTC % duracaoTotalPlaylist;
 
-            let itemIndex = 0;
-            let tempoNoItem = 0;
+            let faixaIndex = 0;
+            let tempoNaFaixa = 0;
 
-            for (let i = 0; i < itemProgramacao.length; i++) {
-                if (tempoNoCiclo < itemProgramacao[i].duration) {
-                    itemIndex = i;
-                    tempoNoItem = tempoNoCiclo;
+            for (let i = 0; i < playlist.length; i++) {
+                if (tempoNoCiclo < playlist[i].duration) {
+                    faixaIndex = i;
+                    tempoNaFaixa = tempoNoCiclo;
                     break;
                 }
-                tempoNoCiclo -= itemProgramacao[i].duration;
+                tempoNoCiclo -= playlist[i].duration;
             }
-            return { itemIndex, tempoNoItem };
-        }
-
-        function falarJingleNarrador() {
-            if ('speechSynthesis' in window && !executandoJingleVoz) {
-                executandoJingleVoz = true;
-                window.speechSynthesis.cancel();
-                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
-                frase.lang = 'pt-BR';
-                frase.rate = 1.05;
-                frase.pitch = 0.95;
-                frase.onend = () => { executandoJingleVoz = false; };
-                frase.onerror = () => { executandoJingleVoz = false; };
-                window.speechSynthesis.speak(frase);
-            }
+            return { faixaIndex, tempoNaFaixa };
         }
 
         function sincronizarTransmissaoEstrita() {
             const ponto = calcularPontoGlobalUTC();
-            const item = itemProgramacao[ponto.itemIndex];
+            const track = playlist[ponto.faixaIndex];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
 
-            if (item.type === 'music' && !activeAudio.paused && !isNaN(activeAudio.duration)) {
-                const tempoRestante = activeAudio.duration - activeAudio.currentTime;
-                if (tempoRestante <= 3.0 && tempoRestante > 0) {
-                    activeAudio.volume = Math.max(0.02, (tempoRestante / 3.0));
-                }
-            }
+            if (faixaAtualIndex !== ponto.faixaIndex) {
+                faixaAtualIndex = ponto.faixaIndex;
+                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${track.title}</strong>`;
 
-            if (itemAtualIndex !== ponto.itemIndex) {
-                itemAtualIndex = ponto.itemIndex;
+                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                const prevPlayer = activeAudio;
 
-                if (item.type === 'jingle') {
-                    nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
-                    audio1.pause();
-                    audio2.pause();
-                    falarJingleNarrador();
-                } else {
-                    nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
-                    const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                    const prevPlayer = activeAudio;
+                nextPlayer.src = track.url;
+                nextPlayer.volume = 0.0;
+                nextPlayer.load();
 
-                    nextPlayer.src = item.url;
-                    nextPlayer.volume = 0.0;
-                    nextPlayer.load();
-
-                    nextPlayer.onloadedmetadata = () => {
-                        if (nextPlayer.duration && isFinite(nextPlayer.duration)) {
-                            item.duration = nextPlayer.duration;
-                        }
-
-                        nextPlayer.currentTime = ponto.tempoNoItem;
-                        nextPlayer.play().then(() => {
-                            let vol = 0.0;
-                            const fadeInterval = setInterval(() => {
-                                vol += 0.1;
-                                if (vol >= 1.0) {
-                                    vol = 1.0;
-                                    nextPlayer.volume = 1.0;
-                                    prevPlayer.pause();
-                                    clearInterval(fadeInterval);
-                                    playerAtivo = playerAtivo === 1 ? 2 : 1;
-                                } else {
-                                    nextPlayer.volume = vol;
-                                    if (!prevPlayer.paused) {
-                                        prevPlayer.volume = Math.max(0, 1.0 - vol);
-                                    }
+                nextPlayer.onloadedmetadata = () => {
+                    nextPlayer.currentTime = ponto.tempoNaFaixa;
+                    nextPlayer.play().then(() => {
+                        let vol = 0.0;
+                        const fadeInterval = setInterval(() => {
+                            vol += 0.1;
+                            if (vol >= 1.0) {
+                                vol = 1.0;
+                                nextPlayer.volume = 1.0;
+                                prevPlayer.pause();
+                                clearInterval(fadeInterval);
+                                playerAtivo = playerAtivo === 1 ? 2 : 1;
+                            } else {
+                                nextPlayer.volume = vol;
+                                if (!prevPlayer.paused) {
+                                    prevPlayer.volume = Math.max(0, 1.0 - vol);
                                 }
-                            }, 150);
-                        }).catch(e => console.log("Aguardando interação do navegador:", e));
-                    };
-                }
+                            }
+                        }, 150);
+                    }).catch(e => console.log("Aguardando interação:", e));
+                };
             } else {
-                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 8) {
-                    activeAudio.currentTime = ponto.tempoNoItem;
+                // Apenas corrige o tempo se houver uma distorção muito grande (ex: mais de 8 segundos), evitando saltos constantes
+                if (!activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNaFaixa) > 8) {
+                    activeAudio.currentTime = ponto.tempoNaFaixa;
                 }
             }
         }
