@@ -518,78 +518,46 @@
 
     <script>
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
-            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
+            { title: "Escolha", url: "ESCOLHA.mp3" },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
         ];
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        const totalPlaylistDuration = playlist.reduce((acc, track) => acc + track.duration, 0);
+        let currentTrackIndex = 0;
 
         function iniciarRadio() {
-            sincronizarTempoReal();
+            currentTrackIndex = Math.floor(Math.random() * playlist.length);
+            tocarFaixaAtual();
         }
 
-        function sincronizarTempoReal() {
-            const now = new Date();
-            const segundosDesdeMeiaNoite = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-            let tempoAtualNaPlaylist = segundosDesdeMeiaNoite % totalPlaylistDuration;
-
-            let faixaEncontrada = 0;
-            let tempoNaFaixa = 0;
-
-            for (let i = 0; i < playlist.length; i++) {
-                if (tempoAtualNaPlaylist < playlist[i].duration) {
-                    faixaEncontrada = i;
-                    tempoNaFaixa = tempoAtualNaPlaylist;
-                    break;
-                }
-                tempoAtualNaPlaylist -= playlist[i].duration;
-            }
-
-            const track = playlist[faixaEncontrada];
-            window.currentTrackIndex = faixaEncontrada;
-
-            if (!audioPlayer.src.includes(track.url)) {
-                audioPlayer.src = track.url;
-                audioPlayer.load();
-            }
-
-            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
-
-            audioPlayer.onloadedmetadata = () => {
-                audioPlayer.currentTime = tempoNaFaixa;
-                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
-            };
-
-            if (audioPlayer.readyState >= 1) {
-                audioPlayer.currentTime = tempoNaFaixa;
-                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
-            }
-        }
-
-        audioPlayer.addEventListener('ended', () => {
-            window.currentTrackIndex = (window.currentTrackIndex + 1) % playlist.length;
-            const track = playlist[window.currentTrackIndex];
+        function tocarFaixaAtual() {
+            const track = playlist[currentTrackIndex];
             audioPlayer.src = track.url;
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
             audioPlayer.load();
-            audioPlayer.play().catch(e => console.log("Erro:", e));
+            audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+        }
+
+        // Quando uma música acaba, passa para a seguinte de forma 100% limpa e sem cortes
+        audioPlayer.addEventListener('ended', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            tocarFaixaAtual();
         });
 
         // Automação do Slide / Anúncio Patrocinado Interno
@@ -605,14 +573,13 @@
                 let nextIndex = (activeIndex + 1) % slides.length;
                 slides[nextIndex].classList.add('active');
 
-                // Atualiza o link do card consoante o slide ativo
                 if (nextIndex === 0) {
                     card.href = "https://spotify.com";
                 } else {
                     card.href = "https://soundcloud.com";
                 }
             });
-        }, 5000); // Troca a cada 5 segundos
+        }, 5000);
 
         function toggleAdminPanel() {
             const panel = document.getElementById('adminPanel');
