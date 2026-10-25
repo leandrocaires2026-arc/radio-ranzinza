@@ -228,7 +228,7 @@
             margin-bottom: 3px;
         }
 
-        /* Estilos dos Slides Ampliados com Imagem */
+        /* Estilos dos Slides Ampliados com Arte em Neon */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
@@ -244,22 +244,28 @@
         .ad-slide.active {
             display: block;
         }
-        .ad-img-container {
+        .ad-art-banner {
             width: 100%;
-            height: 130px;
+            height: 120px;
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
             border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
         }
-        .ad-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s;
+        .art-spotify {
+            background: linear-gradient(135deg, #1db954 0%, #0b3d1c 100%);
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(29, 185, 84, 0.8);
         }
-        .ad-slider-card:hover .ad-img-container img {
-            transform: scale(1.05);
+        .art-soundcloud {
+            background: linear-gradient(135deg, #ff5500 0%, #3a1300 100%);
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 85, 0, 0.8);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -422,22 +428,18 @@
                     </div>
                 </div>
 
-                <!-- SLIDE DE ANÚNCIO AMPLIADO COM IMAGEM (ESQUERDA) -->
+                <!-- SLIDE DE ANÚNCIO (ESQUERDA) -->
                 <a href="https://spotify.com" target="_blank" class="card ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Ranzinza">
-                        </div>
-                        <h3 style="color: var(--neon-pink); margin-bottom: 3px; font-size: 1rem;">🎵 Ouça no Spotify</h3>
+                        <div class="ad-art-banner art-spotify">🎵 SPOTIFY</div>
+                        <h3 style="color: var(--neon-pink); margin-bottom: 3px; font-size: 1rem;">Ouça no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.8rem;">Lançamentos oficiais de RANZINZA em alta fidelidade.</p>
                     </div>
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
-                        </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">🎧 SoundCloud</h3>
+                        <div class="ad-art-banner art-soundcloud">🎧 SOUNDCLOUD</div>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.8rem;">Catálogo completo de fonogramas independentes a 432Hz.</p>
                     </div>
                 </a>
@@ -458,9 +460,9 @@
                         <div class="vinyl-icon">💽</div>
                     </div>
 
-                    <button class="start-btn" onclick="iniciarRadioAoVivo()">▶ Ligar Transmissão</button>
+                    <button class="start-btn" onclick="iniciarRadioFluida()">▶ Ligar Transmissão</button>
 
-                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
+                    <p id="now-playing">Sintonizando transmissão contínua...</p>
                     
                     <div class="equalizer">
                         <div class="bar"></div>
@@ -510,27 +512,24 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
+                <!-- QUADRO SUPERIOR DIREITO EQUALIZADO -->
                 <div class="card" style="border-color: var(--neon-pink);">
                     <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
                     <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
                 </div>
 
-                <!-- SLIDE DE ANÚNCIO AMPLIADO COM IMAGEM (DIREITA) -->
+                <!-- QUADRO INFERIOR DIREITO: SLIDE DE ANÚNCIO (IGUAL À ESQUERDA) -->
                 <a href="https://soundcloud.com" target="_blank" class="card ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
-                        </div>
-                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">🎧 Canal SoundCloud</h3>
+                        <div class="ad-art-banner art-soundcloud">🎧 SOUNDCLOUD</div>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 3px; font-size: 1rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.8rem;">Álbuns completos e versões estendidas sem interrupções.</p>
                     </div>
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
-                        <div class="ad-img-container">
-                            <img src="https://images.unsplash.com/photo-1614680376593-902f749f7ffc?q=80&w=600&auto=format&fit=crop" alt="Spotify Perfil">
-                        </div>
-                        <h3 style="color: var(--neon-green); margin-bottom: 3px; font-size: 1rem;">🎵 Perfil no Spotify</h3>
+                        <div class="ad-art-banner art-spotify">🎵 SPOTIFY</div>
+                        <h3 style="color: var(--neon-green); margin-bottom: 3px; font-size: 1rem;">Perfil no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.8rem;">Siga o artista RANZINZA nas suas playlists favoritas.</p>
                     </div>
                 </a>
@@ -545,76 +544,54 @@
 
     <script>
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
-            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
+            { title: "Escolha", url: "ESCOLHA.mp3" },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
         ];
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
+        let currentTrackIndex = 0;
+        let radioLigada = false;
 
-        function iniciarRadioAoVivo() {
-            sincronizarComHorarioReal();
+        function iniciarRadioFluida() {
+            if (!radioLigada) {
+                radioLigada = true;
+                currentTrackIndex = Math.floor(Math.random() * playlist.length);
+                tocarProximaFaixa();
+            } else {
+                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+            }
         }
 
-        function sincronizarComHorarioReal() {
-            const agora = new Date();
-            const segundosHoje = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            let tempoNoCiclo = segundosHoje % duracaoTotalPlaylist;
-
-            let faixaAtualIndex = 0;
-            let tempoNaFaixa = 0;
-
-            for (let i = 0; i < playlist.length; i++) {
-                if (tempoNoCiclo < playlist[i].duration) {
-                    faixaAtualIndex = i;
-                    tempoNaFaixa = tempoNoCiclo;
-                    break;
-                }
-                tempoNoCiclo -= playlist[i].duration;
-            }
-
-            const track = playlist[faixaAtualIndex];
+        function tocarProximaFaixa() {
+            const track = playlist[currentTrackIndex];
+            audioPlayer.src = track.url;
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
-
-            if (!audioPlayer.src.includes(track.url)) {
-                audioPlayer.src = track.url;
-                audioPlayer.load();
-            }
-
-            audioPlayer.oncanplay = () => {
-                if (Math.abs(audioPlayer.currentTime - tempoNaFaixa) > 2) {
-                    audioPlayer.currentTime = tempoNaFaixa;
-                }
-                audioPlayer.play().catch(e => console.log("Aguardando interação:", e));
-            };
-
-            if (audioPlayer.readyState >= 2) {
-                audioPlayer.currentTime = tempoNaFaixa;
-                audioPlayer.play().catch(e => console.log("Erro:", e));
-            }
+            audioPlayer.load();
+            audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
         }
 
         audioPlayer.addEventListener('ended', () => {
-            sincronizarComHorarioReal();
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            tocarProximaFaixa();
         });
 
-        // Automação dos Slides / Anúncios Laterais com Imagem
+        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
