@@ -228,6 +228,37 @@
             margin-bottom: 3px;
         }
 
+        /* Estilos do Slide / Anúncio Patrocinado */
+        .ad-slider-card {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        .ad-slide {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .ad-slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .ad-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
         .chat-box {
             display: flex;
             flex-direction: column;
@@ -372,7 +403,22 @@
                         <p class="info-box" style="margin: 0;">Saga imersiva e arranjos conceituais estendidos.</p>
                     </div>
                 </div>
+
+                <!-- SLIDE DE ANÚNCIO (ESQUERDA) -->
+                <a href="https://spotify.com" target="_blank" class="card ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
+                    <div class="ad-slide active">
+                        <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
+                        <h3 style="color: var(--neon-pink); margin-bottom: 5px;">🎵 Ouça no Spotify</h3>
+                        <p class="info-box" style="margin: 0;">Acompanhe todos os lançamentos oficiais de RANZINZA em alta qualidade.</p>
+                    </div>
+                    <div class="ad-slide">
+                        <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 5px;">🎧 SoundCloud</h3>
+                        <p class="info-box" style="margin: 0;">Explore o catálogo completo de fonogramas independentes a 432Hz.</p>
+                    </div>
+                </a>
             </div>
+            
             <!-- PAINEL INFERIOR ESQUERDO -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
@@ -432,6 +478,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- PAINEL INFERIOR CENTRAL -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
@@ -445,11 +492,22 @@
                     <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
                     <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
                 </div>
-                <div class="card" style="border-color: var(--neon-blue);">
-                    <h3 style="color: var(--neon-blue);">🔥 Lançamentos Diários</h3>
-                    <p class="info-box">Mais de 45 fonogramas catalogados, registrados via ISRC e transmitidos em fluxo contínuo.</p>
-                </div>
+
+                <!-- SLIDE DE ANÚNCIO (DIREITA) -->
+                <a href="https://soundcloud.com" target="_blank" class="card ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                    <div class="ad-slide active">
+                        <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 5px;">🎧 Canal SoundCloud</h3>
+                        <p class="info-box" style="margin: 0;">Ouça álbuns completos e versões estendidas sem interrupções.</p>
+                    </div>
+                    <div class="ad-slide">
+                        <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
+                        <h3 style="color: var(--neon-green); margin-bottom: 5px;">🎵 Perfil no Spotify</h3>
+                        <p class="info-box" style="margin: 0;">Siga o artista RANZINZA e adicione as faixas às suas playlists.</p>
+                    </div>
+                </a>
             </div>
+            
             <!-- PAINEL INFERIOR DIREITO -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
@@ -485,7 +543,6 @@
 
         function iniciarRadio() {
             sincronizarTempoReal();
-            audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
         }
 
         function sincronizarTempoReal() {
@@ -506,15 +563,24 @@
             }
 
             const track = playlist[faixaEncontrada];
-            audioPlayer.src = track.url;
+            window.currentTrackIndex = faixaEncontrada;
+
+            if (!audioPlayer.src.includes(track.url)) {
+                audioPlayer.src = track.url;
+                audioPlayer.load();
+            }
+
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
-            
-            audioPlayer.load();
+
             audioPlayer.onloadedmetadata = () => {
                 audioPlayer.currentTime = tempoNaFaixa;
+                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
             };
 
-            window.currentTrackIndex = faixaEncontrada;
+            if (audioPlayer.readyState >= 1) {
+                audioPlayer.currentTime = tempoNaFaixa;
+                audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+            }
         }
 
         audioPlayer.addEventListener('ended', () => {
@@ -525,6 +591,28 @@
             audioPlayer.load();
             audioPlayer.play().catch(e => console.log("Erro:", e));
         });
+
+        // Automação do Slide / Anúncio Patrocinado Interno
+        setInterval(() => {
+            const cards = document.querySelectorAll('.ad-slider-card');
+            cards.forEach(card => {
+                const slides = card.querySelectorAll('.ad-slide');
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+
+                // Atualiza o link do card consoante o slide ativo
+                if (nextIndex === 0) {
+                    card.href = "https://spotify.com";
+                } else {
+                    card.href = "https://soundcloud.com";
+                }
+            });
+        }, 5000); // Troca a cada 5 segundos
 
         function toggleAdminPanel() {
             const panel = document.getElementById('adminPanel');
