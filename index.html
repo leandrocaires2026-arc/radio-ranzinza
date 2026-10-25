@@ -279,7 +279,7 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA: Grade de Programação -->
+        <!-- COLUNA ESQUERDA -->
         <div class="side-panel">
             <div class="card" style="border-color: var(--neon-green);">
                 <h3 style="color: var(--neon-green);">📅 Grade de Programação</h3>
@@ -302,7 +302,7 @@
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL: Player Gráfico, Capa e Chat -->
+        <!-- COLUNA CENTRAL -->
         <div class="center-panel">
             <div class="card player-box">
                 <h2>🎙️ Emissão Oficial em Direto</h2>
@@ -311,7 +311,6 @@
                     <div class="vinyl-icon">💽</div>
                 </div>
 
-                <!-- Botão de Ativação Manual para destravar o áudio no browser -->
                 <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
 
                 <p id="now-playing">Clique acima para sintonizar a rádio...</p>
@@ -348,7 +347,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: Estúdio Neon & Destaques -->
+        <!-- COLUNA DIREITA -->
         <div class="side-panel">
             <div class="card" style="border-color: var(--neon-pink);">
                 <h3 style="color: var(--neon-pink);">🌌 Estúdio Neon</h3>
@@ -363,59 +362,25 @@
     </div>
 
     <script>
+        // Lista configurada com os nomes exatos dos ficheiros MP3 que enviou para o GitHub
         const playlist = [
-            // Manhã: New Age & Streamside
-            { title: "Streamside Comfort", url: "https://docs.google.com/uc?export=download&id=1J4tOun9UKKt3XeXt6llQlNzEkZc2JpWI" },
-            { title: "Streamside Comfort (2)", url: "https://docs.google.com/uc?export=download&id=1cTckvrZPrmjjfaKdfsA5SAkGrSBc1lFO" },
-            { title: "Streamside Glow", url: "https://docs.google.com/uc?export=download&id=1c-EWicOjifgDASiD_2B1JmrI0Yw_2Oht" },
-            { title: "Streamside Relief (2)", url: "https://docs.google.com/uc?export=download&id=1nCmP01e1mmd7hdRWIsgBdEDS2JcU5Q9F" },
-            { title: "Streamside Relief (3)", url: "https://docs.google.com/uc?export=download&id=1X8hm5Q0kOVfBE_aYqDm3dDbxTVgmvAjp" },
-            { title: "Streamside Rest", url: "https://docs.google.com/uc?export=download&id=1CysPD5sPLOtuQUljxfcvspr4FPakZfe6" },
-            { title: "Streamside Rest (2)", url: "https://docs.google.com/uc?export=download&id=1lP3xjT4Itl4sdI5aqVvx3CN_45R9SbwO" },
-
-            // Tarde: Pop, Sertanejo & Vocal
-            { title: "Aquele Sonho (Pop)", url: "https://docs.google.com/uc?export=download&id=1L5uV4bPu6fOqHntGHmfOaz2ee7pt-BWm" },
-            { title: "Aquele Sonho 2", url: "https://docs.google.com/uc?export=download&id=10xQEpKZnG2_vYHF4drIbiFrq7tsxs8CM" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "https://docs.google.com/uc?export=download&id=1wnpZf2v7AzodQYkQ8YTyopXDnlDlHziK" },
-            { title: "Eu Não Quero Ter Razão", url: "https://docs.google.com/uc?export=download&id=1Kc7ENo9d6SGraG5Eud2wZrUWJO5A4xaQ" },
-            { title: "Eu Te Dei O Melhor De Mim", url: "https://docs.google.com/uc?export=download&id=1msi6coVVwqPOVr1a8hnARRVOhdpHy5gn" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "https://docs.google.com/uc?export=download&id=1SNYIFmUa2NDVY7sNEw_vKQdNsKsgbxyc" },
-            { title: "Meio Louco Por Você", url: "https://docs.google.com/uc?export=download&id=1GPcAODRZPu9lREmgahjqMEb19qFZcvOZ" },
-            { title: "Não Importa O Lugar", url: "https://docs.google.com/uc?export=download&id=1yKFeXHtuYA_YjzM8bQ7KUHnilCdWdmPy" },
-            { title: "Não Me Olha Desse Jeito", url: "https://docs.google.com/uc?export=download&id=1bH_k6txFHzYahyvKTEug6HvbcOOwvOXh" },
-            { title: "Uma Aposta Ruim", url: "https://docs.google.com/uc?export=download&id=18Q4hAORp_xlYhUbPmai4P5BDQ5JWSiNs" },
-            { title: "Uma Mulher Fatal", url: "https://docs.google.com/uc?export=download&id=1EGP0rgHbTAnsmwoQjQUg3Sy7bz9g1_v9" },
-            { title: "Volta Logo Pra Mim", url: "https://docs.google.com/uc?export=download&id=1q0limi6RWtJIGaEaHPUyf7QX3xMj_9kk" },
-
-            // Noite: Eletrônica & Dance
-            { title: "Became Just One", url: "https://docs.google.com/uc?export=download&id=1X2ZWSw4K46ox4AcyLbq-0AqpdMFCbshH" },
-            { title: "Burning Fire", url: "https://docs.google.com/uc?export=download&id=1j1yhdzlb2R7inOJByBZjN2LO2LW4SXtG" },
-            { title: "Diviny Made Flesh", url: "https://docs.google.com/uc?export=download&id=1llGeqI8pFRDgku5NEggmZNGCVA7d7JBV" },
-            { title: "Down In This Obsession", url: "https://docs.google.com/uc?export=download&id=1O2_czlOtObzbocKmDyF-V24_8aSZZg0A" },
-            { title: "Forever We Glow", url: "https://docs.google.com/uc?export=download&id=1k88LfNpLDLSfb3mgIzPIu1Gw-5jJRt7w" },
-            { title: "Masterpiece (Parte 2)", url: "https://docs.google.com/uc?export=download&id=1R1EGB_cFom_jV59EIXn7nRJGxBoFXj20" },
-            { title: "Nostalgia (Remix)", url: "https://docs.google.com/uc?export=download&id=1znGQW0w2Hq4lLvpQx1alz8BmxVvggLKK" },
-            { title: "Nothing Can Hold (Deep House)", url: "https://docs.google.com/uc?export=download&id=1BYI_x_dMCcEGxsQpKpKwuMG8HPOGTUCO" },
-            { title: "Rising From The Floor", url: "https://docs.google.com/uc?export=download&id=10ICiH0LoSjxYbpaD7Up_y7hOi9jZ29pD" },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "https://docs.google.com/uc?export=download&id=1irCCRL7tDbNqSzfd5rjIHs1bo2_Ed1ZO" },
-            { title: "Soul's Essential Food", url: "https://docs.google.com/uc?export=download&id=1PzAEzcPI0A5KcejP5omws6Lk_Oj1R22L" },
-            { title: "Spinning Through", url: "https://docs.google.com/uc?export=download&id=1bFacea6LRydbZjXoEy7kOVRJPwkzid06" },
-            { title: "Spinning Through (Disco Version)", url: "https://docs.google.com/uc?export=download&id=1MRSmXrTlm23EDCTH50SILxEwi5nLd48B" },
-            { title: "Start The Joy (Uplifting)", url: "https://docs.google.com/uc?export=download&id=18yYojpUARpjljnc75M53ad0yagYC90rg" },
-            { title: "The Price Is Paid", url: "https://docs.google.com/uc?export=download&id=15JRLnE9N5LkA7s9AmusG33k1PFolD544" },
-            { title: "Wings of Destiny", url: "https://docs.google.com/uc?export=download&id=1FMwxnF0w1MvOEr42yyvmP7eCyLQloh_a" },
-
-            // Madrugada: Gentele Strom (Saga Imersiva)
-            { title: "Gentele Strom", url: "https://docs.google.com/uc?export=download&id=1k23tVqq8wWrePJ22SZY14NmY42dvCLEH" },
-            { title: "Gentele Strom (2)", url: "https://docs.google.com/uc?export=download&id=1d6R5QzaYWx1QLeVYYTfRwvS5-mHZOV5F" },
-            { title: "Gentele Strom (4)", url: "https://docs.google.com/uc?export=download&id=1WJTJ2ylvojNUARFli3z74_IgzkmmSOOh" },
-            { title: "Gentele Strom (5)", url: "https://docs.google.com/uc?export=download&id=16uHuz3QUsfHj3y2Ikj5fGYTvytsJhHUs" },
-            { title: "Gentele Strom (7)", url: "https://docs.google.com/uc?export=download&id=1UVh6nqchdVz8SqgDVwc8dLFJyiZfym2f" },
-            { title: "Gentele Strom (8)", url: "https://docs.google.com/uc?export=download&id=1ldYVe-SfMwjSzs62E8pPve9hP5um1Vz7" },
-            { title: "Gentele Strom (9)", url: "https://docs.google.com/uc?export=download&id=1eH9oDOMJM4nTKX9ydAp9LoB1D_Fa8gg_" },
-            { title: "Gentele Strom (11)", url: "https://docs.google.com/uc?export=download&id=10fE_TYTywsbInqOqFcUCuN0LO4w51DG8" },
-            { title: "Gentele Strom (15)", url: "https://docs.google.com/uc?export=download&id=1Hqmp201b0t8uuX4Fh4bKRYFerycHJYmz" },
-            { title: "Gentele Strom (Nova)", url: "https://docs.google.com/uc?export=download&id=1WRqbcGnVKsX3bLuzpd6Ak9kW7C7Cra7P" }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
+            { title: "Escolha", url: "ESCOLHA.mp3" },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
         ];
 
         let currentTrackIndex = 0;
