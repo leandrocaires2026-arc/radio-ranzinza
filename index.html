@@ -497,7 +497,7 @@
         .share-modal-card h3 {
             color: var(--neon-blue);
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .share-grid {
             display: grid;
@@ -520,6 +520,8 @@
             gap: 6px;
             transition: 0.2s;
             text-decoration: none;
+            width: 100%;
+            box-sizing: border-box;
         }
         .share-option-btn:hover {
             border-color: var(--neon-blue);
@@ -562,22 +564,24 @@
 </head>
 <body>
 
-    <!-- MODAL DE PARTILHA COM REDES SOCIAIS -->
+    <!-- MODAL DE PARTILHA OTIMIZADO (DIRECT/STORY) -->
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-modal-card">
             <h3>🌐 Partilhar Rádio Ranzinza</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Escolha a rede social para espalhar o som a 432Hz:</p>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">
+                Para <strong>Instagram, TikTok e Kwai</strong>, o link será copiado para colar nos Stories ou Direct. Para os outros, a partilha é direta!
+            </p>
             
             <div class="share-grid">
                 <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
                 <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <a href="#" id="shareInstagram" target="_blank" class="share-option-btn" style="color: #e1306c;">📸 Instagram</a>
-                <a href="#" id="shareTiktok" target="_blank" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</a>
-                <a href="#" id="shareKwai" target="_blank" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</a>
+                <button onclick="partilharStoryOuDirect('Instagram', 'https://instagram.com')" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharStoryOuDirect('TikTok', 'https://tiktok.com')" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharStoryOuDirect('Kwai', 'https://kwai.com')" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
                 <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
             </div>
             
-            <button class="share-option-btn" onclick="copiarLinkRadio()" style="width: 100%; color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
             <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
         </div>
     </div>
@@ -760,7 +764,7 @@
                 </div>
 
                 <!-- ANÚNCIO / SLIDER -->
-                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
@@ -812,20 +816,29 @@
             sincronizarTransmissaoEstrita();
         });
 
-        // Funções do Modal de Partilha para Facebook, Instagram, WhatsApp, TikTok, Kwai e Threads
+        // Funções do Modal de Partilha
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
 
-            // Links diretos para cada rede social
+            // Redes com partilha direta por link/web
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
-            document.getElementById('shareInstagram').href = `https://www.instagram.com/`; // Instagram foca na cópia do link para stories/bio
-            document.getElementById('shareTiktok').href = `https://www.tiktok.com/`; // TikTok foca na cópia do link para bio/vídeos
-            document.getElementById('shareKwai').href = `https://www.kwai.com/`; // Kwai foca na cópia do link
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
 
             document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        // Função inteligente para redes de Stories e Direct (Instagram, TikTok, Kwai)
+        function partilharStoryOuDirect(redeNome, urlRede) {
+            const urlAtual = window.location.href;
+            navigator.clipboard.writeText(urlAtual).then(() => {
+                alert(`Link copiado com sucesso!\nA abrir o ${redeNome}... Cole o link no seu Story ou Direct para partilhar a Rádio Ranzinza!`);
+                fecharModalPartilha();
+                window.open(urlRede, '_blank');
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
         }
 
         function fecharModalPartilha() {
@@ -835,7 +848,7 @@
         function copiarLinkRadio() {
             const urlAtual = window.location.href;
             navigator.clipboard.writeText(urlAtual).then(() => {
-                alert('Link da Rádio Ranzinza copiado! Agora basta colar no Instagram, TikTok ou Kwai.');
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
                 fecharModalPartilha();
             }).catch(err => {
                 console.error('Erro ao copiar link: ', err);
