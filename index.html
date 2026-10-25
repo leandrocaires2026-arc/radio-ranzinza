@@ -228,7 +228,6 @@
             margin-bottom: 3px;
         }
 
-        /* Estilos do Slide / Anúncio Patrocinado */
         .ad-slider-card {
             text-align: center;
             cursor: pointer;
@@ -404,7 +403,6 @@
                     </div>
                 </div>
 
-                <!-- SLIDE DE ANÚNCIO (ESQUERDA) -->
                 <a href="https://spotify.com" target="_blank" class="card ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
@@ -419,7 +417,6 @@
                 </a>
             </div>
             
-            <!-- PAINEL INFERIOR ESQUERDO -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
@@ -435,9 +432,9 @@
                         <div class="vinyl-icon">💽</div>
                     </div>
 
-                    <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
+                    <button class="start-btn" onclick="iniciarRadioAoVivo()">▶ Ligar Transmissão</button>
 
-                    <p id="now-playing">Sintonizando transmissão contínua...</p>
+                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
                     
                     <div class="equalizer">
                         <div class="bar"></div>
@@ -479,7 +476,6 @@
                 </div>
             </div>
             
-            <!-- PAINEL INFERIOR CENTRAL -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
@@ -493,7 +489,6 @@
                     <p class="info-box">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
                 </div>
 
-                <!-- SLIDE DE ANÚNCIO (DIREITA) -->
                 <a href="https://soundcloud.com" target="_blank" class="card ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -508,7 +503,6 @@
                 </a>
             </div>
             
-            <!-- PAINEL INFERIOR DIREITO -->
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
@@ -517,50 +511,88 @@
     </div>
 
     <script>
+        // Playlist com duração estimada de cada faixa em segundos (ajuste se necessário para bater exato)
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
         ];
 
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
-        let currentTrackIndex = 0;
+        
+        // Calcula a duração total de um ciclo completo da rádio
+        const duracaoTotalPlaylist = playlist.reduce((total, faixa) => total + faixa.duration, 0);
 
-        function iniciarRadio() {
-            currentTrackIndex = Math.floor(Math.random() * playlist.length);
-            tocarFaixaAtual();
+        function iniciarRadioAoVivo() {
+            sincronizarComHorarioReal();
         }
 
-        function tocarFaixaAtual() {
-            const track = playlist[currentTrackIndex];
-            audioPlayer.src = track.url;
+        function sincronizarComHorarioReal() {
+            const agora = new Date();
+            // Segundos decorridos desde a meia-noite de hoje
+            const segundosHoje = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            
+            // Posição exata dentro do ciclo atual da grade (em loop contínuo)
+            let tempoNoCiclo = segundosHoje % duracaoTotalPlaylist;
+
+            let faixaAtualIndex = 0;
+            let tempoNaFaixa = 0;
+
+            // Descobre qual música está a tocar exatamente neste segundo no mundo todo
+            for (let i = 0; i < playlist.length; i++) {
+                if (tempoNoCiclo < playlist[i].duration) {
+                    faixaAtualIndex = i;
+                    tempoNaFaixa = tempoNoCiclo;
+                    break;
+                }
+                tempoNoCiclo -= playlist[i].duration;
+            }
+
+            const track = playlist[faixaAtualIndex];
             nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
-            audioPlayer.load();
-            audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
+
+            // Carrega o ficheiro apenas se já não estiver carregado
+            if (!audioPlayer.src.includes(track.url)) {
+                audioPlayer.src = track.url;
+                audioPlayer.load();
+            }
+
+            // Aguarda o carregamento seguro do buffer para saltar para o ponto exato sem cortar
+            audioPlayer.oncanplay = () => {
+                if (Math.abs(audioPlayer.currentTime - tempoNaFaixa) > 2) {
+                    audioPlayer.currentTime = tempoNaFaixa;
+                }
+                audioPlayer.play().catch(e => console.log("Aguardando interação do navegador:", e));
+            };
+
+            if (audioPlayer.readyState >= 2) {
+                audioPlayer.currentTime = tempoNaFaixa;
+                audioPlayer.play().catch(e => console.log("Erro:", e));
+            }
         }
 
-        // Quando uma música acaba, passa para a seguinte de forma 100% limpa e sem cortes
+        // Quando a música atual termina naturalmente, passa para a próxima da grade
         audioPlayer.addEventListener('ended', () => {
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-            tocarFaixaAtual();
+            // Recalcula o relógio para garantir total precisão ao virar a faixa
+            sincronizarComHorarioReal();
         });
 
-        // Automação do Slide / Anúncio Patrocinado Interno
+        // Automação dos Slides / Anúncios Laterais
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
@@ -573,11 +605,7 @@
                 let nextIndex = (activeIndex + 1) % slides.length;
                 slides[nextIndex].classList.add('active');
 
-                if (nextIndex === 0) {
-                    card.href = "https://spotify.com";
-                } else {
-                    card.href = "https://soundcloud.com";
-                }
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
             });
         }, 5000);
 
