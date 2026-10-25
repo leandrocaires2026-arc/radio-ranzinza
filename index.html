@@ -48,8 +48,6 @@
             margin-top: 6px;
             font-size: 1.05rem;
         }
-        
-        /* Estilo do Banner Decorativo no Topo */
         .radio-banner {
             width: 100%;
             max-width: 1200px;
@@ -77,7 +75,6 @@
             background: linear-gradient(180deg, transparent 60%, rgba(11, 11, 14, 0.8));
             pointer-events: none;
         }
-
         .main-layout {
             display: grid;
             grid-template-columns: 280px 1fr 280px;
@@ -310,7 +307,6 @@
         <p>⚡ Frequências a 432Hz, Produções Independentes & Estúdio Imersivo ⚡</p>
     </header>
 
-    <!-- Banner Decorativo com a imagem do Estúdio Cyberpunk -->
     <div class="radio-banner">
         <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio Rádio Ranzinza">
     </div>
@@ -351,7 +347,7 @@
 
                 <button class="start-btn" onclick="iniciarRadio()">▶ Ligar Transmissão</button>
 
-                <p id="now-playing">Clique acima para sintonizar a rádio...</p>
+                <p id="now-playing">Sintonizando transmissão contínua...</p>
                 
                 <div class="equalizer">
                     <div class="bar"></div>
@@ -401,48 +397,79 @@
 
     <script>
         const playlist = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
-            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" }
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Gentele Strom", url: "Gentele%20Strom%20(1).mp3", duration: 260 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Wings of Destiny / The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 }
         ];
 
-        let currentTrackIndex = 0;
         const audioPlayer = document.getElementById('audioPlayer');
         const nowPlayingText = document.getElementById('now-playing');
+        
+        // Calcula a duração total de todas as músicas da playlist em segundos
+        const totalPlaylistDuration = playlist.reduce((acc, track) => acc + track.duration, 0);
 
         function iniciarRadio() {
-            carregarFaixa(currentTrackIndex);
+            sincronizarTempoReal();
             audioPlayer.play().catch(e => console.log("Erro ao reproduzir:", e));
         }
 
-        function carregarFaixa(index) {
-            if (index >= playlist.length) {
-                currentTrackIndex = 0;
+        function sincronizarTempoReal() {
+            // Pega os segundos passados desde a meia-noite de hoje (horário real do relógio)
+            const now = new Date();
+            const segundosDesdeMeiaNoite = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+            
+            // Faz o ciclo repetir ao longo do dia inteiro usando o resto da divisão
+            let tempoAtualNaPlaylist = segundosDesdeMeiaNoite % totalPlaylistDuration;
+
+            let faixaEncontrada = 0;
+            let tempoNaFaixa = 0;
+
+            // Descobre em qual música do dia a rádio deveria estar agora
+            for (let i = 0; i < playlist.length; i++) {
+                if (tempoAtualNaPlaylist < playlist[i].duration) {
+                    faixaEncontrada = i;
+                    tempoNaFaixa = tempoAtualNaPlaylist;
+                    break;
+                }
+                tempoAtualNaPlaylist -= playlist[i].duration;
             }
-            const track = playlist[currentTrackIndex];
+
+            // Configura e posiciona a música exatamente no segundo correspondente
+            const track = playlist[faixaEncontrada];
             audioPlayer.src = track.url;
-            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong>`;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            
             audioPlayer.load();
+            audioPlayer.onloadedmetadata = () => {
+                audioPlayer.currentTime = tempoNaFaixa;
+            };
+
+            // Guarda qual é a faixa atual para quando acabar passar para a próxima sequencialmente
+            window.currentTrackIndex = faixaEncontrada;
         }
 
+        // Quando uma música acaba, passa naturalmente para a próxima da lista
         audioPlayer.addEventListener('ended', () => {
-            currentTrackIndex++;
-            carregarFaixa(currentTrackIndex);
-            audioPlayer.play().catch(e => console.log("Erro ao passar para a próxima faixa:", e));
+            window.currentTrackIndex = (window.currentTrackIndex + 1) % playlist.length;
+            const track = playlist[window.currentTrackIndex];
+            audioPlayer.src = track.url;
+            nowPlayingText.innerHTML = `No ar agora: <strong>${track.title}</strong> (Ao Vivo)`;
+            audioPlayer.load();
+            audioPlayer.play().catch(e => console.log("Erro:", e));
         });
 
         function enviarMensagem() {
