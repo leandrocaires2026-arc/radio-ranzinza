@@ -807,15 +807,21 @@
             criarMarcacoesRelogio('faceUTC');
             criarMarcacoesRelogio('faceUptime');
             iniciarRelogiosVisuais();
-            document.getElementById('audioPlayer1').volume = 0.8;
-            document.getElementById('audioPlayer2').volume = 0.8;
+            
+            const audio1Ref = document.getElementById('audioPlayer1');
+            const audio2Ref = document.getElementById('audioPlayer2');
+            if (audio1Ref) audio1Ref.volume = 0.8;
+            if (audio2Ref) audio2Ref.volume = 0.8;
+            
             sincronizarConceito6DaManha();
             
             // Atalho secreto para o seu painel de Admin: Ctrl + Shift + A
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
                     const adminPanel = document.getElementById('adminPanel');
-                    adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+                    if (adminPanel) {
+                        adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+                    }
                 }
             });
         });
@@ -824,7 +830,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -858,12 +864,13 @@
 
         function mudarVolumeOuvinte(valor) {
             const vol = valor / 100;
-            audio1.volume = vol;
-            audio2.volume = vol;
+            const a1 = document.getElementById('audioPlayer1');
+            const a2 = document.getElementById('audioPlayer2');
+            if (a1) a1.volume = vol;
+            if (a2) a2.volume = vol;
             document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
-        // Definição exata com duração estimada realista de cada faixa em segundos
         const playlistNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 215 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
@@ -949,21 +956,18 @@
             }
         });
 
-        const audio1 = document.getElementById('audioPlayer1');
-        const audio2 = document.getElementById('audioPlayer2');
-        const nowPlayingText = document.getElementById('now-playing');
         let executandoJingleVoz = false;
         let playerAtivo = 1;
         let somLiberadoOuvinte = false;
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Cálculo matemático exato com base na duração real de cada faixa a partir das 06:00
+        // Cálculo exato baseado na soma das durações reais a partir das 06:00
         function sincronizarConceito6DaManha() {
             const agora = new Date();
             const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
             let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 06:00 da manhã
-            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00 (madrugada)
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00
 
             const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
             let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
@@ -973,7 +977,7 @@
                 const duracaoItem = itemProgramacao[i].durationEstimate || 210;
                 if (tempoNoCiclo < acumulado + duracaoItem) {
                     indiceAtualPlaylist = i;
-                    offsetSegundosInicial = tempoNoCiclo - acumulado;
+                    offsetSegundosInicial = Math.max(0, tempoNoCiclo - acumulado);
                     break;
                 }
                 acumulado += duracaoItem;
@@ -987,20 +991,30 @@
                 const mUTC = agora.getUTCMinutes();
                 const sUTC = agora.getUTCSeconds();
 
-                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
-                document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
-                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
-                document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+                const secEl = document.getElementById('utcSec');
+                const minEl = document.getElementById('utcMin');
+                const hourEl = document.getElementById('utcHour');
+                const digEl = document.getElementById('utcDigital');
+
+                if (secEl) secEl.style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+                if (minEl) minEl.style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                if (hourEl) hourEl.style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+                if (digEl) digEl.innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
 
                 const uptimeSec = Math.floor(performance.now() / 1000);
                 const upH = Math.floor(uptimeSec / 3600);
                 const upM = Math.floor((uptimeSec % 3600) / 60);
                 const upS = uptimeSec % 60;
 
-                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
-                document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
-                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
-                document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+                const upSecEl = document.getElementById('upSec');
+                const upMinEl = document.getElementById('upMin');
+                const upHourEl = document.getElementById('upHour');
+                const upDigEl = document.getElementById('uptimeDigital');
+
+                if (upSecEl) upSecEl.style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+                if (upMinEl) upMinEl.style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                if (upHourEl) upHourEl.style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+                if (upDigEl) upDigEl.innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
         }
 
@@ -1013,6 +1027,12 @@
 
         function tocarItemAtual() {
             const item = itemProgramacao[indiceAtualPlaylist];
+            const audio1 = document.getElementById('audioPlayer1');
+            const audio2 = document.getElementById('audioPlayer2');
+            const nowPlayingText = document.getElementById('now-playing');
+            
+            if (!audio1 || !audio2 || !nowPlayingText) return;
+
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
 
@@ -1026,27 +1046,33 @@
                 nextAudio.src = item.url;
                 nextAudio.load();
 
-                const aplicarOffsetEIniciar = () => {
-                    if (offsetSegundosInicial > 0 && offsetSegundosInicial < nextAudio.duration) {
-                        nextAudio.currentTime = offsetSegundosInicial;
-                        offsetSegundosInicial = 0; 
+                const tentarTocar = () => {
+                    if (offsetSegundosInicial > 0) {
+                        try {
+                            if (nextAudio.duration && offsetSegundosInicial < nextAudio.duration) {
+                                nextAudio.currentTime = offsetSegundosInicial;
+                            }
+                        } catch (e) {
+                            console.log("Offset ajustado no fluxo", e);
+                        }
+                        offsetSegundosInicial = 0;
                     }
+
                     if (somLiberadoOuvinte) {
                         nextAudio.play().then(() => {
                             activeAudio.pause();
                             playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        }).catch(e => console.log("Aguardando interação:", e));
+                        }).catch(e => console.log("Aguardando interação do navegador:", e));
                     } else {
                         activeAudio.pause();
                         playerAtivo = playerAtivo === 1 ? 2 : 1;
                     }
                 };
 
-                if (nextAudio.readyState >= 1) {
-                    aplicarOffsetEIniciar();
-                } else {
-                    nextAudio.onloadedmetadata = aplicarOffsetEIniciar;
-                }
+                nextAudio.oncanplay = () => {
+                    tentarTocar();
+                    nextAudio.oncanplay = null;
+                };
             }
 
             nextAudio.onended = () => {
@@ -1100,7 +1126,7 @@
         function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
+            if(input && input.value.trim() !== '' && messages) {
                 const p = document.createElement('p');
                 p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
                 messages.appendChild(p);
@@ -1112,7 +1138,7 @@
         function enviarMensagemAdmin() {
             const input = document.getElementById('adminInput');
             const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
+            if(input && input.value.trim() !== '' && messages) {
                 const p = document.createElement('p');
                 p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
                 messages.appendChild(p);
