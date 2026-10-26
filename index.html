@@ -584,12 +584,12 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Referência às 06h (Matinal New Age)</div>
-                        <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
+                        <div class="schedule-title">🌅 Amanhecer (Bloco New Age)</div>
+                        <p class="info-box" style="margin: 0;">Duração exata: 1h 23m 12s.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Sequência Contínua</div>
-                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas.</p>
+                        <div class="schedule-title">⚡ Ciclo Perpétuo</div>
+                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas em loop contínuo.</p>
                     </div>
                 </div>
 
@@ -813,9 +813,8 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
             
-            sincronizarConceito6DaManha();
+            inicializarEstudio24h();
             
-            // Atalho secreto para o seu painel de Admin: Ctrl + Shift + A
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
                     const adminPanel = document.getElementById('adminPanel');
@@ -830,7 +829,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -871,6 +870,7 @@
             document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
+        // BLOCO MATINAL: New Age (Amanhecer)
         const playlistNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 215 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
@@ -882,7 +882,7 @@
             { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 208 },
             { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 214 },
             { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 200 },
-            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (5)", url: "Gente%20Strom%20(5).mp3", durationEstimate: 210 },
             { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 218 },
             { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 205 },
             { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
@@ -898,7 +898,8 @@
             { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 220 }
         ];
 
-        const playlistCicloResto = [
+        // RESTANTE DO DIA: Eletrónicas e Sertanejas em ciclo perpétuo ordenado
+        const playlistRestoDia = [
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 215 },
             { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 200 },
@@ -936,51 +937,67 @@
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
         ];
 
-        // Ordem fixa e inviolável da programação
-        const itemProgramacao = [];
-        let contadorMusicas = 0;
-
-        playlistNewAge.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa });
-            contadorMusicas++;
-            if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
-            }
+        // Montagem das grades com jingles a cada 3 músicas
+        const gradeNewAge = [];
+        let c1 = 0;
+        playlistNewAge.forEach(f => {
+            gradeNewAge.push({ type: 'music', ...f });
+            c1++;
+            if (c1 % 3 === 0) gradeNewAge.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
         });
 
-        playlistCicloResto.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa });
-            contadorMusicas++;
-            if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
-            }
+        const gradeRestoDia = [];
+        let c2 = 0;
+        playlistRestoDia.forEach(f => {
+            gradeRestoDia.push({ type: 'music', ...f });
+            c2++;
+            if (c2 % 3 === 0) gradeRestoDia.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
         });
 
         let executandoJingleVoz = false;
         let playerAtivo = 1;
         let somLiberadoOuvinte = false;
+        let playlistGlobal = [];
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Modo Perpétuo Contínuo a partir das 06:00
-        function sincronizarConceito6DaManha() {
-            const agora = new Date();
-            const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 06:00 da manhã
-            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00
+        // Fita Linear Contínua de 24h baseada puramente na soma das durações
+        function inicializarEstudio24h() {
+            // Soma exata dos segundos de cada bloco
+            const duracaoNewAgeTotal = gradeNewAge.reduce((acc, item) => acc + (item.durationEstimate || 210), 0); // ~5112s
+            const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);   // ~7623s
+            const duracaoDiaCompleto = duracaoNewAgeTotal + duracaoRestoTotal;
 
-            const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
-            let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
-            
-            let acumulado = 0;
-            for (let i = 0; i < itemProgramacao.length; i++) {
-                const duracaoItem = itemProgramacao[i].durationEstimate || 210;
-                if (tempoNoCiclo < acumulado + duracaoItem) {
-                    indiceAtualPlaylist = i;
-                    offsetSegundosInicial = Math.max(0, tempoNoCiclo - acumulado);
-                    break;
+            // Tempo linear contínuo baseado no relógio absoluto Epoch (independente de fuso horário local do PC)
+            const tempoDecorridoEpoch = Math.floor(Date.now() / 1000);
+            let tempoNoDia = tempoDecorridoEpoch % duracaoDiaCompleto;
+
+            // Define em qual bloco o estúdio está no momento
+            if (tempoNoDia < duracaoNewAgeTotal) {
+                playlistGlobal = gradeNewAge;
+                let acumulado = 0;
+                for (let i = 0; i < playlistGlobal.length; i++) {
+                    const dur = playlistGlobal[i].durationEstimate || 210;
+                    if (tempoNoDia >= acumulado && tempoNoDia < (acumulado + dur)) {
+                        indiceAtualPlaylist = i;
+                        offsetSegundosInicial = tempoNoDia - acumulado;
+                        break;
+                    }
+                    acumulado += dur;
                 }
-                acumulado += duracaoItem;
+            } else {
+                playlistGlobal = gradeRestoDia;
+                let tempoNoResto = tempoNoDia - duracaoNewAgeTotal;
+                let acumulado = 0;
+                for (let i = 0; i < playlistGlobal.length; i++) {
+                    const dur = playlistGlobal[i].durationEstimate || 210;
+                    if (tempoNoResto >= acumulado && tempoNoResto < (acumulado + dur)) {
+                        indiceAtualPlaylist = i;
+                        offsetSegundosInicial = tempoNoResto - acumulado;
+                        break;
+                    }
+                    acumulado += dur;
+                }
             }
         }
 
@@ -1026,7 +1043,7 @@
         }
 
         function tocarItemAtual() {
-            const item = itemProgramacao[indiceAtualPlaylist];
+            const item = playlistGlobal[indiceAtualPlaylist];
             const audio1 = document.getElementById('audioPlayer1');
             const audio2 = document.getElementById('audioPlayer2');
             const nowPlayingText = document.getElementById('now-playing');
@@ -1053,7 +1070,7 @@
                                 nextAudio.currentTime = offsetSegundosInicial;
                             }
                         } catch (e) {
-                            console.log("Offset ajustado no fluxo", e);
+                            console.log("Offset ajustado", e);
                         }
                         offsetSegundosInicial = 0;
                     }
@@ -1062,7 +1079,7 @@
                         nextAudio.play().then(() => {
                             activeAudio.pause();
                             playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        }).catch(e => console.log("Aguardando interação do navegador:", e));
+                        }).catch(e => console.log("Aguardando interação:", e));
                     } else {
                         activeAudio.pause();
                         playerAtivo = playerAtivo === 1 ? 2 : 1;
@@ -1081,7 +1098,16 @@
         }
 
         function tocarProximaFaixa() {
-            indiceAtualPlaylist = (indiceAtualPlaylist + 1) % itemProgramacao.length;
+            indiceAtualPlaylist++;
+            // Se o bloco New Age acabar, transita automaticamente para o resto do dia (Eletrônicas e Sertanejas)
+            if (indiceAtualPlaylist >= playlistGlobal.length) {
+                indiceAtualPlaylist = 0;
+                if (playlistGlobal === gradeNewAge) {
+                    playlistGlobal = gradeRestoDia;
+                } else {
+                    playlistGlobal = gradeNewAge; // Reinicia o ciclo diário completando as 24h
+                }
+            }
             offsetSegundosInicial = 0;
             tocarItemAtual();
         }
@@ -1104,7 +1130,7 @@
                 };
                 window.speechSynthesis.speak(frase);
             } else {
-                setTimeout(tocarProximaFaixa, 4000);
+                setTimeout(tocarProximaFaxlsa, 4000);
             }
         }
 
