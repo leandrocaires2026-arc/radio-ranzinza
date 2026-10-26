@@ -13,19 +13,20 @@
 
     <style>
         :root {
-            --bg-color: #0b0b0e;
-            --card-bg: #15151a;
+            --card-bg: rgba(16, 20, 31, 0.82);
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
             --neon-yellow: #ffaa00;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(0, 240, 255, 0.35);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #050811;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -33,9 +34,36 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* Camada com filtro de saturação e contraste para reforçar e nitidificar as cores da imagem de fundo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            filter: contrast(135%) saturate(160%) brightness(0.85);
+            z-index: -2;
+        }
+
+        /* Camada leve de cobertura translúcida escura para manter o contraste elegante */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 17, 0.55);
+            z-index: -1;
         }
         
-        /* CABEÇALHO COM ESTILO VISUAL DE ALTIFALANTES E NEON */
+        /* CABEÇALHO */
         header {
             width: 100%;
             max-width: 1200px;
@@ -47,33 +75,35 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid var(--neon-pink);
-            background: linear-gradient(135deg, #150015, #001122, #0d0d12);
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
+            border: 2px solid var(--neon-blue);
+            background: #111;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
-        header::before {
-            content: '';
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(255, 0, 127, 0.3) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 50%, rgba(0, 240, 255, 0.3) 0%, transparent 50%);
+            top: 0;
+            left: 0;
             z-index: 1;
+            filter: brightness(0.6);
         }
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: rgba(11, 11, 14, 0.8);
+            background: rgba(11, 11, 14, 0.85);
             padding: 15px 30px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            border: 1px solid var(--neon-blue);
+            backdrop-filter: blur(4px);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.9);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
             letter-spacing: 2px;
         }
         .header-content p {
@@ -98,9 +128,10 @@
         }
         .card {
             background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
@@ -113,7 +144,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
         }
         .card-top {
             min-height: 250px;
@@ -145,7 +176,7 @@
             justify-content: space-between;
         }
         .player-box {
-            background: radial-gradient(circle at center, #1c1c28 0%, #141419 100%);
+            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.92) 0%, rgba(13, 18, 29, 0.96) 100%);
             text-align: center;
         }
         .player-box h2 {
@@ -191,12 +222,12 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: linear-gradient(135deg, #02050b, #0a1120);
-            border: 2px solid #d4af37;
+            background: linear-gradient(135deg, rgba(2, 5, 11, 0.95), rgba(10, 17, 32, 0.95));
+            border: 2px solid var(--neon-blue);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.15), 0 0 25px rgba(0, 240, 255, 0.2);
+            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.1), 0 0 25px rgba(0, 240, 255, 0.2);
             align-items: center;
             position: relative;
             overflow: hidden;
@@ -209,13 +240,13 @@
             background: rgba(3, 7, 16, 0.9);
             padding: 15px;
             border-radius: 12px;
-            border: 1px solid rgba(212, 175, 55, 0.35);
+            border: 1px solid rgba(0, 240, 255, 0.3);
         }
         .telemetry-label {
             font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #d4af37;
+            color: var(--neon-blue);
             margin-bottom: 12px;
             font-weight: bold;
         }
@@ -224,7 +255,7 @@
             height: 140px;
             background: radial-gradient(circle, #09172c 0%, #010408 85%);
             border: 6px solid #1a233a;
-            outline: 2px solid #d4af37;
+            outline: 2px solid var(--neon-blue);
             border-radius: 50%;
             position: relative;
             display: flex;
@@ -249,8 +280,8 @@
         .tick.major {
             width: 3.5px;
             height: 10px;
-            background: #d4af37;
-            box-shadow: 0 0 5px #d4af37;
+            background: var(--neon-blue);
+            box-shadow: 0 0 5px var(--neon-blue);
         }
         .hand {
             position: absolute;
@@ -262,8 +293,8 @@
         .hour-hand {
             width: 4.5px;
             height: 30px;
-            background: #d4af37;
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            background: var(--neon-yellow);
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
             transform: translateX(-50%) rotate(0deg);
         }
         .minute-hand {
@@ -276,8 +307,8 @@
         .second-hand {
             width: 1.5px;
             height: 50px;
-            background: #00f0ff;
-            box-shadow: 0 0 8px #00f0ff;
+            background: var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue);
             transform: translateX(-50%) rotate(0deg);
         }
         .clock-center {
@@ -286,15 +317,15 @@
             left: 50%;
             width: 9px;
             height: 9px;
-            background: #d4af37;
+            background: var(--neon-blue);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px #d4af37;
+            box-shadow: 0 0 8px var(--neon-blue);
         }
         .digital-subtext {
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.9rem;
-            color: #d4af37;
+            color: var(--neon-blue);
             margin-top: 12px;
         }
         audio {
@@ -336,6 +367,11 @@
             align-items: center;
             justify-content: center;
         }
+        .ad-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
@@ -358,7 +394,7 @@
         }
         .chat-messages {
             flex: 1;
-            background: #0a0a0e;
+            background: rgba(7, 10, 18, 0.9);
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
@@ -379,7 +415,7 @@
         }
         input {
             flex: 1;
-            background: #1c1c24;
+            background: #151b2c;
             color: white;
             border: 1px solid var(--border-color);
         }
@@ -395,7 +431,7 @@
         }
         button.chat-btn:hover { opacity: 0.9; }
         .admin-panel {
-            background: #1a1018;
+            background: #13101a;
             border: 1px solid var(--neon-pink);
             border-radius: 8px;
             padding: 12px;
@@ -421,7 +457,7 @@
             gap: 12px;
         }
         .platform-btn {
-            background: #1f1f2b;
+            background: #151b2c;
             color: white;
             padding: 8px 14px;
             border-radius: 6px;
@@ -435,68 +471,75 @@
         }
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
-
-        /* BANNER COM IMAGEM DE SUBWOOFER E NEON ACENTUADO */
         .radio-banner {
             width: 100%;
             height: 200px;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid var(--neon-blue);
+            border: 2px solid var(--neon-blue);
             position: relative;
-            margin-top: 20px;
-            background: radial-gradient(circle at center, #1b0c24 0%, #050508 100%);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 20px;
+            background: #111;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
-        .subwoofer-art {
+        .radio-banner img {
             width: 100%;
             height: 100%;
-            position: relative;
-            background: linear-gradient(135deg, rgba(255,0,127,0.15), rgba(0,240,255,0.15));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .speaker-ring {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 6px solid #2a2a35;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 0 15px var(--neon-pink);
-            background: radial-gradient(circle, #0e0e12 40%, #1c1c28 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .speaker-cone {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #333 0%, #050508 90%);
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
+            object-fit: cover;
         }
         .info-box {
             font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.4;
         }
+
+        /* MODAL DE PARTILHA */
+        .share-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 999;
+        }
+        .share-modal-card {
+            background: rgba(16, 20, 31, 0.95); border: 2px solid var(--neon-blue); border-radius: 14px;
+            padding: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); animation: fadeIn 0.3s ease-in-out;
+        }
+        .share-modal-card h3 { color: var(--neon-blue); margin-top: 0; margin-bottom: 8px; }
+        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .share-option-btn {
+            background: #151b2c; color: white; border: 1px solid var(--border-color); padding: 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
+        }
+        .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
+        .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO COM ARTE DE ESTÚDIO CYBERPUNK -->
-    <header>
-        <div class="subwoofer-art" style="position: absolute; inset:0; opacity: 0.4;">
-            <div style="display: flex; gap: 40px; align-items: center; justify-content: space-around; width: 100%;">
-                <div class="speaker-ring"><div class="speaker-cone"></div></div>
-                <div class="speaker-ring" style="width: 160px; height: 160px;"><div class="speaker-cone" style="width: 80px; height: 80px;"></div></div>
-                <div class="speaker-ring"><div class="speaker-cone"></div></div>
+    <!-- MODAL DE PARTILHA -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal-card">
+            <h3>🌐 Partilhar Rádio Ranzinza</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            
+            <div class="share-grid">
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
             </div>
+            
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
         </div>
+    </div>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
         <div class="header-content">
             <h1>RÁDIO RANZINZA</h1>
             <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
@@ -507,8 +550,8 @@
         
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
-            <div>
-                <div class="card card-top" style="border-color: var(--neon-green);">
+            <div class="side-panel">
+                <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
                         <div class="schedule-title">🌅 06h - Bloco Matinal (New Age)</div>
@@ -520,13 +563,20 @@
                     </div>
                 </div>
 
-                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-pink);">
+                <!-- ANÚNCIO / SLIDER -->
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
-                            <div class="subwoofer-art" style="height: 180px;">
-                                <div class="speaker-ring"><div class="speaker-cone"></div></div>
-                            </div>
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
+                                <g transform="translate(170, 50) scale(1.4)">
+                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
+                                </g>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Ouça no Spotify</text>
+                            </svg>
                         </div>
                         <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
@@ -534,9 +584,7 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,0,127,0.15));">
-                                <div class="speaker-ring" style="border-color: var(--neon-blue); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-blue);"><div class="speaker-cone" style="border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink);"></div></div>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -545,21 +593,17 @@
             </div>
             
             <div class="radio-banner">
-                <div class="subwoofer-art">
-                    <div style="display: flex; gap: 30px; align-items: center;">
-                        <div class="speaker-ring"><div class="speaker-cone"></div></div>
-                        <div class="speaker-ring" style="width: 150px; height: 150px;"><div class="speaker-cone" style="width: 75px; height: 75px;"></div></div>
-                    </div>
-                </div>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
         </div>
 
         <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
-            <div>
+            <div class="center-panel">
                 <div class="card player-box">
                     <h2>🎙️ Emissão Oficial em Direto</h2>
 
+                    <!-- PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO -->
                     <div class="racing-telemetry-panel">
                         <div class="telemetry-item">
                             <div class="telemetry-label">🏁 UTC (Greenwich)</div>
@@ -606,6 +650,27 @@
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
+
+                    <!-- BOTÃO DE PARTILHA -->
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="abrirModalPartilha()" style="
+                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+                            color: #ffffff;
+                            border: none;
+                            padding: 10px 18px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card chat-box" style="height: auto;">
@@ -629,18 +694,14 @@
             </div>
             
             <div class="radio-banner">
-                <div class="subwoofer-art" style="background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(255,0,127,0.1));">
-                    <div style="display: flex; gap: 40px; align-items: center;">
-                        <div class="speaker-ring" style="width: 140px; height: 140px;"><div class="speaker-cone" style="width: 70px; height: 70px;"></div></div>
-                    </div>
-                </div>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
-            <div>
-                <div class="card card-top" style="border-color: var(--neon-pink);">
+            <div class="side-panel">
+                <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
                     <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
                     <div class="schedule-block" style="border-color: var(--neon-pink);">
@@ -649,13 +710,12 @@
                     </div>
                 </div>
 
+                <!-- ANÚNCIO / SLIDER -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,255,102,0.1));">
-                                <div class="speaker-ring" style="border-color: var(--neon-blue); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-blue);"><div class="speaker-cone" style="border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div></div>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -663,9 +723,15 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
                         <div class="ad-img-container">
-                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(255,170,0,0.15), rgba(255,0,127,0.15));">
-                                <div class="speaker-ring" style="border-color: var(--neon-yellow); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-yellow);"><div class="speaker-cone" style="border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink);"></div></div>
-                            </div>
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
+                                <g transform="translate(170, 50) scale(1.4)">
+                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
+                                </g>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Perfil no Spotify</text>
+                            </svg>
                         </div>
                         <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
@@ -674,11 +740,7 @@
             </div>
             
             <div class="radio-banner">
-                <div class="subwoofer-art">
-                    <div style="display: flex; gap: 30px; align-items: center;">
-                        <div class="speaker-ring" style="width: 150px; height: 150px;"><div class="speaker-cone" style="width: 75px; height: 75px;"></div></div>
-                    </div>
-                </div>
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
 
@@ -701,7 +763,48 @@
             sincronizarTransmissaoEstrita();
         });
 
-        // 1. BLOCO MATINAL: NEW AGE (Executado pontualmente às 06:00 UTC)
+        /* FUNÇÕES DO MODAL DE PARTILHA */
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
+
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).then(() => {
+                    fecharModalPartilha();
+                }).catch((error) => console.log('Partilha cancelada', error));
+            } else {
+                copiarLinkRadio();
+            }
+        }
+
+        function fecharModalPartilha() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copiarLinkRadio() {
+            const urlAtual = window.location.href;
+            navigator.clipboard.writeText(urlAtual).then(() => {
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
+                fecharModalPartilha();
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
+        }
+
+        /* 1. BLOCO MATINAL: NEW AGE (Executado pontualmente às 06:00 UTC) */
         const playlistNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
@@ -729,7 +832,7 @@
             { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 }
         ];
 
-        // 2. CICLO CONTÍNUO DO RESTO DO DIA: ELETRÔNICAS E SERTANEJAS
+        /* 2. CICLO CONTÍNUO DO RESTO DO DIA: ELETRÔNICAS E SERTANEJAS */
         const playlistCicloResto = [
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
