@@ -196,6 +196,44 @@
             0% { height: 8px; }
             100% { height: 36px; }
         }
+        /* CONTROLO DE VOLUME ESTILIZADO */
+        .volume-control-box {
+            background: rgba(3, 7, 16, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 15px auto;
+            max-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .volume-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #151b2c;
+            outline: none;
+            border: 1px solid var(--border-color);
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--neon-pink);
+            cursor: pointer;
+            box-shadow: 0 0 6px var(--neon-pink);
+        }
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -558,11 +596,11 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 06h - Bloco Matinal (New Age)</div>
+                        <div class="schedule-title">🌅 Início às 06h (Matinal New Age)</div>
                         <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
-                        <div class="schedule-title">🌙 Resto do Dia (Ciclo Contínuo)</div>
+                        <div class="schedule-title">🌙 Sequência Contínua</div>
                         <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas.</p>
                     </div>
                 </div>
@@ -631,7 +669,7 @@
                         </div>
                     </div>
 
-                    <p id="now-playing">Estúdio Perpétuo no Ar...</p>
+                    <p id="now-playing">Estúdio Sequencial no Ar...</p>
 
                     <!-- BOTÃO DE DESTRAVAMENTO DE ÁUDIO -->
                     <div id="playTriggerBox" style="margin-bottom: 12px;">
@@ -660,8 +698,17 @@
                         <div class="bar"></div>
                     </div>
 
-                    <audio id="audioPlayer1" preload="auto"></audio>
-                    <audio id="audioPlayer2" preload="auto"></audio>
+                    <!-- CAIXA DE CONTROLO DE VOLUME -->
+                    <div class="volume-control-box">
+                        <div class="volume-header">
+                            <span>🔊 Volume do Ouvinte</span>
+                            <span id="volumePercent">80%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" oninput="mudarVolumeOuvinte(this.value)">
+                    </div>
+
+                    <audio id="audioPlayer1" preload="auto" onended="tocarProximaFaixa()"></audio>
+                    <audio id="audioPlayer2" preload="auto" onended="tocarProximaFaixa()"></audio>
 
                     <div class="external-platforms">
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
@@ -756,7 +803,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DO MOTOR CORRIGIDO E DIRETO -->
+    <!-- SCRIPT DO MOTOR SEQUENCIAL CONTÍNUO -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -771,14 +818,16 @@
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
             criarMarcacoesRelogio('faceUptime');
-            iniciarRelogiosEAutomacaoPerpetua();
+            iniciarRelogiosVisuais();
+            document.getElementById('audioPlayer1').volume = 0.8;
+            document.getElementById('audioPlayer2').volume = 0.8;
         });
 
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -810,6 +859,13 @@
             }).catch(err => {
                 console.error('Erro ao copiar link: ', err);
             });
+        }
+
+        function mudarVolumeOuvinte(valor) {
+            const vol = valor / 100;
+            audio1.volume = vol;
+            audio2.volume = vol;
+            document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
         const playlistNewAge = [
@@ -877,22 +933,23 @@
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3" }
         ];
 
+        // Monta a ordem sequencial da programação
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
         playlistNewAge.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa, duration: 210 });
+            itemProgramacao.push({ type: 'music', ...faixa });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 7 });
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
             }
         });
 
         playlistCicloResto.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa, duration: 210 });
+            itemProgramacao.push({ type: 'music', ...faixa });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 7 });
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
             }
         });
 
@@ -902,9 +959,9 @@
         let executandoJingleVoz = false;
         let playerAtivo = 1;
         let somLiberadoOuvinte = false;
-        let itemAtualEmissao = null;
+        let indiceAtualPlaylist = 0;
 
-        function iniciarRelogiosEAutomacaoPerpetua() {
+        function iniciarRelogiosVisuais() {
             setInterval(() => {
                 const agora = new Date();
                 const hUTC = agora.getUTCHours();
@@ -926,41 +983,17 @@
                 document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
                 document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
-
-            setInterval(sincronizarEstudioPerpetuo, 1000);
-            sincronizarEstudioPerpetuo();
         }
 
-        function calcularEstadoAtualPeloUTC() {
-            const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.duration || 210), 0);
-            const agora = new Date();
-            const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let segundosDesdeAs6 = segundosUTC - 21600;
-            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400;
-
-            let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
-            let acumulado = 0;
-
-            for (let i = 0; i < itemProgramacao.length; i++) {
-                const duracaoItem = itemProgramacao[i].duration || 210;
-                acumulado += duracaoItem;
-                if (tempoNoCiclo < acumulado) {
-                    const segundosNaFaixa = tempoNoCiclo - (acumulado - duracaoItem);
-                    return { index: i, item: itemProgramacao[i], offset: segundosNaFaixa };
-                }
-            }
-            return { index: 0, item: itemProgramacao[0], offset: 0 };
+        function ligarSomOuvinte() {
+            somLiberadoOuvinte = true;
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) triggerBox.style.display = 'none';
+            tocarItemAtual();
         }
 
-        function sincronizarEstudioPerpetuo() {
-            const estado = calcularEstadoAtualPeloUTC();
-            if (!itemAtualEmissao || itemAtualEmissao.index !== estado.index) {
-                itemAtualEmissao = estado;
-                executarItemNoAr(estado.item, estado.offset);
-            }
-        }
-
-        function executarItemNoAr(item, offsetSegundos) {
+        function tocarItemAtual() {
+            const item = itemProgramacao[indiceAtualPlaylist];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
 
@@ -973,19 +1006,12 @@
                 nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
                 nextAudio.src = item.url;
                 nextAudio.load();
-                try {
-                    if (offsetSegundos > 0) {
-                        nextAudio.currentTime = offsetSegundos;
-                    }
-                } catch(e) {
-                    console.log("Ajuste de offset pendente:", e);
-                }
 
                 if (somLiberadoOuvinte) {
                     nextAudio.play().then(() => {
                         activeAudio.pause();
                         playerAtivo = playerAtivo === 1 ? 2 : 1;
-                    }).catch(e => console.log("Aguardando interação do ouvinte.", e));
+                    }).catch(e => console.log("Aguardando interacão:", e));
                 } else {
                     activeAudio.pause();
                     playerAtivo = playerAtivo === 1 ? 2 : 1;
@@ -993,29 +1019,10 @@
             }
         }
 
-        function ligarSomOuvinte() {
-            somLiberadoOuvinte = true;
-            const triggerBox = document.getElementById('playTriggerBox');
-            if (triggerBox) triggerBox.style.display = 'none';
-
-            const estado = calcularEstadoAtualPeloUTC();
-            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-
-            if (estado.item.type === 'music') {
-                activeAudio.src = estado.item.url;
-                try {
-                    activeAudio.currentTime = estado.offset;
-                } catch(e) {}
-                activeAudio.play().then(() => {
-                    nowPlayingText.innerHTML = `No ar agora: <strong>${estado.item.title}</strong>`;
-                }).catch(err => {
-                    console.log("Erro ao forçar play:", err);
-                    activeAudio.currentTime = 0;
-                    activeAudio.play();
-                });
-            } else {
-                falarJingleNarrador();
-            }
+        // Acionado automaticamente quando qualquer faixa termina de tocar
+        function tocarProximaFaixa() {
+            indiceAtualPlaylist = (indiceAtualPlaylist + 1) % itemProgramacao.length;
+            tocarItemAtual();
         }
 
         function falarJingleNarrador() {
@@ -1026,9 +1033,18 @@
                 frase.lang = 'pt-BR';
                 frase.rate = 1.05;
                 frase.pitch = 0.95;
-                frase.onend = () => { executandoJingleVoz = false; };
-                frase.onerror = () => { executandoJingleVoz = false; };
+                frase.onend = () => { 
+                    executandoJingleVoz = false;
+                    // Avança automaticamente após o jingle terminar de falar
+                    tocarProximaFaixa();
+                };
+                frase.onerror = () => { 
+                    executandoJingleVoz = false;
+                    tocarProximaFaixa();
+                };
                 window.speechSynthesis.speak(frase);
+            } else {
+                setTimeout(tocarProximaFaixa, 4000);
             }
         }
 
@@ -1072,7 +1088,7 @@
                 p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
-                messages.scrollTop = messages.scrollHeight; // CORRIGIDO AQUI
+                messages.scrollTop = messages.scrollHeight;
             }
         }
     </script>
