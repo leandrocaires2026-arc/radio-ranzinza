@@ -35,7 +35,7 @@
             min-height: 100vh;
         }
         
-        /* CABEÇALHO COM A SUA IMAGEM FOTOGRÁFICA ORIGINAL */
+        /* CABEÇALHO COM ESTILO VISUAL DE ALTIFALANTES E NEON */
         header {
             width: 100%;
             max-width: 1200px;
@@ -47,35 +47,33 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid var(--neon-pink);
-            background: #111;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+            border: 2px solid var(--neon-pink);
+            background: linear-gradient(135deg, #150015, #001122, #0d0d12);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
-        header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        header::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 0, 127, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(0, 240, 255, 0.3) 0%, transparent 50%);
             z-index: 1;
-            filter: brightness(1.1) saturate(1.6);
         }
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: rgba(11, 11, 14, 0.75);
+            background: rgba(11, 11, 14, 0.8);
             padding: 15px 30px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: #ffffff;
-            text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.9);
             letter-spacing: 2px;
         }
         .header-content p {
@@ -338,12 +336,6 @@
             align-items: center;
             justify-content: center;
         }
-        .ad-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(1.1) saturate(1.6);
-        }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
@@ -444,6 +436,7 @@
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
 
+        /* BANNER COM IMAGEM DE SUBWOOFER E NEON ACENTUADO */
         .radio-banner {
             width: 100%;
             height: 200px;
@@ -452,14 +445,39 @@
             border: 1px solid var(--neon-blue);
             position: relative;
             margin-top: 20px;
-            background: #111;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+            background: radial-gradient(circle at center, #1b0c24 0%, #050508 100%);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .radio-banner img {
+        .subwoofer-art {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: brightness(1.1) saturate(1.6);
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,0,127,0.15), rgba(0,240,255,0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .speaker-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 6px solid #2a2a35;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 0 15px var(--neon-pink);
+            background: radial-gradient(circle, #0e0e12 40%, #1c1c28 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .speaker-cone {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #333 0%, #050508 90%);
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
         }
         .info-box {
             font-size: 0.8rem;
@@ -470,8 +488,15 @@
 </head>
 <body>
 
+    <!-- CABEÇALHO COM ARTE DE ESTÚDIO CYBERPUNK -->
     <header>
-        <img src="radiofoto.jpg" alt="Estúdio de Transmissão Altifalantes">
+        <div class="subwoofer-art" style="position: absolute; inset:0; opacity: 0.4;">
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: space-around; width: 100%;">
+                <div class="speaker-ring"><div class="speaker-cone"></div></div>
+                <div class="speaker-ring" style="width: 160px; height: 160px;"><div class="speaker-cone" style="width: 80px; height: 80px;"></div></div>
+                <div class="speaker-ring"><div class="speaker-cone"></div></div>
+            </div>
+        </div>
         <div class="header-content">
             <h1>RÁDIO RANZINZA</h1>
             <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
@@ -499,7 +524,9 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
                         <div class="ad-img-container">
-                            <img src="radiofoto.jpg" alt="Spotify Ranzinza Altifalantes">
+                            <div class="subwoofer-art" style="height: 180px;">
+                                <div class="speaker-ring"><div class="speaker-cone"></div></div>
+                            </div>
                         </div>
                         <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
@@ -507,7 +534,9 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
                         <div class="ad-img-container">
-                            <img src="radiofoto.jpg" alt="SoundCloud Ranzinza Altifalantes">
+                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,0,127,0.15));">
+                                <div class="speaker-ring" style="border-color: var(--neon-blue); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-blue);"><div class="speaker-cone" style="border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink);"></div></div>
+                            </div>
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
@@ -516,7 +545,12 @@
             </div>
             
             <div class="radio-banner">
-                <img src="radiofoto.jpg" alt="Rodapé Esquerdo Altifalantes">
+                <div class="subwoofer-art">
+                    <div style="display: flex; gap: 30px; align-items: center;">
+                        <div class="speaker-ring"><div class="speaker-cone"></div></div>
+                        <div class="speaker-ring" style="width: 150px; height: 150px;"><div class="speaker-cone" style="width: 75px; height: 75px;"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -595,7 +629,11 @@
             </div>
             
             <div class="radio-banner">
-                <img src="radiofoto.jpg" alt="Rodapé Central Altifalantes">
+                <div class="subwoofer-art" style="background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(255,0,127,0.1));">
+                    <div style="display: flex; gap: 40px; align-items: center;">
+                        <div class="speaker-ring" style="width: 140px; height: 140px;"><div class="speaker-cone" style="width: 70px; height: 70px;"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -615,7 +653,9 @@
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
                         <div class="ad-img-container">
-                            <img src="radiofoto.jpg" alt="SoundCloud Destaque Altifalantes">
+                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,255,102,0.1));">
+                                <div class="speaker-ring" style="border-color: var(--neon-blue); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-blue);"><div class="speaker-cone" style="border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></div></div>
+                            </div>
                         </div>
                         <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
@@ -623,7 +663,9 @@
                     <div class="ad-slide">
                         <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
                         <div class="ad-img-container">
-                            <img src="radiofoto.jpg" alt="Perfil Spotify Altifalantes">
+                            <div class="subwoofer-art" style="height: 180px; background: linear-gradient(135deg, rgba(255,170,0,0.15), rgba(255,0,127,0.15));">
+                                <div class="speaker-ring" style="border-color: var(--neon-yellow); box-shadow: inset 0 0 15px #000, 0 0 15px var(--neon-yellow);"><div class="speaker-cone" style="border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink);"></div></div>
+                            </div>
                         </div>
                         <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
@@ -632,7 +674,11 @@
             </div>
             
             <div class="radio-banner">
-                <img src="radiofoto.jpg" alt="Rodapé Direito Altifalantes">
+                <div class="subwoofer-art">
+                    <div style="display: flex; gap: 30px; align-items: center;">
+                        <div class="speaker-ring" style="width: 150px; height: 150px;"><div class="speaker-cone" style="width: 75px; height: 75px;"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
