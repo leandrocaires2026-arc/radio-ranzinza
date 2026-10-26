@@ -35,6 +35,7 @@
             min-height: 100vh;
         }
         
+        /* CABEÇALHO COM A SUA IMAGEM DE ALTIFALANTES ACENTUADA */
         header {
             width: 100%;
             max-width: 1200px;
@@ -58,7 +59,7 @@
             top: 0;
             left: 0;
             z-index: 1;
-            filter: brightness(0.95) saturate(1.4);
+            filter: brightness(1.1) saturate(1.6);
         }
         .header-content {
             position: relative;
@@ -187,6 +188,7 @@
             100% { height: 36px; }
         }
 
+        /* PAINEL DE INSTRUMENTOS ESTILO SUPERCARRO */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -441,27 +443,6 @@
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
 
-        .share-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-            display: none; align-items: center; justify-content: center; z-index: 999;
-        }
-        .share-modal-card {
-            background: rgba(16, 20, 31, 0.95); border: 2px solid var(--neon-blue); border-radius: 14px;
-            padding: 25px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); animation: fadeIn 0.3s ease-in-out;
-        }
-        .share-modal-card h3 { color: var(--neon-blue); margin-top: 0; margin-bottom: 8px; }
-        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .share-option-btn {
-            background: #151b2c; color: white; border: 1px solid var(--border-color); padding: 10px;
-            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
-        }
-        .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
-        .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
-
-        /* BANNER COM A SUA IMAGEM DE ALTIFALANTES E CORES ACENTUADAS */
         .radio-banner {
             width: 100%;
             height: 200px;
@@ -488,26 +469,6 @@
 </head>
 <body>
 
-    <div class="share-modal-overlay" id="shareModal">
-        <div class="share-modal-card">
-            <h3>🌐 Partilhar Rádio Ranzinza</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
-            
-            <div class="share-grid">
-                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
-                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
-                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
-            </div>
-            
-            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
-            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
-        </div>
-    </div>
-
-    <!-- CABEÇALHO COM A IMAGEM DE ALTIFALANTES ACENTUADA -->
     <header>
         <img src="radiofoto.jpg" alt="Estúdio de Transmissão Altifalantes">
         <div class="header-content">
@@ -618,26 +579,6 @@
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
-
-                    <div style="margin-top: 15px; text-align: center;">
-                        <button onclick="abrirModalPartilha()" style="
-                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
-                            color: #ffffff;
-                            border: none;
-                            padding: 10px 18px;
-                            border-radius: 8px;
-                            font-weight: bold;
-                            font-size: 0.85rem;
-                            cursor: pointer;
-                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
-                            transition: 0.2s;
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 8px;
-                        ">
-                            🔗 Partilhar Rádio Ranzinza
-                        </button>
-                    </div>
                 </div>
 
                 <div class="card chat-box" style="height: auto;">
@@ -729,46 +670,7 @@
             sincronizarTransmissaoEstrita();
         });
 
-        function abrirModalPartilha() {
-            const urlAtual = encodeURIComponent(window.location.href);
-            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
-
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
-            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
-
-            document.getElementById('shareModal').style.display = 'flex';
-        }
-
-        function partilharNativoRedes() {
-            const urlAtual = window.location.href;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Rádio Ranzinza',
-                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
-                    url: urlAtual,
-                }).then(() => {
-                    fecharModalPartilha();
-                }).catch((error) => console.log('Partilha cancelada', error));
-            } else {
-                copiarLinkRadio();
-            }
-        }
-
-        function fecharModalPartilha() {
-            document.getElementById('shareModal').style.display = 'none';
-        }
-
-        function copiarLinkRadio() {
-            const urlAtual = window.location.href;
-            navigator.clipboard.writeText(urlAtual).then(() => {
-                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
-                fecharModalPartilha();
-            }).catch(err => {
-                console.error('Erro ao copiar link: ', err);
-            });
-        }
-
+        // 1. BLOCO MATINAL: NEW AGE (Executado pontualmente às 06:00 UTC)
         const playlistNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
@@ -796,6 +698,7 @@
             { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 }
         ];
 
+        // 2. CICLO CONTÍNUO DO RESTO DO DIA: ELETRÔNICAS E SERTANEJAS
         const playlistCicloResto = [
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
