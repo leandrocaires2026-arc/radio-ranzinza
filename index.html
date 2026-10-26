@@ -585,11 +585,11 @@
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
                         <div class="schedule-title">🌅 Amanhecer (Bloco New Age)</div>
-                        <p class="info-box" style="margin: 0;">Duração exata: 1h 23m 12s.</p>
+                        <p class="info-box" style="margin: 0;">Das 06h às 07:23.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
                         <div class="schedule-title">⚡ Ciclo Perpétuo</div>
-                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas em loop contínuo.</p>
+                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas.</p>
                     </div>
                 </div>
 
@@ -813,7 +813,7 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
             
-            inicializarEstudio24h();
+            inicializarEstudioExato();
             
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
@@ -882,7 +882,7 @@
             { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 208 },
             { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 214 },
             { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 200 },
-            { title: "Gentele Strom (5)", url: "Gente%20Strom%20(5).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
             { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 218 },
             { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 205 },
             { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
@@ -898,7 +898,7 @@
             { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 220 }
         ];
 
-        // RESTANTE DO DIA: Eletrónicas e Sertanejas em ciclo perpétuo ordenado
+        // RESTANTE DO DIA: Eletrônicas e Sertanejas em ciclo perpétuo
         const playlistRestoDia = [
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
             { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 215 },
@@ -961,39 +961,43 @@
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Fita Linear Contínua de 24h baseada puramente na soma das durações
-        function inicializarEstudio24h() {
-            // Soma exata dos segundos de cada bloco
-            const duracaoNewAgeTotal = gradeNewAge.reduce((acc, item) => acc + (item.durationEstimate || 210), 0); // ~5112s
-            const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);   // ~7623s
-            const duracaoDiaCompleto = duracaoNewAgeTotal + duracaoRestoTotal;
+        // Lógica Exata de Sincronização por Horário do Dia e Somatório de Durações
+        function inicializarEstudioExato() {
+            const agora = new Date();
+            const segundosDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            
+            // 06:00 da manhã em segundos = 21600s
+            let segundosDesdeAs6 = segundosDoDia - 21600;
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00
 
-            // Tempo linear contínuo baseado no relógio absoluto Epoch (independente de fuso horário local do PC)
-            const tempoDecorridoEpoch = Math.floor(Date.now() / 1000);
-            let tempoNoDia = tempoDecorridoEpoch % duracaoDiaCompleto;
+            const duracaoNewAgeTotal = gradeNewAge.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
 
-            // Define em qual bloco o estúdio está no momento
-            if (tempoNoDia < duracaoNewAgeTotal) {
+            if (segundosDesdeAs6 < duracaoNewAgeTotal) {
+                // Bloco do Amanhecer (New Age)
                 playlistGlobal = gradeNewAge;
                 let acumulado = 0;
                 for (let i = 0; i < playlistGlobal.length; i++) {
                     const dur = playlistGlobal[i].durationEstimate || 210;
-                    if (tempoNoDia >= acumulado && tempoNoDia < (acumulado + dur)) {
+                    if (segundosDesdeAs6 >= acumulado && segundosDesdeAs6 < (acumulado + dur)) {
                         indiceAtualPlaylist = i;
-                        offsetSegundosInicial = tempoNoDia - acumulado;
+                        offsetSegundosInicial = segundosDesdeAs6 - acumulado;
                         break;
                     }
                     acumulado += dur;
                 }
             } else {
+                // Bloco do Resto do Dia (Eletrônicas e Sertanejas em Loop Perpétuo)
                 playlistGlobal = gradeRestoDia;
-                let tempoNoResto = tempoNoDia - duracaoNewAgeTotal;
+                const segundosNoResto = segundosDesdeAs6 - duracaoNewAgeTotal;
+                const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
+                let tempoNoCicloResto = segundosNoResto % duracaoRestoTotal;
+
                 let acumulado = 0;
                 for (let i = 0; i < playlistGlobal.length; i++) {
                     const dur = playlistGlobal[i].durationEstimate || 210;
-                    if (tempoNoResto >= acumulado && tempoNoResto < (acumulado + dur)) {
+                    if (tempoNoCicloResto >= acumulado && tempoNoCiclo < (acumulado + dur)) {
                         indiceAtualPlaylist = i;
-                        offsetSegundosInicial = tempoNoResto - acumulado;
+                        offsetSegundosInicial = tempoNoCicloResto - acumulado;
                         break;
                     }
                     acumulado += dur;
@@ -1099,13 +1103,11 @@
 
         function tocarProximaFaixa() {
             indiceAtualPlaylist++;
-            // Se o bloco New Age acabar, transita automaticamente para o resto do dia (Eletrônicas e Sertanejas)
             if (indiceAtualPlaylist >= playlistGlobal.length) {
                 indiceAtualPlaylist = 0;
+                // Se o bloco New Age acabar, muda para o resto do dia. Se o resto do dia acabar, repete em ciclo perpétuo.
                 if (playlistGlobal === gradeNewAge) {
                     playlistGlobal = gradeRestoDia;
-                } else {
-                    playlistGlobal = gradeNewAge; // Reinicia o ciclo diário completando as 24h
                 }
             }
             offsetSegundosInicial = 0;
@@ -1130,7 +1132,7 @@
                 };
                 window.speechSynthesis.speak(frase);
             } else {
-                setTimeout(tocarProximaFaxlsa, 4000);
+                setTimeout(tocarProximaFaixa, 4000);
             }
         }
 
