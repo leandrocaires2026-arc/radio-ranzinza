@@ -961,19 +961,17 @@
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Lógica Exata de Sincronização por Horário do Dia e Somatório de Durações
         function inicializarEstudioExato() {
             const agora = new Date();
             const segundosDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
             
-            // 06:00 da manhã em segundos = 21600s
-            let segundosDesdeAs6 = segundosDoDia - 21600;
-            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00
+            let segundosDesdeAs6 = segundosDoDia - 21600; // 21600s = 06:00 da manhã
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400;
 
             const duracaoNewAgeTotal = gradeNewAge.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
+            const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
 
             if (segundosDesdeAs6 < duracaoNewAgeTotal) {
-                // Bloco do Amanhecer (New Age)
                 playlistGlobal = gradeNewAge;
                 let acumulado = 0;
                 for (let i = 0; i < playlistGlobal.length; i++) {
@@ -986,16 +984,14 @@
                     acumulado += dur;
                 }
             } else {
-                // Bloco do Resto do Dia (Eletrônicas e Sertanejas em Loop Perpétuo)
                 playlistGlobal = gradeRestoDia;
                 const segundosNoResto = segundosDesdeAs6 - duracaoNewAgeTotal;
-                const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
                 let tempoNoCicloResto = segundosNoResto % duracaoRestoTotal;
 
                 let acumulado = 0;
                 for (let i = 0; i < playlistGlobal.length; i++) {
                     const dur = playlistGlobal[i].durationEstimate || 210;
-                    if (tempoNoCicloResto >= acumulado && tempoNoCiclo < (acumulado + dur)) {
+                    if (tempoNoCicloResto >= acumulado && tempoNoCicloResto < (acumulado + dur)) {
                         indiceAtualPlaylist = i;
                         offsetSegundosInicial = tempoNoCicloResto - acumulado;
                         break;
@@ -1067,6 +1063,13 @@
                 nextAudio.src = item.url;
                 nextAudio.load();
 
+                // Garante que o buffer do navegador processa a posição correta após carregar os metadados
+                nextAudio.onloadedmetadata = () => {
+                    if (offsetSegundosInicial > 0 && offsetSegundosInicial < nextAudio.duration) {
+                        nextAudio.currentTime = offsetSegundosInicial;
+                    }
+                };
+
                 const tentarTocar = () => {
                     if (offsetSegundosInicial > 0) {
                         try {
@@ -1074,26 +1077,33 @@
                                 nextAudio.currentTime = offsetSegundosInicial;
                             }
                         } catch (e) {
-                            console.log("Offset ajustado", e);
+                            console.log("Ajustando offset de buffer", e);
                         }
-                        offsetSegundosInicial = 0;
                     }
 
                     if (somLiberadoOuvinte) {
                         nextAudio.play().then(() => {
                             activeAudio.pause();
                             playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        }).catch(e => console.log("Aguardando interação:", e));
+                        }).catch(e => console.log("Aguardando interacão:", e));
                     } else {
                         activeAudio.pause();
                         playerAtivo = playerAtivo === 1 ? 2 : 1;
                     }
+                    offsetSegundosInicial = 0; // Reseta após aplicar para o fluxo normal
                 };
 
-                nextAudio.oncanplay = () => {
+                nextAudio.oncanplaythrough = () => {
                     tentarTocar();
-                    nextAudio.oncanplay = null;
+                    nextAudio.oncanplaythrough = null;
                 };
+
+                // Fallback caso demore a disparar o canplaythrough
+                setTimeout(() => {
+                    if (nextAudio.paused && somLiberadoOuvinte) {
+                        tentarTocar();
+                    }
+                }, 1000);
             }
 
             nextAudio.onended = () => {
@@ -1105,7 +1115,6 @@
             indiceAtualPlaylist++;
             if (indiceAtualPlaylist >= playlistGlobal.length) {
                 indiceAtualPlaylist = 0;
-                // Se o bloco New Age acabar, muda para o resto do dia. Se o resto do dia acabar, repete em ciclo perpétuo.
                 if (playlistGlobal === gradeNewAge) {
                     playlistGlobal = gradeRestoDia;
                 }
@@ -1128,7 +1137,7 @@
                 };
                 frase.onerror = () => { 
                     executandoJingleVoz = false;
-                    tocarProximaFaixa();
+                    tocarProximaFaixa5();
                 };
                 window.speechSynthesis.speak(frase);
             } else {
