@@ -440,18 +440,6 @@
             margin-top: 10px;
             display: none;
         }
-        .admin-toggle {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            margin-top: 5px;
-            text-align: right;
-            display: block;
-            width: 100%;
-        }
-        .admin-toggle:hover { color: var(--neon-pink); }
         .external-platforms {
             margin-top: 15px;
             display: flex;
@@ -707,8 +695,8 @@
                         <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" oninput="mudarVolumeOuvinte(this.value)">
                     </div>
 
-                    <audio id="audioPlayer1" preload="auto" onended="tocarProximaFaixa()"></audio>
-                    <audio id="audioPlayer2" preload="auto" onended="tocarProximaFaixa()"></audio>
+                    <audio id="audioPlayer1" preload="auto"></audio>
+                    <audio id="audioPlayer2" preload="auto"></audio>
 
                     <div class="external-platforms">
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
@@ -745,9 +733,10 @@
                         <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
                         <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
                     </div>
-                    <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
+                    
+                    <!-- PAINEL DO ADMIN SECRETO (Ativado com Ctrl + Shift + A) -->
                     <div class="admin-panel" id="adminPanel">
-                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Painel Restrito do Estúdio // Rádio Ranzinza</p>
                         <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
                         <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
                     </div>
@@ -803,7 +792,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE INÍCIO SIMBÓLICO ÀS 06:00 E FLUXO CONTÍNUO SEQUENCIAL -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -821,14 +809,22 @@
             iniciarRelogiosVisuais();
             document.getElementById('audioPlayer1').volume = 0.8;
             document.getElementById('audioPlayer2').volume = 0.8;
-            sincronizarPontoDePartidaDas6h();
+            restaurarEstadoEstudio();
+            
+            // Atalho secreto para abrir o painel do Admin: Pressione Ctrl + Shift + A
+            window.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+                    const adminPanel = document.getElementById('adminPanel');
+                    adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+                }
+            });
         });
 
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -840,8 +836,6 @@
                     title: 'Rádio Ranzinza',
                     text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
                     url: urlAtual,
-                }).then(() => {
-                    fecharModalPartilha();
                 }).catch((error) => console.log('Partilha cancelada', error));
             } else {
                 copiarLinkRadio();
@@ -934,7 +928,7 @@
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
         ];
 
-        // Organiza a playlist sequencial completa
+        // Organização fixa e imutável da grade da rádio
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
@@ -962,26 +956,27 @@
         let somLiberadoOuvinte = false;
         let indiceAtualPlaylist = 0;
 
-        // Apenas calcula a faixa inicial com base nas 06:00, sem travar o andamento posterior
-        function sincronizarPontoDePartidaDas6h() {
-            const agora = new Date();
-            const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 6 horas da manhã
-            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja madrugada
-
-            const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
-            let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
-            
-            let acumulado = 0;
-            for (let i = 0; i < itemProgramacao.length; i++) {
-                const duracaoItem = itemProgramacao[i].durationEstimate || 210;
-                acumulado += duracaoItem;
-                if (tempoNoCiclo < acumulado) {
-                    indiceAtualPlaylist = i;
-                    break;
-                }
+        // Recupera o estado exato da transmissão salva na sessão local (sem reiniciar a grade)
+        function restaurarEstadoEstudio() {
+            const indiceSalvo = localStorage.getItem('radio_indice');
+            if (indiceSalvo !== null) {
+                indiceAtualPlaylist = parseInt(indiceSalvo, 10);
+                if (indiceAtualPlaylist >= itemProgramacao.length) indiceAtualPlaylist = 0;
+            } else {
+                indiceAtualPlaylist = 0; // Padrão inicial fixo se nunca acessou
             }
         }
+
+        // Salva constantemente o andamento para que F5 retome exatamente do mesmo ponto
+        function salvarEstadoEstudio() {
+            localStorage.setItem('radio_indice', indiceAtualPlaylist);
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            if (!activeAudio.paused) {
+                localStorage.setItem('radio_tempo', activeAudio.currentTime);
+            }
+        }
+
+        setInterval(salvarEstadoEstudio, 2000);
 
         function iniciarRelogiosVisuais() {
             setInterval(() => {
@@ -1011,10 +1006,10 @@
             somLiberadoOuvinte = true;
             const triggerBox = document.getElementById('playTriggerBox');
             if (triggerBox) triggerBox.style.display = 'none';
-            tocarItemAtual();
+            tocarItemAtual(true);
         }
 
-        function tocarItemAtual() {
+        function tocarItemAtual(retomarProgresso = false) {
             const item = itemProgramacao[indiceAtualPlaylist];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
@@ -1029,6 +1024,15 @@
                 nextAudio.src = item.url;
                 nextAudio.load();
 
+                nextAudio.onloadedmetadata = () => {
+                    if (retomarProgresso) {
+                        const tempoSalvo = parseFloat(localStorage.getItem('radio_tempo')) || 0;
+                        if (tempoSalvo > 0 && tempoSalvo < nextAudio.duration) {
+                            nextAudio.currentTime = tempoSalvo;
+                        }
+                    }
+                };
+
                 if (somLiberadoOuvinte) {
                     nextAudio.play().then(() => {
                         activeAudio.pause();
@@ -1039,12 +1043,16 @@
                     playerAtivo = playerAtivo === 1 ? 2 : 1;
                 }
             }
+
+            nextAudio.onended = () => {
+                tocarProximaFaixa();
+            };
         }
 
-        // Fluxo sequencial puro a partir do momento atual
         function tocarProximaFaixa() {
             indiceAtualPlaylist = (indiceAtualPlaylist + 1) % itemProgramacao.length;
-            tocarItemAtual();
+            localStorage.setItem('radio_tempo', 0);
+            tocarItemAtual(false);
         }
 
         function falarJingleNarrador() {
@@ -1083,11 +1091,6 @@
                 card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
             });
         }, 5000);
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
 
         function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
