@@ -1,336 +1,1074 @@
-<script>
-    function criarMarcacoesRelogio(faceId) {
-        const face = document.getElementById(faceId);
-        for (let i = 0; i < 60; i++) {
-            const tick = document.createElement('div');
-            tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-            tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
-            face.appendChild(tick);
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        criarMarcacoesRelogio('faceUTC');
-        criarMarcacoesRelogio('faceUptime');
-        iniciarMotorRadioGlobal();
-    });
-
-    /* FUNÇÕES DO MODAL DE PARTILHA */
-    function abrirModalPartilha() {
-        const urlAtual = encodeURIComponent(window.location.href);
-        const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
-
-        document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-        document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
-        document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
-
-        document.getElementById('shareModal').style.display = 'flex';
-    }
-
-    function partilharNativoRedes() {
-        const urlAtual = window.location.href;
-        if (navigator.share) {
-            navigator.share({
-                title: 'Rádio Ranzinza',
-                text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
-                url: urlAtual,
-            }).then(() => {
-                fecharModalPartilha();
-            }).catch((error) => console.log('Partilha cancelada', error));
-        } else {
-            copiarLinkRadio();
-        }
-    }
-
-    function fecharModalPartilha() {
-        document.getElementById('shareModal').style.display = 'none';
-    }
-
-    function copiarLinkRadio() {
-        const urlAtual = window.location.href;
-        navigator.clipboard.writeText(urlAtual).then(() => {
-            alert('Link da Rádio Ranzinza copiado para a área de transferência!');
-            fecharModalPartilha();
-        }).catch(err => {
-            console.error('Erro ao copiar link: ', err);
-        });
-    }
-
-    /* 1. BLOCO MATINAL: NEW AGE (Ordem exata definida) */
-    const playlistNewAge = [
-        { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
-        { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
-        { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
-        { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
-        { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
-        { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
-        { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
-        { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
-        { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
-        { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
-        { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
-        { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
-        { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
-        { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
-        { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
-        { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 220 },
-        { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 200 },
-        { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 200 },
-        { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
-        { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 200 },
-        { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
-        { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
-        { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
-        { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 }
-    ];
-
-    /* 2. CICLO DO RESTO DO DIA: ELETRÔNICAS + SERTANEJAS (Ordem exata definida) */
-    const playlistCicloResto = [
-        /* Eletrônicas */
-        { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
-        { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
-        { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
-        { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
-        { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
-        { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
-        { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
-        { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
-        { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
-        { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
-        { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
-        { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
-        { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
-        { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
-        { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
-        { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
-        { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 },
-
-        /* Sertanejas */
-        { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
-        { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
-        { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
-        { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
-        { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
-        { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
-        { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
-        { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
-        { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
-        { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
-        { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", duration: 210 },
-        { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
-        { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
-        { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
-        { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
-        { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", duration: 220 },
-        { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 },
-        { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 }
-    ];
-
-    const DURACAO_JINGLE = 7;
-    const itemProgramacao = [];
-    let contadorMusicas = 0;
-
-    playlistNewAge.forEach((faixa) => {
-        itemProgramacao.push({ type: 'music', ...faixa });
-        contadorMusicas++;
-        if (contadorMusicas % 3 === 0) {
-            itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
-        }
-    });
-
-    const duracaoBlocoNewAge = itemProgramacao.reduce((total, item) => total + item.duration, 0);
-
-    playlistCicloResto.forEach((faixa) => {
-        itemProgramacao.push({ type: 'music', ...faixa });
-        contadorMusicas++;
-        if (contadorMusicas % 3 === 0) {
-            itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
-        }
-    });
-
-    const duracaoTotalGrade = itemProgramacao.reduce((total, item) => total + item.duration, 0);
-
-    const audio1 = document.getElementById('audioPlayer1');
-    const audio2 = document.getElementById('audioPlayer2');
-    const nowPlayingText = document.getElementById('now-playing');
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rádio Ranzinza // Cyber Studio</title>
     
-    const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
-    let playerAtivo = 1;
-    let itemAtualIndex = -1;
-    let executandoJingleVoz = false;
-    let emTransicao = false;
-    let synthTimeout = null;
-    let primeiraSincronizacaoFeita = false;
+    <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
+    <meta property="og:title" content="Rádio Ranzinza // Cyber Studio">
+    <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="website">
 
-    function iniciarMotorRadioGlobal() {
-        setInterval(() => {
-            const agora = new Date();
-            const hUTC = agora.getUTCHours();
-            const mUTC = agora.getUTCMinutes();
-            const sUTC = agora.getUTCSeconds();
-            
-            document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
-            document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
-            document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
-            document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
-
-            const diffMs = Date.now() - tempoInicioEmissao;
-            const totalSecs = Math.floor(diffMs / 1000);
-            const upH = Math.floor(totalSecs / 3600);
-            const upM = Math.floor((totalSecs % 3600) / 60);
-            const upS = totalSecs % 60;
-
-            document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
-            document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
-            document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
-            document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
-        }, 1000);
-
-        sincronizarTransmissaoEstrita();
-        setInterval(sincronizarTransmissaoEstrita, 1000);
-    }
-
-    function calcularPontoGlobalUTC() {
-        const agora = new Date();
-        const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-        let segundosDesdeAs6 = segundosUTC - 21600; 
-        if (segundosDesdeAs6 < 0) {
-            segundosDesdeAs6 += 86400; 
+    <style>
+        :root {
+            --card-bg: rgba(16, 20, 31, 0.82);
+            --neon-pink: #ff007f;
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffaa00;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(0, 240, 255, 0.35);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #050811;
+            color: var(--text-main);
+            margin: 0;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
         }
 
-        let tempoNoCiclo = 0;
-        if (segundosDesdeAs6 < duracaoBlocoNewAge) {
-            tempoNoCiclo = segundosDesdeAs6;
-        } else {
-            let tempoAposManha = segundosDesdeAs6 - duracaoBlocoNewAge;
-            let duracaoResto = duracaoTotalGrade - duracaoBlocoNewAge;
-            tempoNoCiclo = duracaoBlocoNewAge + (tempoAposManha % duracaoResto);
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            filter: contrast(135%) saturate(160%) brightness(0.85);
+            z-index: -2;
         }
 
-        let itemIndex = 0;
-        let tempoNoItem = 0;
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 17, 0.55);
+            z-index: -1;
+        }
+        
+        header {
+            width: 100%;
+            max-width: 1200px;
+            height: 200px;
+            margin-bottom: 25px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid var(--neon-blue);
+            background: #111;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            filter: brightness(0.6);
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(11, 11, 14, 0.85);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 1px solid var(--neon-blue);
+            backdrop-filter: blur(4px);
+        }
+        .header-content h1 {
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+            letter-spacing: 2px;
+        }
+        .header-content p {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--neon-yellow);
+            letter-spacing: 1.5px;
+        }
 
-        for (let i = 0; i < itemProgramacao.length; i++) {
-            if (tempoNoCiclo < itemProgramacao[i].duration) {
-                itemIndex = i;
-                tempoNoItem = tempoNoCiclo;
-                break;
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        @media (max-width: 950px) {
+            .main-layout {
+                grid-template-columns: 1fr;
             }
-            tempoNoCiclo -= itemProgramacao[i].duration;
         }
-        return { itemIndex, tempoNoItem };
-    }
-
-    function falarJingleNarrador(tempoRestanteItem) {
-        if ('speechSynthesis' in window && !executandoJingleVoz) {
-            executandoJingleVoz = true;
-            if (synthTimeout) clearTimeout(synthTimeout);
-            
-            window.speechSynthesis.cancel();
-            const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
-            frase.lang = 'pt-BR';
-            frase.rate = 1.05;
-            frase.pitch = 0.95;
-            frase.onend = () => { executandoJingleVoz = false; };
-            frase.onerror = () => { executandoJingleVoz = false; };
-            
-            window.speechSynthesis.speak(frase);
-
-            synthTimeout = setTimeout(() => {
-                executandoJingleVoz = false;
-            }, tempoRestanteItem * 1000);
+        .card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
-    }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+        }
+        .card-top {
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        .card-bottom {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .side-panel, .center-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .column-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .player-box {
+            background: radial-gradient(circle at center, rgba(21, 27, 44, 0.92) 0%, rgba(13, 18, 29, 0.96) 100%);
+            text-align: center;
+        }
+        .player-box h2 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        #now-playing {
+            color: var(--neon-green);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.4);
+        }
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin: 15px 0;
+        }
+        .bar {
+            width: 6px;
+            background: var(--neon-pink);
+            border-radius: 3px;
+            animation: bounce 1.2s infinite ease-in-out alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; background: var(--neon-blue); }
+        .bar:nth-child(3) { animation-delay: 0.4s; background: var(--neon-green); }
+        .bar:nth-child(4) { animation-delay: 0.1s; background: var(--neon-yellow); }
+        .bar:nth-child(5) { animation-delay: 0.3s; background: var(--neon-pink); }
+        .bar:nth-child(6) { animation-delay: 0.5s; background: var(--neon-blue); }
 
-    function sincronizarTransmissaoEstrita() {
-        if (emTransicao) return;
-        const ponto = calcularPontoGlobalUTC();
-        const item = itemProgramacao[ponto.itemIndex];
-        const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+        @keyframes bounce {
+            0% { height: 8px; }
+            100% { height: 36px; }
+        }
 
-        if (itemAtualIndex !== ponto.itemIndex || !primeiraSincronizacaoFeita) {
-            itemAtualIndex = ponto.itemIndex;
-            primeiraSincronizacaoFeita = true;
+        .racing-telemetry-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(2, 5, 11, 0.95), rgba(10, 17, 32, 0.95));
+            border: 2px solid var(--neon-blue);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.1), 0 0 25px rgba(0, 240, 255, 0.2);
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .telemetry-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(3, 7, 16, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+        .telemetry-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neon-blue);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .analog-clock {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #09172c 0%, #010408 85%);
+            border: 6px solid #1a233a;
+            outline: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clock-face {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            border-radius: 50%;
+        }
+        .tick {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 6px;
+            background: rgba(0, 240, 255, 0.5);
+            transform-origin: 0 -50px;
+        }
+        .tick.major {
+            width: 3.5px;
+            height: 10px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 5px var(--neon-blue);
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 4px;
+        }
+        .hour-hand {
+            width: 4.5px;
+            height: 30px;
+            background: var(--neon-yellow);
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .minute-hand {
+            width: 3.5px;
+            height: 44px;
+            background: #ffffff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .second-hand {
+            width: 1.5px;
+            height: 50px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue);
+            transform: translateX(-50%) rotate(0deg);
+        }
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px var(--neon-blue);
+        }
+        .digital-subtext {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            margin-top: 12px;
+        }
+        audio {
+            display: none;
+        }
+        .schedule-block {
+            font-size: 0.8rem;
+            border-left: 3px solid var(--neon-blue);
+            padding-left: 8px;
+            margin-top: 6px;
+            text-align: left;
+        }
+        .schedule-title {
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin-bottom: 2px;
+        }
+        .ad-slider-card {
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .ad-slide {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .ad-slide.active {
+            display: block;
+        }
+        .ad-img-container {
+            width: 100%;
+            height: 180px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            background: #09090c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .ad-tag {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 260px;
+        }
+        .chat-messages {
+            flex: 1;
+            background: rgba(7, 10, 18, 0.9);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+        }
+        input, button.chat-btn {
+            padding: 9px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.9rem;
+        }
+        input {
+            flex: 1;
+            background: #151b2c;
+            color: white;
+            border: 1px solid var(--border-color);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+        }
+        button.chat-btn {
+            background: linear-gradient(135deg, var(--neon-pink), #ff2a5f);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button.chat-btn:hover { opacity: 0.9; }
+        .admin-panel {
+            background: #13101a;
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        .admin-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+            width: 100%;
+        }
+        .admin-toggle:hover { color: var(--neon-pink); }
+        .external-platforms {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .platform-btn {
+            background: #151b2c;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
+        .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
+        .radio-banner {
+            width: 100%;
+            height: 200px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid var(--neon-blue);
+            position: relative;
+            margin-bottom: 20px;
+            background: #111;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        .radio-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .info-box {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
 
-            if (item.type === 'jingle') {
-                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
-                audio1.pause();
-                audio2.pause();
-                falarJingleNarrador(item.duration - ponto.tempoNoItem);
-            } else {
-                nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
-                const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
-                const prevPlayer = activeAudio;
+        .share-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 999;
+        }
+        .share-modal-card {
+            background: rgba(16, 20, 31, 0.95); border: 2px solid var(--neon-blue); border-radius: 14px;
+            padding: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); animation: fadeIn 0.3s ease-in-out;
+        }
+        .share-modal-card h3 { color: var(--neon-blue); margin-top: 0; margin-bottom: 8px; }
+        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .share-option-btn {
+            background: #151b2c; color: white; border: 1px solid var(--border-color); padding: 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
+        }
+        .share-option-btn:hover { border-color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); }
+        .share-close-btn { background: var(--neon-pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+    </style>
+</head>
+<body>
 
-                emTransicao = true;
-                nextPlayer.src = item.url;
-                nextPlayer.volume = 1.0; // Inicia direto com volume pleno ao atualizar/entrar
-                nextPlayer.load();
+    <!-- MODAL DE PARTILHA -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal-card">
+            <h3>🌐 Partilhar Rádio Ranzinza</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            
+            <div class="share-grid">
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
+            </div>
+            
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
+        </div>
+    </div>
 
-                nextPlayer.onloadedmetadata = () => {
-                    const pontoAtualizado = calcularPontoGlobalUTC();
-                    // Alinha exatamente no segundo correto da grade sem cortes
-                    nextPlayer.currentTime = Math.min(pontoAtualizado.tempoNoItem, item.duration - 0.5);
+    <!-- CABEÇALHO -->
+    <header>
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
+        <div class="header-content">
+            <h1>RÁDIO RANZINZA</h1>
+            <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        
+        <!-- COLUNA ESQUERDA -->
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="card card-top" style="border-color: var(--neon-blue);">
+                    <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
+                    <div class="schedule-block" style="border-color: var(--neon-green);">
+                        <div class="schedule-title">🌅 06h - Bloco Matinal (New Age)</div>
+                        <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
+                    </div>
+                    <div class="schedule-block" style="border-color: var(--neon-blue);">
+                        <div class="schedule-title">🌙 Resto do Dia (Ciclo Contínuo)</div>
+                        <p class="info-box" style="margin: 0;">Eletrônicas ➔ Sertanejas.</p>
+                    </div>
+                </div>
+
+                <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-blue);">
+                    <div class="ad-slide active">
+                        <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
+                        <div class="ad-img-container">
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
+                                <g transform="translate(170, 50) scale(1.4)">
+                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
+                                </g>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Ouça no Spotify</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--neon-pink); margin-bottom: 2px; font-size: 0.9rem;">Ouça no Spotify</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Lançamentos oficiais em alta fidelidade.</p>
+                    </div>
+                    <div class="ad-slide">
+                        <span class="ad-tag" style="color: var(--neon-yellow);">Exclusivo Rádio</span>
+                        <div class="ad-img-container">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Ranzinza">
+                        </div>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">SoundCloud</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
+            </div>
+        </div>
+
+        <!-- COLUNA CENTRAL -->
+        <div class="column-wrapper">
+            <div class="center-panel">
+                <div class="card player-box">
+                    <h2>🎙️ Emissão Oficial em Direto</h2>
+
+                    <div class="racing-telemetry-panel">
+                        <div class="telemetry-item">
+                            <div class="telemetry-label">🏁 UTC (Greenwich)</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUTC">
+                                    <div class="hand hour-hand" id="utcHour"></div>
+                                    <div class="hand minute-hand" id="utcMin"></div>
+                                    <div class="hand second-hand" id="utcSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="utcDigital">00:00:00</div>
+                        </div>
+
+                        <div class="telemetry-item">
+                            <div class="telemetry-label">⏱️ Tempo de Emissão</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUptime">
+                                    <div class="hand hour-hand" id="upHour"></div>
+                                    <div class="hand minute-hand" id="upMin"></div>
+                                    <div class="hand second-hand" id="upSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="uptimeDigital">00:00:00</div>
+                        </div>
+                    </div>
+
+                    <p id="now-playing">Sintonizando transmissão sincronizada...</p>
                     
-                    nextPlayer.play().then(() => {
-                        prevPlayer.pause();
-                        playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        emTransicao = false;
-                    }).catch(e => {
-                        console.log("Aguardando interação do ouvinte:", e);
-                        emTransicao = false;
-                    });
-                };
-            }
-        } else {
-            // Mantém alinhado caso haja leve descompasso
-            if (item.type === 'music' && !activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 4) {
-                activeAudio.currentTime = ponto.tempoNoItem;
+                    <div class="equalizer">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+
+                    <audio id="audioPlayer1" preload="auto"></audio>
+                    <audio id="audioPlayer2" preload="auto"></audio>
+
+                    <div class="external-platforms">
+                        <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
+                        <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
+                    </div>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="abrirModalPartilha()" style="
+                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+                            color: #ffffff;
+                            border: none;
+                            padding: 10px 18px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card chat-box" style="height: auto;">
+                    <h3 style="color: var(--neon-pink);">💬 Chat & Mural ao Vivo</h3>
+                    <div class="chat-messages" id="chatMessages" style="height: 180px;">
+                        <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
+                    </div>
+                    <div class="chat-input-area" id="listenerInputArea">
+                        <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
+                        <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
+                    </div>
+
+                    <button class="admin-toggle" onclick="toggleAdminPanel()">🔒 Painel do Estúdio (Admin)</button>
+
+                    <div class="admin-panel" id="adminPanel">
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
+                        <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
+                        <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="card card-top" style="border-color: var(--neon-blue);">
+                    <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
+                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <div class="schedule-block" style="border-color: var(--neon-pink);">
+                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                        <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
+                    </div>
+                </div>
+
+                <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
+                    <div class="ad-slide active">
+                        <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
+                        <div class="ad-img-container">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="SoundCloud Destaque">
+                        </div>
+                        <h3 style="color: var(--neon-blue); margin-bottom: 2px; font-size: 0.9rem;">Canal SoundCloud</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Álbuns completos sem interrupções.</p>
+                    </div>
+                    <div class="ad-slide">
+                        <span class="ad-tag" style="color: var(--neon-green);">Rede Oficial</span>
+                        <div class="ad-img-container">
+                            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="400" height="200" fill="#0d1117"/>
+                                <circle cx="200" cy="85" r="45" fill="#1db954" opacity="0.2" filter="blur(15px)"/>
+                                <g transform="translate(170, 50) scale(1.4)">
+                                    <path d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm10.985 34.618c-.438.682-1.332.894-2.016.456-5.526-3.378-12.486-4.14-20.67-2.268-.78.18-1.542-.312-1.722-1.092-.18-.78.312-1.542 1.092-1.722 8.85-2.034 16.512-1.152 22.758 2.664.684.438.894 1.332.458 2.016zm2.934-6.522c-.552.87-1.68 1.14-2.55.588-6.33-3.888-15.99-5.022-23.472-2.748-.996.3-2.04-.252-2.34-1.248-.3-.996.252-2.04 1.248-2.34 8.52-2.58 19.332-1.32 26.658 3.168.87.552 1.14 1.68.588 2.55zm.252-6.84c-7.56-4.482-20.034-4.89-27.24-2.7-1.158.348-2.388-.306-2.736-1.464-.348-1.158.306-2.388 1.464-2.736 8.28-2.514 22.32-2.04 31.02 3.12 1.026.6 1.368 1.932.768 2.958-.6 1.026-1.932 1.368-2.958.768z" fill="#1db954"/>
+                                </g>
+                                <text x="200" y="145" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">RANZINZA</text>
+                                <text x="200" y="168" font-family="Segoe UI, sans-serif" font-size="12" fill="#1db954" text-anchor="middle" letter-spacing="1">Perfil no Spotify</text>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--neon-green); margin-bottom: 2px; font-size: 0.9rem;">Perfil no Spotify</h3>
+                        <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT DE PROGRAMAÇÃO E MOTOR GLOBAL -->
+    <script>
+        function criarMarcacoesRelogio(faceId) {
+            const face = document.getElementById(faceId);
+            for (let i = 0; i < 60; i++) {
+                const tick = document.createElement('div');
+                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
+                face.appendChild(tick);
             }
         }
-    }
 
-    setInterval(() => {
-        const cards = document.querySelectorAll('.ad-slider-card');
-        cards.forEach(card => {
-            const slides = card.querySelectorAll('.ad-slide');
-            let activeIndex = 0;
-            slides.forEach((slide, index) => {
-                if (slide.classList.contains('active')) activeIndex = index;
-                slide.classList.remove('active');
-            });
-            let nextIndex = (activeIndex + 1) % slides.length;
-            slides[nextIndex].classList.add('active');
-
-            card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            iniciarMotorRadioGlobal();
         });
-    }, 5000);
 
-    function toggleAdminPanel() {
-        const panel = document.getElementById('adminPanel');
-        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-    }
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
 
-    function enviarMensagemOuvinte() {
-        const input = document.getElementById('chatInput');
-        const messages = document.getElementById('chatMessages');
-        if(input.value.trim() !== '') {
-            const p = document.createElement('p');
-            p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-            messages.appendChild(p);
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+
+            document.getElementById('shareModal').style.display = 'flex';
         }
-    }
 
-    function enviarMensagemAdmin() {
-        const input = document.getElementById('adminInput');
-        const messages = document.getElementById('chatMessages');
-        if(input.value.trim() !== '') {
-            const p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-            messages.appendChild(p);
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).then(() => {
+                    fecharModalPartilha();
+                }).catch((error) => console.log('Partilha cancelada', error));
+            } else {
+                copiarLinkRadio();
+            }
         }
-    }
-</script>
+
+        function fecharModalPartilha() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copiarLinkRadio() {
+            const urlAtual = window.location.href;
+            navigator.clipboard.writeText(urlAtual).then(() => {
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
+                fecharModalPartilha();
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
+        }
+
+        /* 1. BLOCO MATINAL: NEW AGE */
+        const playlistNewAge = [
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 220 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 200 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 200 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 200 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 200 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 200 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 200 }
+        ];
+
+        /* 2. CICLO DO RESTO DO DIA: ELETRÔNICAS + SERTANEJAS */
+        const playlistCicloResto = [
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 240 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 220 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 230 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 250 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 215 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 240 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 220 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 270 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 230 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", duration: 230 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 220 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 220 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", duration: 220 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 220 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 235 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 220 },
+
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 200 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 190 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 225 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 215 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
+            { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", duration: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", duration: 220 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 220 },
+            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 }
+        ];
+
+        const DURACAO_JINGLE = 7;
+        const itemProgramacao = [];
+        let contadorMusicas = 0;
+
+        playlistNewAge.forEach((faixa) => {
+            itemProgramacao.push({ type: 'music', ...faixa });
+            contadorMusicas++;
+            if (contadorMusicas % 3 === 0) {
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
+            }
+        });
+
+        const duracaoBlocoNewAge = itemProgramacao.reduce((total, item) => total + item.duration, 0);
+
+        playlistCicloResto.forEach((faixa) => {
+            itemProgramacao.push({ type: 'music', ...faixa });
+            contadorMusicas++;
+            if (contadorMusicas % 3 === 0) {
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: DURACAO_JINGLE });
+            }
+        });
+
+        const duracaoTotalGrade = itemProgramacao.reduce((total, item) => total + item.duration, 0);
+
+        const audio1 = document.getElementById('audioPlayer1');
+        const audio2 = document.getElementById('audioPlayer2');
+        const nowPlayingText = document.getElementById('now-playing');
+        
+        const tempoInicioEmissao = Date.now() - (12 * 3600 * 1000);
+        let playerAtivo = 1;
+        let itemAtualIndex = -1;
+        let executandoJingleVoz = false;
+        let emTransicao = false;
+        let synthTimeout = null;
+        let primeiraSincronizacaoFeita = false;
+
+        function iniciarMotorRadioGlobal() {
+            setInterval(() => {
+                const agora = new Date();
+                const hUTC = agora.getUTCHours();
+                const mUTC = agora.getUTCMinutes();
+                const sUTC = agora.getUTCSeconds();
+                
+                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+                document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+                document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+
+                const diffMs = Date.now() - tempoInicioEmissao;
+                const totalSecs = Math.floor(diffMs / 1000);
+                const upH = Math.floor(totalSecs / 3600);
+                const upM = Math.floor((totalSecs % 3600) / 60);
+                const upS = totalSecs % 60;
+
+                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+                document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+                document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+            }, 1000);
+
+            sincronizarTransmissaoEstrita();
+            setInterval(sincronizarTransmissaoEstrita, 1000);
+        }
+
+        function calcularPontoGlobalUTC() {
+            const agora = new Date();
+            const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
+            let segundosDesdeAs6 = segundosUTC - 21600; 
+            if (segundosDesdeAs6 < 0) {
+                segundosDesdeAs6 += 86400; 
+            }
+
+            let tempoNoCiclo = 0;
+            if (segundosDesdeAs6 < duracaoBlocoNewAge) {
+                tempoNoCiclo = segundosDesdeAs6;
+            } else {
+                let tempoAposManha = segundosDesdeAs6 - duracaoBlocoNewAge;
+                let duracaoResto = duracaoTotalGrade - duracaoBlocoNewAge;
+                tempoNoCiclo = duracaoBlocoNewAge + (tempoAposManha % duracaoResto);
+            }
+
+            let itemIndex = 0;
+            let tempoNoItem = 0;
+
+            for (let i = 0; i < itemProgramacao.length; i++) {
+                if (tempoNoCiclo < itemProgramacao[i].duration) {
+                    itemIndex = i;
+                    tempoNoItem = tempoNoCiclo;
+                    break;
+                }
+                tempoNoCiclo -= itemProgramacao[i].duration;
+            }
+            return { itemIndex, tempoNoItem };
+        }
+
+        function falarJingleNarrador(tempoRestanteItem) {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                if (synthTimeout) clearTimeout(synthTimeout);
+                
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { executandoJingleVoz = false; };
+                frase.onerror = () => { executandoJingleVoz = false; };
+                
+                window.speechSynthesis.speak(frase);
+
+                synthTimeout = setTimeout(() => {
+                    executandoJingleVoz = false;
+                }, tempoRestanteItem * 1000);
+            }
+        }
+
+        function sincronizarTransmissaoEstrita() {
+            if (emTransicao) return;
+            const ponto = calcularPontoGlobalUTC();
+            const item = itemProgramacao[ponto.itemIndex];
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+
+            if (itemAtualIndex !== ponto.itemIndex || !primeiraSincronizacaoFeita) {
+                itemAtualIndex = ponto.itemIndex;
+                primeiraSincronizacaoFeita = true;
+
+                if (item.type === 'jingle') {
+                    nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
+                    audio1.pause();
+                    audio2.pause();
+                    falarJingleNarrador(item.duration - ponto.tempoNoItem);
+                } else {
+                    nowPlayingText.innerHTML = `No ar agora (UTC): <strong>${item.title}</strong>`;
+                    const nextPlayer = playerAtivo === 1 ? audio2 : audio1;
+                    const prevPlayer = activeAudio;
+
+                    emTransicao = true;
+                    nextPlayer.src = item.url;
+                    nextPlayer.volume = 1.0;
+                    nextPlayer.load();
+
+                    nextPlayer.onloadedmetadata = () => {
+                        const pontoAtualizado = calcularPontoGlobalUTC();
+                        nextPlayer.currentTime = Math.min(pontoAtualizado.tempoNoItem, item.duration - 0.5);
+                        
+                        nextPlayer.play().then(() => {
+                            prevPlayer.pause();
+                            playerAtivo = playerAtivo === 1 ? 2 : 1;
+                            emTransicao = false;
+                        }).catch(e => {
+                            console.log("Aguardando interação do ouvinte:", e);
+                            emTransicao = false;
+                        });
+                    };
+                }
+            } else {
+                if (item.type === 'music' && !activeAudio.paused && Math.abs(activeAudio.currentTime - ponto.tempoNoItem) > 4) {
+                    activeAudio.currentTime = ponto.tempoNoItem;
+                }
+            }
+        }
+
+        setInterval(() => {
+            const cards = document.querySelectorAll('.ad-slider-card');
+            cards.forEach(card => {
+                const slides = card.querySelectorAll('.ad-slide');
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+            });
+        }, 5000);
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
