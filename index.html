@@ -625,8 +625,26 @@
                         </div>
                     </div>
 
-                    <p id="now-playing">Sintonizando grade diária exata...</p>
+                    <p id="now-playing">Clique abaixo para ligar o som da rádio...</p>
                     
+                    <!-- BOTÃO DE DESTRAVAMENTO DE ÁUDIO (AUTOPLAY FIX) -->
+                    <div id="playTriggerBox" style="margin-bottom: 12px;">
+                        <button onclick="forcarInicioTransmissao()" style="
+                            background: linear-gradient(135deg, var(--neon-green), #00aa44);
+                            color: #050811;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.95rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+                            transition: 0.2s;
+                        ">
+                            ▶ LIGAR TRANSMISSÃO 432Hz
+                        </button>
+                    </div>
+
                     <div class="equalizer">
                         <div class="bar"></div>
                         <div class="bar"></div>
@@ -737,7 +755,7 @@
 
     </div>
 
-    <!-- SCRIPT DE MOTOR HÍBRIDO: GRADE DIÁRIA ESTÁVEL + SEM CORTES -->
+    <!-- SCRIPT DE MOTOR HÍBRIDO COM GATILHO DE ÁUDIO -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -752,7 +770,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
             criarMarcacoesRelogio('faceUptime');
-            iniciarMotorGradeEstavel();
+            iniciarRelogiosVisuais();
         });
 
         function abrirModalPartilha() {
@@ -863,7 +881,6 @@
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", duration: 210 }
         ];
 
-        /* Montagem rigorosa da grade na ordem exata definida por você */
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
@@ -893,8 +910,7 @@
         let executandoJingleVoz = false;
         let playerAtivo = 1;
 
-        function iniciarMotorGradeEstavel() {
-            // Relógios visuais do topo
+        function iniciarRelogiosVisuais() {
             setInterval(() => {
                 const agora = new Date();
                 const hUTC = agora.getUTCHours();
@@ -915,8 +931,6 @@
                 document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
                 document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
-
-            sincronizarOuAvancarGrade();
         }
 
         function calcularIndicePeloHorarioUTC() {
@@ -937,6 +951,15 @@
             return 0;
         }
 
+        function forcarInicioTransmissao() {
+            // Esconde o botão de play inicial e destrava o áudio
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) triggerBox.style.display = 'none';
+
+            indiceAtual = calcularIndicePeloHorarioUTC();
+            tocarItemAtualGrade();
+        }
+
         function falarJingleNarrador() {
             if ('speechSynthesis' in window && !executandoJingleVoz) {
                 executandoJingleVoz = true;
@@ -951,15 +974,7 @@
             }
         }
 
-        function sincronizarOuAvancarGrade() {
-            // Se for o primeiro acesso, sintoniza exatamente no horário da programação do dia
-            if (indiceAtual === -1) {
-                indiceAtual = calcularIndicePeloHorarioUTC();
-            } else {
-                // Caso contrário, avança estritamente para a próxima na ordem oficial da grade
-                indiceAtual = (indiceAtual + 1) % itemProgramacao.length;
-            }
-
+        function tocarItemAtualGrade() {
             const item = itemProgramacao[indiceAtual];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
@@ -971,7 +986,8 @@
                 falarJingleNarrador();
 
                 setTimeout(() => {
-                    sincronizarOuAvancarGrade();
+                    indiceAtual = (indiceAtual + 1) % itemProgramacao.length;
+                    tocarItemAtualGrade();
                 }, 7000);
             } else {
                 nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
@@ -984,12 +1000,15 @@
                     activeAudio.pause();
                     playerAtivo = playerAtivo === 1 ? 2 : 1;
                 }).catch(e => {
-                    console.log("Aguardando interação para autorizar reprodução automática:", e);
+                    console.log("Reprodução automática bloqueada pelo navegador. Aguardando clique.", e);
+                    // Mostra o botão de play caso o autoplay automático falhe
+                    const triggerBox = document.getElementById('playTriggerBox');
+                    if (triggerBox) triggerBox.style.display = 'block';
                 });
 
-                // BLINDAGEM SEM CORTES: A música roda até o último segundo real do arquivo
                 nextAudio.onended = () => {
-                    sincronizarOuAvancarGrade();
+                    indiceAtual = (indiceAtual + 1) % itemProgramacao.length;
+                    tocarItemAtualGrade();
                 };
             }
         }
@@ -1031,7 +1050,8 @@
             const input = document.getElementById('adminInput');
             const messages = document.getElementById('chatMessages');
             if(input.value.trim() !== '') {
-                const p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
