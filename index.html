@@ -596,7 +596,7 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Início às 06h (Matinal New Age)</div>
+                        <div class="schedule-title">🌅 Referência às 06h (Matinal New Age)</div>
                         <p class="info-box" style="margin: 0;">Instrumentais & Streamside.</p>
                     </div>
                     <div class="schedule-block" style="border-color: var(--neon-blue);">
@@ -803,7 +803,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DO MOTOR SEQUENCIAL CONTÍNUO -->
+    <!-- SCRIPT DE INÍCIO SIMBÓLICO ÀS 06:00 E FLUXO CONTÍNUO SEQUENCIAL -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -821,13 +821,14 @@
             iniciarRelogiosVisuais();
             document.getElementById('audioPlayer1').volume = 0.8;
             document.getElementById('audioPlayer2').volume = 0.8;
+            sincronizarPontoDePartidaDas6h();
         });
 
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -869,71 +870,71 @@
         }
 
         const playlistNewAge = [
-            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3" },
-            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3" },
-            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3" },
-            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3" },
-            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3" },
-            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3" },
-            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3" },
-            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3" },
-            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3" },
-            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3" },
-            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3" },
-            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3" },
-            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3" },
-            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3" },
-            { title: "Nostalgia", url: "NOSTALGIA.mp3" },
-            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3" },
-            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3" },
-            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3" },
-            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3" },
-            { title: "Streamside Relief", url: "Streamside%20Relief.mp3" },
-            { title: "Streamside Rest", url: "Streamside%20Rest.mp3" }
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", durationEstimate: 210 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", durationEstimate: 210 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", durationEstimate: 210 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", durationEstimate: 210 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", durationEstimate: 210 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", durationEstimate: 210 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", durationEstimate: 210 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", durationEstimate: 210 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", durationEstimate: 210 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 210 }
         ];
 
         const playlistCicloResto = [
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3" },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3" },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3" },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3" },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3" },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3" },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3" },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3" },
-            { title: "Persistence", url: "PERSISTENCE.mp3" },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3" },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3" },
-            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3" },
-            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3" },
-            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3" },
-            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3" },
-            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3" },
-            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3" },
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3" },
-            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3" },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3" },
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" },
-            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3" },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
-            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3" },
-            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3" },
-            { title: "Não Me Procure Mais (Remix)", url: "N%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3" },
-            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3" },
-            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3" },
-            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3" },
-            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3" },
-            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3" },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3" },
-            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3" }
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 210 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 210 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", durationEstimate: 210 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", durationEstimate: 210 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", durationEstimate: 210 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", durationEstimate: 210 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", durationEstimate: 210 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", durationEstimate: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", durationEstimate: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", durationEstimate: 210 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", durationEstimate: 210 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", durationEstimate: 210 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", durationEstimate: 210 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", durationEstimate: 210 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", durationEstimate: 210 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", durationEstimate: 210 },
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", durationEstimate: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", durationEstimate: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", durationEstimate: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", durationEstimate: 210 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", durationEstimate: 210 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", durationEstimate: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", durationEstimate: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", durationEstimate: 210 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", durationEstimate: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", durationEstimate: 210 },
+            { title: "Não Me Procure Mais (Remix)", url: "N%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", durationEstimate: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", durationEstimate: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", durationEstimate: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", durationEstimate: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", durationEstimate: 210 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", durationEstimate: 210 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", durationEstimate: 210 },
+            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
         ];
 
-        // Monta a ordem sequencial da programação
+        // Organiza a playlist sequencial completa
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
@@ -941,7 +942,7 @@
             itemProgramacao.push({ type: 'music', ...faixa });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
             }
         });
 
@@ -949,7 +950,7 @@
             itemProgramacao.push({ type: 'music', ...faixa });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
-                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+                itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
             }
         });
 
@@ -960,6 +961,27 @@
         let playerAtivo = 1;
         let somLiberadoOuvinte = false;
         let indiceAtualPlaylist = 0;
+
+        // Apenas calcula a faixa inicial com base nas 06:00, sem travar o andamento posterior
+        function sincronizarPontoDePartidaDas6h() {
+            const agora = new Date();
+            const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 6 horas da manhã
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja madrugada
+
+            const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
+            let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
+            
+            let acumulado = 0;
+            for (let i = 0; i < itemProgramacao.length; i++) {
+                const duracaoItem = itemProgramacao[i].durationEstimate || 210;
+                acumulado += duracaoItem;
+                if (tempoNoCiclo < acumulado) {
+                    indiceAtualPlaylist = i;
+                    break;
+                }
+            }
+        }
 
         function iniciarRelogiosVisuais() {
             setInterval(() => {
@@ -1011,7 +1033,7 @@
                     nextAudio.play().then(() => {
                         activeAudio.pause();
                         playerAtivo = playerAtivo === 1 ? 2 : 1;
-                    }).catch(e => console.log("Aguardando interacão:", e));
+                    }).catch(e => console.log("Aguardando interação:", e));
                 } else {
                     activeAudio.pause();
                     playerAtivo = playerAtivo === 1 ? 2 : 1;
@@ -1019,7 +1041,7 @@
             }
         }
 
-        // Acionado automaticamente quando qualquer faixa termina de tocar
+        // Fluxo sequencial puro a partir do momento atual
         function tocarProximaFaixa() {
             indiceAtualPlaylist = (indiceAtualPlaylist + 1) % itemProgramacao.length;
             tocarItemAtual();
@@ -1035,7 +1057,6 @@
                 frase.pitch = 0.95;
                 frase.onend = () => { 
                     executandoJingleVoz = false;
-                    // Avança automaticamente após o jingle terminar de falar
                     tocarProximaFaixa();
                 };
                 frase.onerror = () => { 
