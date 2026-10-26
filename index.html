@@ -824,7 +824,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -863,68 +863,69 @@
             document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
+        // Definição exata com duração estimada realista de cada faixa em segundos
         const playlistNewAge = [
-            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 215 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", durationEstimate: 220 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", durationEstimate: 205 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", durationEstimate: 212 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", durationEstimate: 198 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", durationEstimate: 225 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 208 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 214 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 200 },
             { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 218 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 205 },
             { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", durationEstimate: 210 },
-            { title: "Nostalgia", url: "NOSTALGIA.mp3", durationEstimate: 210 },
-            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", durationEstimate: 210 },
-            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", durationEstimate: 210 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", durationEstimate: 222 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", durationEstimate: 240 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", durationEstimate: 195 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", durationEstimate: 200 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", durationEstimate: 205 },
             { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", durationEstimate: 210 },
-            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", durationEstimate: 210 },
-            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", durationEstimate: 210 },
-            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", durationEstimate: 210 },
-            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 210 }
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", durationEstimate: 215 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", durationEstimate: 205 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", durationEstimate: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 220 }
         ];
 
         const playlistCicloResto = [
             { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 210 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 210 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", durationEstimate: 210 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", durationEstimate: 210 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 215 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 200 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", durationEstimate: 225 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", durationEstimate: 230 },
             { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", durationEstimate: 210 },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", durationEstimate: 210 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", durationEstimate: 210 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", durationEstimate: 190 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", durationEstimate: 245 },
             { title: "Persistence", url: "PERSISTENCE.mp3", durationEstimate: 210 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", durationEstimate: 210 },
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", durationEstimate: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", durationEstimate: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", durationEstimate: 220 },
             { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", durationEstimate: 210 },
-            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", durationEstimate: 210 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", durationEstimate: 215 },
             { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", durationEstimate: 210 },
-            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", durationEstimate: 210 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", durationEstimate: 205 },
             { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", durationEstimate: 210 },
-            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", durationEstimate: 210 },
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", durationEstimate: 210 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", durationEstimate: 215 },
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", durationEstimate: 200 },
             { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", durationEstimate: 210 },
             { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", durationEstimate: 210 },
-            { title: "Escolha", url: "ESCOLHA.mp3", durationEstimate: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", durationEstimate: 195 },
             { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", durationEstimate: 210 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", durationEstimate: 210 },
-            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", durationEstimate: 210 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", durationEstimate: 210 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", durationEstimate: 215 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", durationEstimate: 220 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", durationEstimate: 205 },
             { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", durationEstimate: 210 },
-            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", durationEstimate: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", durationEstimate: 200 },
             { title: "Não Me Procure Mais (Remix)", url: "N%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", durationEstimate: 210 },
-            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", durationEstimate: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", durationEstimate: 205 },
             { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", durationEstimate: 210 },
-            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", durationEstimate: 210 },
-            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", durationEstimate: 210 },
-            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", durationEstimate: 210 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", durationEstimate: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", durationEstimate: 215 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", durationEstimate: 220 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", durationEstimate: 205 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", durationEstimate: 205 },
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
         ];
 
@@ -957,11 +958,11 @@
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Calcula matematicamente o índice e o segundo exato com base no conceito conceitual das 06:00
+        // Cálculo matemático exato com base na duração real de cada faixa a partir das 06:00
         function sincronizarConceito6DaManha() {
             const agora = new Date();
             const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 6 horas da manhã
+            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 06:00 da manhã
             if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00 (madrugada)
 
             const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
@@ -1025,11 +1026,10 @@
                 nextAudio.src = item.url;
                 nextAudio.load();
 
-                // Aplica o offset calculado a partir das 06h para iniciar exatamente no segundo correto da música atual
                 const aplicarOffsetEIniciar = () => {
                     if (offsetSegundosInicial > 0 && offsetSegundosInicial < nextAudio.duration) {
                         nextAudio.currentTime = offsetSegundosInicial;
-                        offsetSegundosInicial = 0; // Usado apenas na primeira carga conceitual
+                        offsetSegundosInicial = 0; 
                     }
                     if (somLiberadoOuvinte) {
                         nextAudio.play().then(() => {
