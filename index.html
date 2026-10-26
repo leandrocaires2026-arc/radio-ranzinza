@@ -830,7 +830,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `url?id=10sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -962,7 +962,7 @@
         let indiceAtualPlaylist = 0;
         let offsetSegundosInicial = 0;
 
-        // Cálculo exato baseado na soma das durações reais a partir das 06:00
+        // Modo Perpétuo Contínuo a partir das 06:00
         function sincronizarConceito6DaManha() {
             const agora = new Date();
             const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
