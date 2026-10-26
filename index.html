@@ -755,15 +755,31 @@
 
     </div>
 
-    <!-- SCRIPT DO MOTOR DE DUPLO DECK COM BLINDAGEM DE BUFFER -->
+    <!-- SCRIPT DO MOTOR CORRIGIDO E DIRETO -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
             for (let i = 0; i < 60; i++) {
                 const tick = document.createElement('div');
                 tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`; face.appendChild(tick); } }  window.addEventListener('DOMContentLoaded', () => { criarMarcacoesRelogio('faceUTC'); criarMarcacoesRelogio('faceUptime'); iniciarRelogiosEAutomacaoPerpetua(); });  function abrirModalPartilha() { const urlAtual = encodeURIComponent(window.location.href); const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");  document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`; document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
-            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}\%20${urlAtual}`;
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
+                face.appendChild(tick);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            iniciarRelogiosEAutomacaoPerpetua();
+        });
+
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
+
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
 
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -892,25 +908,27 @@
         let itemAtualEmissao = null;
 
         function iniciarRelogiosEAutomacaoPerpetua() {
-            // Relógios visuais do painel
             setInterval(() => {
                 const agora = new Date();
                 const hUTC = agora.getUTCHours();
                 const mUTC = agora.getUTCMinutes();
                 const sUTC = agora.getUTCSeconds();
                 
-                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`; document.getElementById('utcMin').style.transform = `translateX(-50\%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
-                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC \% 12) * 30 + mUTC * 0.5}deg)`; document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+                document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+                document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
 
                 const uptimeSec = Math.floor(performance.now() / 1000);
                 const upH = Math.floor(uptimeSec / 3600);
                 const upM = Math.floor((uptimeSec % 3600) / 60);
                 const upS = uptimeSec % 60;
-                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`; document.getElementById('upMin').style.transform = `translateX(-50\%) rotate(${upM * 6 + upS * 0.1}deg)`;
-                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH \% 12) * 30 + upM * 0.5}deg)`; document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+                document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+                document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
 
-            // Verifica o estado da rádio baseada no UTC a cada segundo
             setInterval(sincronizarEstudioPerpetuo, 1000);
             sincronizarEstudioPerpetuo();
         }
@@ -919,7 +937,7 @@
             const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.duration || 210), 0);
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let segundosDesdeAs6 = segundosUTC - 21600; // Base 06:00 UTC
+            let segundosDesdeAs6 = segundosUTC - 21600; 
             if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400;
 
             let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
@@ -950,4 +968,122 @@
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
 
             if (item.type === 'jingle') {
-                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
+                audio1.pause();
+                audio2.pause();
+                falarJingleNarrador();
+            } else {
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                
+                nextAudio.src = item.url;
+                nextAudio.load();
+
+                // Define o tempo sem travar a execução
+                try {
+                    if (offsetSegundos > 0) {
+                        nextAudio.currentTime = offsetSegundos;
+                    }
+                } catch(e) {
+                    console.log("Ajuste de offset pendente:", e);
+                }
+
+                if (somLiberadoOuvinte) {
+                    nextAudio.play().then(() => {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    }).catch(e => console.log("Aguardando interação do ouvinte.", e));
+                } else {
+                    activeAudio.pause();
+                    playerAtivo = playerAtivo === 1 ? 2 : 1;
+                }
+            }
+        }
+
+        // Função do botão: Destrava o som e reproduz instantaneamente o que está no ar
+        function ligarSomOuvinte() {
+            somLiberadoOuvinte = true;
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) triggerBox.style.display = 'none';
+
+            const estado = calcularEstadoAtualPeloUTC();
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            
+            if (estado.item.type === 'music') {
+                activeAudio.src = estado.item.url;
+                try {
+                    activeAudio.currentTime = estado.offset;
+                } catch(e) {}
+                activeAudio.play().then(() => {
+                    nowPlayingText.innerHTML = `No ar agora: <strong>${estado.item.title}</strong>`;
+                }).catch(err => {
+                    console.log("Erro ao forçar play:", err);
+                    // Fallback de segurança absoluto caso o navegador bloqueie
+                    activeAudio.currentTime = 0;
+                    activeAudio.play();
+                });
+            } else {
+                falarJingleNarrador();
+            }
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { executandoJingleVoz = false; };
+                frase.onerror = () => { executandoJingleVoz = false; };
+                window.speechSynthesis.speak(frase);
+            }
+        }
+
+        // Carrossel de patrocínio
+        setInterval(() => {
+            const cards = document.querySelectorAll('.ad-slider-card');
+            cards.forEach(card => {
+                const slides = card.querySelectorAll('.ad-slide');
+                let activeIndex = 0;
+                slides.forEach((slide, index) => {
+                    if (slide.classList.contains('active')) activeIndex = index;
+                    slide.classList.remove('active');
+                });
+                let nextIndex = (activeIndex + 1) % slides.length;
+                slides[nextIndex].classList.add('active');
+                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
+            });
+        }, 5000);
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input.value.trim() !== '') {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = JSON.stringify(messages.scrollHeight);
+            }
+        }
+    </script>
+</body>
+</html>
