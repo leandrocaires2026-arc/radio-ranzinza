@@ -809,9 +809,9 @@
             iniciarRelogiosVisuais();
             document.getElementById('audioPlayer1').volume = 0.8;
             document.getElementById('audioPlayer2').volume = 0.8;
-            restaurarEstadoEstudio();
+            sincronizarConceito6DaManha();
             
-            // Atalho secreto para abrir o painel do Admin: Pressione Ctrl + Shift + A
+            // Atalho secreto para o seu painel de Admin: Ctrl + Shift + A
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
                     const adminPanel = document.getElementById('adminPanel');
@@ -824,7 +824,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://mail.google.com/mail/u/0/?tab=rm&ogbl0sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -928,7 +928,7 @@
             { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
         ];
 
-        // Organização fixa e imutável da grade da rádio
+        // Ordem fixa e inviolável da programação
         const itemProgramacao = [];
         let contadorMusicas = 0;
 
@@ -955,28 +955,29 @@
         let playerAtivo = 1;
         let somLiberadoOuvinte = false;
         let indiceAtualPlaylist = 0;
+        let offsetSegundosInicial = 0;
 
-        // Recupera o estado exato da transmissão salva na sessão local (sem reiniciar a grade)
-        function restaurarEstadoEstudio() {
-            const indiceSalvo = localStorage.getItem('radio_indice');
-            if (indiceSalvo !== null) {
-                indiceAtualPlaylist = parseInt(indiceSalvo, 10);
-                if (indiceAtualPlaylist >= itemProgramacao.length) indiceAtualPlaylist = 0;
-            } else {
-                indiceAtualPlaylist = 0; // Padrão inicial fixo se nunca acessou
+        // Calcula matematicamente o índice e o segundo exato com base no conceito conceitual das 06:00
+        function sincronizarConceito6DaManha() {
+            const agora = new Date();
+            const segundosAtuaisDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            let segundosDesdeAs6 = segundosAtuaisDoDia - 21600; // 21600s = 6 horas da manhã
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400; // Caso seja antes das 06:00 (madrugada)
+
+            const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.durationEstimate || 210), 0);
+            let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
+            
+            let acumulado = 0;
+            for (let i = 0; i < itemProgramacao.length; i++) {
+                const duracaoItem = itemProgramacao[i].durationEstimate || 210;
+                if (tempoNoCiclo < acumulado + duracaoItem) {
+                    indiceAtualPlaylist = i;
+                    offsetSegundosInicial = tempoNoCiclo - acumulado;
+                    break;
+                }
+                acumulado += duracaoItem;
             }
         }
-
-        // Salva constantemente o andamento para que F5 retome exatamente do mesmo ponto
-        function salvarEstadoEstudio() {
-            localStorage.setItem('radio_indice', indiceAtualPlaylist);
-            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-            if (!activeAudio.paused) {
-                localStorage.setItem('radio_tempo', activeAudio.currentTime);
-            }
-        }
-
-        setInterval(salvarEstadoEstudio, 2000);
 
         function iniciarRelogiosVisuais() {
             setInterval(() => {
@@ -1006,10 +1007,10 @@
             somLiberadoOuvinte = true;
             const triggerBox = document.getElementById('playTriggerBox');
             if (triggerBox) triggerBox.style.display = 'none';
-            tocarItemAtual(true);
+            tocarItemAtual();
         }
 
-        function tocarItemAtual(retomarProgresso = false) {
+        function tocarItemAtual() {
             const item = itemProgramacao[indiceAtualPlaylist];
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
@@ -1024,23 +1025,27 @@
                 nextAudio.src = item.url;
                 nextAudio.load();
 
-                nextAudio.onloadedmetadata = () => {
-                    if (retomarProgresso) {
-                        const tempoSalvo = parseFloat(localStorage.getItem('radio_tempo')) || 0;
-                        if (tempoSalvo > 0 && tempoSalvo < nextAudio.duration) {
-                            nextAudio.currentTime = tempoSalvo;
-                        }
+                // Aplica o offset calculado a partir das 06h para iniciar exatamente no segundo correto da música atual
+                const aplicarOffsetEIniciar = () => {
+                    if (offsetSegundosInicial > 0 && offsetSegundosInicial < nextAudio.duration) {
+                        nextAudio.currentTime = offsetSegundosInicial;
+                        offsetSegundosInicial = 0; // Usado apenas na primeira carga conceitual
+                    }
+                    if (somLiberadoOuvinte) {
+                        nextAudio.play().then(() => {
+                            activeAudio.pause();
+                            playerAtivo = playerAtivo === 1 ? 2 : 1;
+                        }).catch(e => console.log("Aguardando interação:", e));
+                    } else {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
                     }
                 };
 
-                if (somLiberadoOuvinte) {
-                    nextAudio.play().then(() => {
-                        activeAudio.pause();
-                        playerAtivo = playerAtivo === 1 ? 2 : 1;
-                    }).catch(e => console.log("Aguardando interação:", e));
+                if (nextAudio.readyState >= 1) {
+                    aplicarOffsetEIniciar();
                 } else {
-                    activeAudio.pause();
-                    playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    nextAudio.onloadedmetadata = aplicarOffsetEIniciar;
                 }
             }
 
@@ -1051,8 +1056,8 @@
 
         function tocarProximaFaixa() {
             indiceAtualPlaylist = (indiceAtualPlaylist + 1) % itemProgramacao.length;
-            localStorage.setItem('radio_tempo', 0);
-            tocarItemAtual(false);
+            offsetSegundosInicial = 0;
+            tocarItemAtual();
         }
 
         function falarJingleNarrador() {
