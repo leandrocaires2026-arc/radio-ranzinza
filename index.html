@@ -625,11 +625,11 @@
                         </div>
                     </div>
 
-                    <p id="now-playing">Clique abaixo para ligar o som da rádio...</p>
+                    <p id="now-playing">Estúdio Perpétuo no Ar...</p>
                     
                     <!-- BOTÃO DE DESTRAVAMENTO DE ÁUDIO -->
                     <div id="playTriggerBox" style="margin-bottom: 12px;">
-                        <button onclick="forcarInicioTransmissao()" style="
+                        <button onclick="ligarSomOuvinte()" style="
                             background: linear-gradient(135deg, var(--neon-green), #00aa44);
                             color: #050811;
                             border: none;
@@ -641,7 +641,7 @@
                             box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
                             transition: 0.2s;
                         ">
-                            ▶ LIGAR TRANSMISSÃO 432Hz
+                            ▶ LIGAR O SOM DA TRANSMISSÃO
                         </button>
                     </div>
 
@@ -755,31 +755,15 @@
 
     </div>
 
-    <!-- SCRIPT DO MOTOR COM LEITURA REAL DE DURAÇÃO -->
+    <!-- SCRIPT DO MOTOR DE DUPLO DECK COM BLINDAGEM DE BUFFER -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
             for (let i = 0; i < 60; i++) {
                 const tick = document.createElement('div');
                 tick.className = i % 5 === 0 ? 'tick major' : 'tick';
-                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
-                face.appendChild(tick);
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            criarMarcacoesRelogio('faceUTC');
-            criarMarcacoesRelogio('faceUptime');
-            iniciarRelogiosVisuais();
-        });
-
-        function abrirModalPartilha() {
-            const urlAtual = encodeURIComponent(window.location.href);
-            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
-
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
-            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`; face.appendChild(tick); } }  window.addEventListener('DOMContentLoaded', () => { criarMarcacoesRelogio('faceUTC'); criarMarcacoesRelogio('faceUptime'); iniciarRelogiosEAutomacaoPerpetua(); });  function abrirModalPartilha() { const urlAtual = encodeURIComponent(window.location.href); const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");  document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`; document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}\%20${urlAtual}`;
 
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -869,7 +853,7 @@
             { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3" },
             { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3" },
             { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3" },
-            { title: "Não Me Procure Mais (Remix)", url: "N%C3%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3" },
+            { title: "Não Me Procure Mais (Remix)", url: "N%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3" },
             { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3" },
             { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3" },
             { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3" },
@@ -883,7 +867,7 @@
         let contadorMusicas = 0;
 
         playlistNewAge.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa, duration: 0 });
+            itemProgramacao.push({ type: 'music', ...faixa, duration: 210 });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
                 itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 7 });
@@ -891,7 +875,7 @@
         });
 
         playlistCicloResto.forEach((faixa) => {
-            itemProgramacao.push({ type: 'music', ...faixa, duration: 0 });
+            itemProgramacao.push({ type: 'music', ...faixa, duration: 210 });
             contadorMusicas++;
             if (contadorMusicas % 3 === 0) {
                 itemProgramacao.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 7 });
@@ -902,183 +886,68 @@
         const audio2 = document.getElementById('audioPlayer2');
         const nowPlayingText = document.getElementById('now-playing');
         
-        let indiceAtual = 0;
-        let duracoesCarregadas = 0;
         let executandoJingleVoz = false;
         let playerAtivo = 1;
-        let radioIniciada = false;
+        let somLiberadoOuvinte = false;
+        let itemAtualEmissao = null;
 
-        function iniciarRelogiosVisuais() {
+        function iniciarRelogiosEAutomacaoPerpetua() {
+            // Relógios visuais do painel
             setInterval(() => {
                 const agora = new Date();
                 const hUTC = agora.getUTCHours();
                 const mUTC = agora.getUTCMinutes();
                 const sUTC = agora.getUTCSeconds();
                 
-                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
-                document.getElementById('utcMin').style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
-                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
-                document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+                document.getElementById('utcSec').style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`; document.getElementById('utcMin').style.transform = `translateX(-50\%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                document.getElementById('utcHour').style.transform = `translateX(-50%) rotate(${(hUTC \% 12) * 30 + mUTC * 0.5}deg)`; document.getElementById('utcDigital').innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
 
                 const uptimeSec = Math.floor(performance.now() / 1000);
                 const upH = Math.floor(uptimeSec / 3600);
                 const upM = Math.floor((uptimeSec % 3600) / 60);
                 const upS = uptimeSec % 60;
-                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
-                document.getElementById('upMin').style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
-                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
-                document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+                document.getElementById('upSec').style.transform = `translateX(-50%) rotate(${upS * 6}deg)`; document.getElementById('upMin').style.transform = `translateX(-50\%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                document.getElementById('upHour').style.transform = `translateX(-50%) rotate(${(upH \% 12) * 30 + upM * 0.5}deg)`; document.getElementById('uptimeDigital').innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
 
-            // Carrega as durações reais de cada arquivo de áudio em segundo plano
-            carregarDuracoesReais();
+            // Verifica o estado da rádio baseada no UTC a cada segundo
+            setInterval(sincronizarEstudioPerpetuo, 1000);
+            sincronizarEstudioPerpetuo();
         }
 
-        function carregarDuracoesReais() {
-            itemProgramacao.forEach((item, index) => {
-                if (item.type === 'music') {
-                    const tempAudio = new Audio(item.url);
-                    tempAudio.preload = 'metadata';
-                    tempAudio.onloadedmetadata = () => {
-                        item.duration = tempAudio.duration || 210;
-                        duracoesCarregadas++;
-                    };
-                    tempAudio.onerror = () => {
-                        item.duration = 210; // Padrão de segurança caso ocorra erro de rede
-                        duracoesCarregadas++;
-                    };
-                } else {
-                    duracoesCarregadas++;
-                }
-            });
-        }
-
-        function calcularIndicePeloHorarioUTC() {
+        function calcularEstadoAtualPeloUTC() {
             const duracaoTotalCiclo = itemProgramacao.reduce((total, item) => total + (item.duration || 210), 0);
             const agora = new Date();
             const segundosUTC = (agora.getUTCHours() * 3600) + (agora.getUTCMinutes() * 60) + agora.getUTCSeconds();
-            let segundosDesdeAs6 = segundosUTC - 21600; // 06:00 UTC
+            let segundosDesdeAs6 = segundosUTC - 21600; // Base 06:00 UTC
             if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400;
 
             let tempoNoCiclo = segundosDesdeAs6 % duracaoTotalCiclo;
             let acumulado = 0;
 
             for (let i = 0; i < itemProgramacao.length; i++) {
-                acumulado += (itemProgramacao[i].duration || 210);
+                const duracaoItem = itemProgramacao[i].duration || 210;
+                acumulado += duracaoItem;
                 if (tempoNoCiclo < acumulado) {
-                    return i;
+                    const segundosNaFaixa = tempoNoCiclo - (acumulado - duracaoItem);
+                    return { index: i, item: itemProgramacao[i], offset: segundosNaFaixa };
                 }
             }
-            return 0;
+            return { index: 0, item: itemProgramacao[0], offset: 0 };
         }
 
-        function forcarInicioTransmissao() {
-            radioIniciada = true;
-            const triggerBox = document.getElementById('playTriggerBox');
-            if (triggerBox) triggerBox.style.display = 'none';
+        function sincronizarEstudioPerpetuo() {
+            const estado = calcularEstadoAtualPeloUTC();
 
-            indiceAtual = calcularIndicePeloHorarioUTC();
-            tocarItemAtualGrade();
-        }
-
-        function falarJingleNarrador() {
-            if ('speechSynthesis' in window && !executandoJingleVoz) {
-                executandoJingleVoz = true;
-                window.speechSynthesis.cancel();
-                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
-                frase.lang = 'pt-BR';
-                frase.rate = 1.05;
-                frase.pitch = 0.95;
-                frase.onend = () => { executandoJingleVoz = false; };
-                frase.onerror = () => { executandoJingleVoz = false; };
-                window.speechSynthesis.speak(frase);
+            if (!itemAtualEmissao || itemAtualEmissao.index !== estado.index) {
+                itemAtualEmissao = estado;
+                executarItemNoAr(estado.item, estado.offset);
             }
         }
 
-        function tocarItemAtualGrade() {
-            if (!radioIniciada) return;
-
-            const item = itemProgramacao[indiceAtual];
+        function executarItemNoAr(item, offsetSegundos) {
             const activeAudio = playerAtivo === 1 ? audio1 : audio2;
             const nextAudio = playerAtivo === 1 ? audio2 : audio1;
 
             if (item.type === 'jingle') {
-                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
-                audio1.pause();
-                audio2.pause();
-                falarJingleNarrador();
-
-                setTimeout(() => {
-                    indiceAtual = (indiceAtual + 1) % itemProgramacao.length;
-                    tocarItemAtualGrade();
-                }, 7000);
-            } else {
-                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
-                
-                nextAudio.src = item.url;
-                nextAudio.volume = 1.0;
-                nextAudio.load();
-
-                nextAudio.play().then(() => {
-                    activeAudio.pause();
-                    playerAtivo = playerAtivo === 1 ? 2 : 1;
-                }).catch(e => {
-                    console.log("Aguardando interação para autorizar reprodução automática:", e);
-                    const triggerBox = document.getElementById('playTriggerBox');
-                    if (triggerBox) triggerBox.style.display = 'block';
-                });
-
-                nextAudio.onended = () => {
-                    indiceAtual = (indiceAtual + 1) % itemProgramacao.length;
-                    tocarItemAtualGrade();
-                };
-            }
-        }
-
-        // Carrossel de patrocínio
-        setInterval(() => {
-            const cards = document.querySelectorAll('.ad-slider-card');
-            cards.forEach(card => {
-                const slides = card.querySelectorAll('.ad-slide');
-                let activeIndex = 0;
-                slides.forEach((slide, index) => {
-                    if (slide.classList.contains('active')) activeIndex = index;
-                    slide.classList.remove('active');
-                });
-                let nextIndex = (activeIndex + 1) % slides.length;
-                slides[nextIndex].classList.add('active');
-                card.href = nextIndex === 0 ? "https://spotify.com" : "https://soundcloud.com";
-            });
-        }, 5000);
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function enviarMensagemOuvinte() {
-            const input = document.getElementById('chatInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
-        }
-
-        function enviarMensagemAdmin() {
-            const input = document.getElementById('adminInput');
-            const messages = document.getElementById('chatMessages');
-            if(input.value.trim() !== '') {
-                const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
-                messages.appendChild(p);
-                input.value = '';
-                messages.scrollTop = JSON.stringify(messages.scrollHeight);
-            }
-        }
-    </script>
-</body>
-</html>
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);
