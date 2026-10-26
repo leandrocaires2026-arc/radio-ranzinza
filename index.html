@@ -823,6 +823,13 @@
                     }
                 }
             });
+
+            // Revalida o offset e sincronia ao retornar para a aba
+            document.addEventListener("visibilitychange", () => {
+                if (!document.hidden && somLiberadoOuvinte) {
+                    inicializarEstudioExato();
+                }
+            });
         });
 
         function abrirModalPartilha() {
@@ -1137,7 +1144,7 @@
                 };
                 frase.onerror = () => { 
                     executandoJingleVoz = false;
-                    tocarProximaFaixa5();
+                    tocarProximaFaixa(); // Corrigido aqui (removido o '5' indesejado)
                 };
                 window.speechSynthesis.speak(frase);
             } else {
