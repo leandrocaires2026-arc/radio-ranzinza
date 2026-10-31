@@ -283,6 +283,18 @@
             position: relative;
             border-radius: 50%;
         }
+        .tick {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 2px; height: 6px;
+            background: rgba(0, 240, 255, 0.5);
+            transform-origin: 0 -50px;
+        }
+        .tick.major {
+            width: 3.5px; height: 10px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 5px var(--neon-blue);
+        }
         .hand {
             position: absolute;
             bottom: 50%; left: 50%;
@@ -419,6 +431,14 @@
             font-weight: bold;
         }
         button.chat-btn:hover { opacity: 0.9; }
+        .admin-panel {
+            background: #13101a;
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
         .external-platforms {
             margin-top: 15px;
             display: flex;
@@ -460,9 +480,92 @@
             color: var(--text-muted);
             line-height: 1.4;
         }
+        .share-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .share-modal-card {
+            background: rgba(16, 20, 31, 0.95);
+            border: 2px solid var(--neon-blue);
+            border-radius: 14px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .share-modal-card h3 {
+            color: var(--neon-blue);
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .share-option-btn {
+            background: #151b2c;
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.2s;
+            text-decoration: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .share-option-btn:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.1);
+        }
+        .share-close-btn {
+            background: var(--neon-pink);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- MODAL DE PARTILHA -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal-card">
+            <h3>🌐 Partilhar Rádio Ranzinza</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            <div class="share-grid">
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
+            </div>
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
+        </div>
+    </div>
 
     <!-- CABEÇALHO -->
     <header>
@@ -503,7 +606,7 @@
                         <div class="telemetry-item">
                             <div class="telemetry-label">🏁 UTC (Greenwich)</div>
                             <div class="analog-clock">
-                                <div class="clock-face">
+                                <div class="clock-face" id="faceUTC">
                                     <div class="hand hour-hand" id="utcHour"></div>
                                     <div class="hand minute-hand" id="utcMin"></div>
                                     <div class="hand second-hand" id="utcSec"></div>
@@ -515,7 +618,7 @@
                         <div class="telemetry-item">
                             <div class="telemetry-label">⏱️ Tempo de Emissão</div>
                             <div class="analog-clock">
-                                <div class="clock-face">
+                                <div class="clock-face" id="faceUptime">
                                     <div class="hand hour-hand" id="upHour"></div>
                                     <div class="hand minute-hand" id="upMin"></div>
                                     <div class="hand second-hand" id="upSec"></div>
@@ -564,11 +667,32 @@
                         <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" oninput="mudarVolumeOuvinte(this.value)">
                     </div>
 
-                    <audio id="audioPlayer" preload="auto"></audio>
+                    <audio id="audioPlayer1" preload="auto"></audio>
+                    <audio id="audioPlayer2" preload="auto"></audio>
 
                     <div class="external-platforms">
                         <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
+                    </div>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="abrirModalPartilha()" style="
+                            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+                            color: #ffffff;
+                            border: none;
+                            padding: 10px 18px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
                     </div>
                 </div>
 
@@ -577,14 +701,21 @@
                     <div class="chat-messages" id="chatMessages" style="height: 180px;">
                         <p style="color: var(--neon-blue);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
                     </div>
-                    <div class="chat-input-area">
+                    <div class="chat-input-area" id="listenerInputArea">
                         <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
                         <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
+                    </div>
+                    
+                    <!-- PAINEL DO ADMIN SECRETO (Ativado com Ctrl + Shift + A) -->
+                    <div class="admin-panel" id="adminPanel">
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Painel Restrito do Estúdio // Rádio Ranzinza</p>
+                        <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
+                        <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
                     </div>
                 </div>
             </div>
             <div class="radio-banner">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Central">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
@@ -593,208 +724,378 @@
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-pink); margin-bottom: 8px;">🌌 Estúdio Neon</h3>
-                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente e frequências a 432Hz.</p>
+                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <div class="schedule-block" style="border-color: var(--neon-pink);">
+                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                        <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
+                    </div>
                 </div>
+            </div>
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT DE PROGRAMAÇÃO E REPRODUÇÃO AUTOMÁTICA -->
+    <!-- SCRIPT DE PROGRAMAÇÃO E REPRODUÇÃO -->
     <script>
-        // LISTA COMPLETA ORGANIZADA POR ESTILOS
-        const playlistNewAge = [
-            { title: "Gentele Strom (1)", url: "" },
-            { title: "Gentele Strom (2)", url: "" },
-            { title: "Gentele Strom (3)", url: "" },
-            { title: "Gentele Strom (4)", url: "" },
-            { title: "Gentele Strom (5)", url: "" },
-            { title: "Gentele Strom (6)", url: "" },
-            { title: "Gentele Strom (7)", url: "" },
-            { title: "Gentele Strom (8)", url: "" },
-            { title: "Gentele Strom (9)", url: "" },
-            { title: "Gentele Strom (10)", url: "" },
-            { title: "Gentele Strom (11)", url: "" },
-            { title: "Gentele Strom (12)", url: "" },
-            { title: "Gentele Strom (15)", url: "" },
-            { title: "Gentele Strom (16)", url: "" },
-            { title: "Streamside Comfort", url: "" },
-            { title: "Streamside Glow (1)", url: "" },
-            { title: "Streamside Relief", url: "" },
-            { title: "Streamside Rest", url: "" }
-        ];
-
-        // Ciclo Perpétuo estruturado na ordem: Eletrônicas ➔ Sertanejo ➔ Pop ➔ Rock
-        const blocosCiclo = [
-            {
-                estilo: "Eletrônicas",
-                faixas: [
-                    { title: "Always Been With You", url: "" },
-                    { title: "Became Just One", url: "" },
-                    { title: "Bride to the Feeling", url: "" },
-                    { title: "Burning Fire", url: "" },
-                    { title: "Diviny Made Flesh", url: "" },
-                    { title: "Down in This Obsession", url: "" },
-                    { title: "Event Horizon", url: "" },
-                    { title: "Everything I Give", url: "" },
-                    { title: "Forever We Glow", url: "" },
-                    { title: "Hacking Shot", url: "" },
-                    { title: "In Life's Illusion", url: "" },
-                    { title: "Masterpiece (Parte 2)", url: "" },
-                    { title: "Persistence", url: "" },
-                    { title: "Sem Limites para Amar", url: "" },
-                    { title: "Soul's Essential Food", url: "" },
-                    { title: "Spinning Through", url: "" },
-                    { title: "Start the Joy", url: "" },
-                    { title: "The Price Is Paid", url: "" },
-                    { title: "Tomorrow I Try Again", url: "" },
-                    { title: "Tomorrow I Try Again (Remix)", url: "" },
-                    { title: "Who Is This Stranger", url: "" }
-                ]
-            },
-            {
-                estilo: "Sertanejo",
-                faixas: [
-                    { title: "Aquele Sonho", url: "" },
-                    { title: "Entre o Te Amo e o Te Adoro", url: "" },
-                    { title: "Escolha", url: "" },
-                    { title: "Eu Não Quero Ter Razão", url: "" },
-                    { title: "Eu Sem Querer Amei Você", url: "" },
-                    { title: "Me Cansei do Seu Tanto Faz", url: "" },
-                    { title: "Me Diz Por Que Você Sumiu Assim", url: "" },
-                    { title: "Meio Louco por Você", url: "" },
-                    { title: "Não Importa o Lugar", url: "" },
-                    { title: "Não Me Procure Mais", url: "" },
-                    { title: "Não Me Procure Mais (Remix)", url: "" },
-                    { title: "Se Você Ligar...", url: "" },
-                    { title: "Sem Querer Amei Você", url: "" },
-                    { title: "Uma Aposta Ruim", url: "" },
-                    { title: "Uma Mulher Fatal", url: "" },
-                    { title: "Volta Logo Pra Mim", url: "" }
-                ]
-            },
-            {
-                estilo: "Pop",
-                faixas: [
-                    { title: "Água Rasa", url: "" },
-                    { title: "All That Is Mine", url: "" },
-                    { title: "Entre a Coragem e o Medo", url: "" },
-                    { title: "Lado a Lado", url: "" },
-                    { title: "Nostalgia", url: "" },
-                    { title: "Raízes e Consequências", url: "" }
-                ]
-            },
-            {
-                estilo: "Rock",
-                faixas: [
-                    { title: "A Chave", url: "" },
-                    { title: "Ainda Amo Te Conhecer", url: "" },
-                    { title: "Eros", url: "" },
-                    { title: "Navegantes", url: "" },
-                    { title: "Um Bom Lugar Pra Se Morar", url: "" }
-                ]
+        function criarMarcacoesRelogio(faceId) {
+            const face = document.getElementById(faceId);
+            if (!face) return;
+            for (let i = 0; i < 60; i++) {
+                const tick = document.createElement('div');
+                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
+                face.appendChild(tick);
             }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            iniciarRelogiosVisuais();
+            
+            const audio1Ref = document.getElementById('audioPlayer1');
+            const audio2Ref = document.getElementById('audioPlayer2');
+            if (audio1Ref) audio1Ref.volume = 0.8;
+            if (audio2Ref) audio2Ref.volume = 0.8;
+            
+            inicializarEstudioExato();
+            
+            window.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+                    const adminPanel = document.getElementById('adminPanel');
+                    if (adminPanel) {
+                        adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+                    }
+                }
+            });
+
+            document.addEventListener("visibilitychange", () => {
+                if (!document.hidden && somLiberadoOuvinte) {
+                    inicializarEstudioExato();
+                }
+            });
+        });
+
+        function iniciarRelogiosVisuais() {
+            setInterval(() => {
+                const agora = new Date();
+                const hUTC = agora.getUTCHours();
+                const mUTC = agora.getUTCMinutes();
+                const sUTC = agora.getUTCSeconds();
+
+                const secEl = document.getElementById('utcSec');
+                const minEl = document.getElementById('utcMin');
+                const hourEl = document.getElementById('utcHour');
+                const digEl = document.getElementById('utcDigital');
+
+                if (secEl) secEl.style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+                if (minEl) minEl.style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                if (hourEl) hourEl.style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+                if (digEl) digEl.innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+
+                const uptimeSec = Math.floor(performance.now() / 1000);
+                const upH = Math.floor(uptimeSec / 3600);
+                const upM = Math.floor((uptimeSec % 3600) / 60);
+                const upS = uptimeSec % 60;
+
+                const upSecEl = document.getElementById('upSec');
+                const upMinEl = document.getElementById('upMin');
+                const upHourEl = document.getElementById('upHour');
+                const upDigEl = document.getElementById('uptimeDigital');
+
+                if (upSecEl) upSecEl.style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+                if (upMinEl) upMinEl.style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                if (upHourEl) upHourEl.style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+                if (upDigEl) upDigEl.innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        // BLOCO MATINAL: New Age (Amanhecer)
+        const playlistNewAge = [
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 215 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", durationEstimate: 220 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", durationEstimate: 205 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", durationEstimate: 212 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", durationEstimate: 198 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", durationEstimate: 225 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 208 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 214 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 200 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 218 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 205 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", durationEstimate: 222 },
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", durationEstimate: 240 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", durationEstimate: 195 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", durationEstimate: 200 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", durationEstimate: 205 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", durationEstimate: 210 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", durationEstimate: 215 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", durationEstimate: 205 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", durationEstimate: 200 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 220 }
         ];
 
-        let blocoAtualIdx = 0;
-        let faixaAtualIdx = 0;
-        let audioIniciado = false;
-        let modoNewAge = false;
+        // CICLO PERPÉTUO DO RESTO DO DIA: Organizado estritamente na ordem Eletrônicas ➔ Sertanejo ➔ Pop ➔ Rock
+        const playlistRestoDia = [
+            // BLOCO 1: Eletrônicas
+            { title: "Always Been With You", url: "ALWAYS%20BEEN%20WITH%20YOU.mp3", durationEstimate: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 215 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 200 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", durationEstimate: 225 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", durationEstimate: 230 },
+            { title: "Event Horizon", url: "EVENT%20HORIZON.mp3", durationEstimate: 215 },
+            { title: "Everything I Give", url: "EVERYTHING%20I%20GIVE.mp3", durationEstimate: 210 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", durationEstimate: 210 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", durationEstimate: 190 },
+            { title: "In Life's Illusion", url: "IN%20LIFE`S%20ILLUSION.mp3", durationEstimate: 210 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", durationEstimate: 245 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", durationEstimate: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix) (1)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", durationEstimate: 220 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", durationEstimate: 220 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", durationEstimate: 210 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", durationEstimate: 215 },
+            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", durationEstimate: 210 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", durationEstimate: 205 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", durationEstimate: 210 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", durationEstimate: 215 },
+            { title: "Tomorrow I Try Again (Chipmunki Children Vocals Remix)", url: "TOMORROW%20I%20TRY%20AGAIN%20(CHIPMUNKI%20CHILDREN%20VOCALS%20REMIX).mp3", durationEstimate: 215 },
+            { title: "Who Is This Stranger", url: "WHO%20IS%20THIS%20STRANGER.mp3", durationEstimate: 210 },
 
-        function verificarHorarioNewAge() {
+            // BLOCO 2: Sertanejo
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", durationEstimate: 200 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", durationEstimate: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", durationEstimate: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", durationEstimate: 195 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", durationEstimate: 210 },
+            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", durationEstimate: 215 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", durationEstimate: 220 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", durationEstimate: 205 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", durationEstimate: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", durationEstimate: 200 },
+            { title: "Não Me Procure Mais (Remix)", url: "N%A3o%20me%20procure%20mais%20(Remix)%20(Remix).mp3", durationEstimate: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", durationEstimate: 205 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", durationEstimate: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", durationEstimate: 215 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", durationEstimate: 220 },
+            { title: "Volta Logo Pra Mim (1)", url: "VOLTA%20LOGO%20PRA%20MIM%20(1).mp3", durationEstimate: 205 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", durationEstimate: 205 },
+
+            // BLOCO 3: Pop
+            { title: "Água Rasa", url: "AGUA%20RASA.mp3", durationEstimate: 200 },
+            { title: "All That Is Mine", url: "ALL%20THAT%20IS%20MINE.mp3", durationEstimate: 210 },
+            { title: "Entre a Coragem e o Medo", url: "ENTRE%20A%20CORAGEM%20E%20O%20MEDO.mp3", durationEstimate: 215 },
+            { title: "Lado a Lado", url: "LADO%20A%20LADO.mp3", durationEstimate: 205 },
+            { title: "Raízes e Consequências", url: "RAIZES%20E%20CONSEQUENCIAS.mp3", durationEstimate: 220 },
+
+            // BLOCO 4: Rock
+            { title: "A Chave", url: "A%20CHAVE.mp3", durationEstimate: 210 },
+            { title: "Ainda Amo Te Conhecer", url: "AINDA%20AMO%20TE%20CONHECER.mp3", durationEstimate: 215 },
+            { title: "Eros", url: "EROS.mp3", durationEstimate: 205 },
+            { title: "Navegantes", url: "NAVEGANTES.mp3", durationEstimate: 220 },
+            { title: "Um Bom Lugar Pra Se Morar", url: "UM%20BOM%20LUGAR%20PRA%20SE%20MORAR.mp3", durationEstimate: 210 }
+        ];
+
+        // Montagem das grades com jingles a cada 3 músicas
+        const gradeNewAge = [];
+        let c1 = 0;
+        playlistNewAge.forEach(f => {
+            gradeNewAge.push({ type: 'music', ...f });
+            c1++;
+            if (c1 % 3 === 0) gradeNewAge.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
+        });
+
+        const gradeRestoDia = [];
+        let c2 = 0;
+        playlistRestoDia.forEach(f => {
+            gradeRestoDia.push({ type: 'music', ...f });
+            c2++;
+            if (c2 % 3 === 0) gradeRestoDia.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', durationEstimate: 7 });
+        });
+
+        let executandoJingleVoz = false;
+        let playerAtivo = 1;
+        let somLiberadoOuvinte = false;
+        let playlistGlobal = [];
+        let indiceAtualPlaylist = 0;
+        let offsetSegundosInicial = 0;
+
+        function inicializarEstudioExato() {
             const agora = new Date();
-            const horas = agora.getHours();
-            const minutos = agora.getMinutes();
-            const tempoEmMinutos = horas * 60 + minutos;
+            const segundosDoDia = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            
+            let segundosDesdeAs6 = segundosDoDia - 21600; // 21600s = 06:00 da manhã
+            if (segundosDesdeAs6 < 0) segundosDesdeAs6 += 86400;
 
-            // Horário fixo do New Age: das 06:00 (360 min) às 07:23 (443 min)
-            return (tempoEmMinutos >= 360 && tempoEmMinutos < 443);
+            const duracaoNewAgeTotal = gradeNewAge.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
+            const duracaoRestoTotal = gradeRestoDia.reduce((acc, item) => acc + (item.durationEstimate || 210), 0);
+
+            if (segundosDesdeAs6 < duracaoNewAgeTotal) {
+                playlistGlobal = gradeNewAge;
+                let acumulado = 0;
+                for (let i = 0; i < playlistGlobal.length; i++) {
+                    const dur = playlistGlobal[i].durationEstimate || 210;
+                    if (segundosDesdeAs6 >= acumulado && segundosDesdeAs6 < (acumulado + dur)) {
+                        indiceAtualPlaylist = i;
+                        offsetSegundosInicial = segundosDesdeAs6 - acumulado;
+                        break;
+                    }
+                    acumulado += dur;
+                }
+            } else {
+                playlistGlobal = gradeRestoDia;
+                const segundosNoResto = segundosDesdeAs6 - duracaoNewAgeTotal;
+                let tempoNoCicloResto = segundosNoResto % duracaoRestoTotal;
+
+                let acumulado = 0;
+                for (let i = 0; i < playlistGlobal.length; i++) {
+                    const dur = playlistGlobal[i].durationEstimate || 210;
+                    if (tempoNoCicloResto >= acumulado && tempoNoCicloResto < (acumulado + dur)) {
+                        indiceAtualPlaylist = i;
+                        offsetSegundosInicial = tempoNoCicloResto - acumulado;
+                        break;
+                    }
+                    acumulado += dur;
+                }
+            }
         }
 
         function ligarSomOuvinte() {
-            audioIniciado = true;
-            document.getElementById('playTriggerBox').style.display = 'none';
-            tocarProximaFaixa();
+            somLiberadoOuvinte = true;
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) triggerBox.style.display = 'none';
+            tocarItemAtual();
         }
 
-        function tocarProximaFaixa() {
-            if (!audioIniciado) return;
+        function tocarItemAtual() {
+            const item = playlistGlobal[indiceAtualPlaylist];
+            const audio1 = document.getElementById('audioPlayer1');
+            const audio2 = document.getElementById('audioPlayer2');
+            const nowPlayingText = document.getElementById('now-playing');
+            
+            if (!audio1 || !audio2 || !nowPlayingText) return;
 
-            const player = document.getElementById('audioPlayer');
-            let faixa;
-            let estiloNome;
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
 
-            // Verifica se está no horário fixo do New Age
-            if (verificarHorarioNewAge()) {
-                modoNewAge = true;
-                estiloNome = "New Age (Fixo da Manhã)";
-                // Escolhe aleatoriamente ou em ordem do New Age
-                const randomIndex = Math.floor(Math.random() * playlistNewAge.length);
-                faixa = playlistNewAge[randomIndex];
+            if (item.type === 'jingle') {
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-pink);">${item.title}</strong>`;
+                audio1.pause();
+                audio2.pause();
+                falarJingleNarrador();
             } else {
-                modoNewAge = false;
-                const bloco = blocosCiclo[blocoAtualIdx];
-                estiloNome = bloco.estilo;
-                faixa = bloco.faixas[faixaAtualIdx];
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                nextAudio.src = item.url;
+                nextAudio.load();
+
+                nextAudio.onloadedmetadata = () => {
+                    if (offsetSegundosInicial > 0 && offsetSegundosInicial < nextAudio.duration) {
+                        nextAudio.currentTime = offsetSegundosInicial;
+                    }
+                };
+
+                const tentarTocar = () => {
+                    if (offsetSegundosInicial > 0) {
+                        try {
+                            if (nextAudio.duration && offsetSegundosInicial < nextAudio.duration) {
+                                nextAudio.currentTime = offsetSegundosInicial;
+                            }
+                        } catch (e) {
+                            console.log("Ajustando offset de buffer", e);
+                        }
+                    }
+
+                    if (somLiberadoOuvinte) {
+                        nextAudio.play().then(() => {
+                            activeAudio.pause();
+                            playerAtivo = playerAtivo === 1 ? 2 : 1;
+                        }).catch(e => console.log("Aguardando interacão:", e));
+                    } else {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    }
+                    offsetSegundosInicial = 0;
+                };
+
+                nextAudio.oncanplaythrough = () => {
+                    tentarTocar();
+                    nextAudio.oncanplaythrough = null;
+                };
+
+                setTimeout(() => {
+                    if (nextAudio.paused && somLiberadoOuvinte) {
+                        tentarTocar();
+                    }
+                }, 1000);
             }
 
-            document.getElementById('now-playing').innerText = `No Ar [${estiloNome}]: ${faixa.title}`;
-
-            if (faixa.url && faixa.url.trim() !== "") {
-                player.src = faixa.url;
-                player.play().catch(e => console.log("Aguardando interação ou URL válida"));
-            } else {
-                // Simulação de transição se o link estiver vazio para teste
-                console.warn(`URL vazia para: ${faixa.title}. Avançando em 3s...`);
-                setTimeout(avancarFila, 3000);
-            }
-
-            player.onended = function() {
-                avancarFila();
+            nextAudio.onended = () => {
+                tocarProximaFaixa();
             };
         }
 
-        function avancarFila() {
-            if (modoNewAge) {
-                // Durante o bloco New Age, apenas troca para a próxima música do New Age
-                tocarProximaFaixa();
-                return;
-            }
-
-            // Avança no Ciclo Perpétuo
-            faixaAtualIdx++;
-            const bloco = blocosCiclo[blocoAtualIdx];
-            
-            if (faixaAtualIdx >= bloco.faixas.length) {
-                faixaAtualIdx = 0;
-                blocoAtualIdx++;
-                
-                // Se acabou o bloco Rock, o ciclo perpétuo reinicia nas Eletrônicas
-                if (blocoAtualIdx >= blocosCiclo.length) {
-                    blocoAtualIdx = 0; 
+        function tocarProximaFaixa() {
+            indiceAtualPlaylist++;
+            if (indiceAtualPlaylist >= playlistGlobal.length) {
+                indiceAtualPlaylist = 0;
+                if (playlistGlobal === gradeNewAge) {
+                    playlistGlobal = gradeRestoDia;
                 }
             }
-            tocarProximaFaixa();
+            offsetSegundosInicial = 0;
+            tocarItemAtual();
         }
 
-        function mudarVolumeOuvinte(valor) {
-            const player = document.getElementById('audioPlayer');
-            player.volume = valor / 100;
-            document.getElementById('volumePercent').innerText = valor + "%";
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { 
+                    executandoJingleVoz = false;
+                    tocarProximaFaixa();
+                };
+                frase.onerror = () => { 
+                    executandoJingleVoz = false;
+                    tocarProximaFaixa();
+                };
+                window.speechSynthesis.speak(frase);
+            } else {
+                setTimeout(tocarProximaFaixa, 4000);
+            }
         }
-
-        // Relógio UTC
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('utcDigital').innerText = now.toISOString().substr(11, 8);
-        }, 1000);
 
         function enviarMensagemOuvinte() {
             const input = document.getElementById('chatInput');
-            if (input.value.trim() === "") return;
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML += `<p><strong>Ouvinte:</strong> ${input.value}</p>`;
-            input.value = "";
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            const messages = document.getElementById('chatMessages');
+            if(input && input.value.trim() !== '' && messages) {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-blue);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input && input.value.trim() !== '' && messages) {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
         }
     </script>
 </body>
