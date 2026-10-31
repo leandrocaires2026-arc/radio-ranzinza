@@ -347,47 +347,6 @@
             color: var(--neon-blue);
             margin-bottom: 2px;
         }
-        .ad-slider-card {
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .ad-slide {
-            display: none;
-            animation: fadeIn 0.6s ease-in-out;
-        }
-        .ad-slide.active { display: block; }
-        .ad-img-container {
-            width: 100%;
-            height: 180px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            background: #09090c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ad-img-container img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .ad-tag {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            display: inline-block;
-            margin-bottom: 6px;
-        }
         .chat-box {
             display: flex;
             flex-direction: column;
@@ -810,6 +769,52 @@
                 if (upHourEl) upHourEl.style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
                 if (upDigEl) upDigEl.innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
             }, 1000);
+        }
+
+        // FUNÇÕES DA MODAL DE PARTILHA
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Rádio Ranzinza',
+                    text: 'Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!',
+                    url: urlAtual,
+                }).catch((error) => console.log('Partilha cancelada', error));
+            } else {
+                copiarLinkRadio();
+            }
+        }
+
+        function fecharModalPartilha() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copiarLinkRadio() {
+            const urlAtual = window.location.href;
+            navigator.clipboard.writeText(urlAtual).then(() => {
+                alert('Link da Rádio Ranzinza copiado para a área de transferência!');
+                fecharModalPartilha();
+            }).catch(err => {
+                console.error('Erro ao copiar link: ', err);
+            });
+        }
+
+        function mudarVolumeOuvinte(valor) {
+            const vol = valor / 100;
+            const a1 = document.getElementById('audioPlayer1');
+            const a2 = document.getElementById('audioPlayer2');
+            if (a1) a1.volume = vol;
+            if (a2) a2.volume = vol;
+            document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
         // BLOCO MATINAL: New Age (Amanhecer)
