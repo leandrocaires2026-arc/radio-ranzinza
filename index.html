@@ -1,97 +1,46 @@
-// 🌌 1. Bloco Matinal: New Age (Amanhecer - Fixo das 06h às 07:23)
-        const playlistNewAge = [
-            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", durationEstimate: 215 },
-            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(1).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(10).mp3", durationEstimate: 220 },
-            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(11).mp3", durationEstimate: 205 },
-            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(12).mp3", durationEstimate: 212 },
-            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(15).mp3", durationEstimate: 198 },
-            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(16).mp3", durationEstimate: 225 },
-            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(2).mp3", durationEstimate: 208 },
-            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(3).mp3", durationEstimate: 214 },
-            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(4).mp3", durationEstimate: 200 },
-            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(5).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(6).mp3", durationEstimate: 218 },
-            { title: "Gentele Strom (13)", url: "Gentele%20Strom%20(7).mp3", durationEstimate: 205 },
-            { title: "Gentele Strom (14)", url: "Gentele%20Strom%20(8).mp3", durationEstimate: 210 },
-            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(9).mp3", durationEstimate: 222 },
-            { title: "Nostalgia", url: "NOSTALGIA.mp3", durationEstimate: 240 },
-            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", durationEstimate: 195 },
-            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", durationEstimate: 200 },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", durationEstimate: 205 },
-            { title: "Streamside Glow", url: "Streamside%20Glow%20(1).mp3", durationEstimate: 210 },
-            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", durationEstimate: 215 },
-            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", durationEstimate: 205 },
-            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", durationEstimate: 200 },
-            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", durationEstimate: 220 }
-        ];
-
-        // ⚡ 2. Bloco Eletrônica (Cyber Studio)
-        const playlistEletronica = [
-            { title: "Tomorrow I Try Again (Remix)", url: "TOMORROW%20I%20TRY%20AGAIN%20(CHIPMUNKI%20CHILDREN%20VOCALS%20REMIX).mp3", durationEstimate: 215 },[cite: 1]
-            { title: "Who Is This Stranger", url: "WHO%20IS%20THIS%20STRANGER.mp3", durationEstimate: 210 },[cite: 2]
-            { title: "Always Been With You", url: "ALWAYS%20BEEN%20WITH%20YOU.mp3", durationEstimate: 210 },[cite: 4]
-            { title: "Event Horizon", url: "EVENT%20HORIZON.mp3", durationEstimate: 215 },[cite: 5]
-            { title: "Everything I Give (Remix)", url: "EVERYTHING%20I%20GIVE(REMIX).mp3", durationEstimate: 205 },[cite: 6]
-            { title: "In Life's Illusion", url: "IN%20LIFE'S%20ILLUSION%20-%20RANZINZA.mp3", durationEstimate: 220 },[cite: 7]
-            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", durationEstimate: 210 },
-            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", durationEstimate: 215 },
-            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", durationEstimate: 200 },
-            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", durationEstimate: 225 },
-            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", durationEstimate: 230 },
-            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", durationEstimate: 210 },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", durationEstimate: 190 },
-            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", durationEstimate: 245 },
-            { title: "Persistence", url: "PERSISTENCE.mp3", durationEstimate: 210 },
-            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", durationEstimate: 215 },
-            { title: "Spinning Through", url: "SPINNING%20THROUGH%20.mp3", durationEstimate: 210 },
-            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", durationEstimate: 205 },
-            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", durationEstimate: 210 },
-            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", durationEstimate: 215 }
-        ];
-
-        // 🎵 3. Bloco Sertanejo
-        const playlistSertanejo = [
-            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", durationEstimate: 200 },
-            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", durationEstimate: 210 },
-            { title: "Escolha", url: "ESCOLHA.mp3", durationEstimate: 195 },
-            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", durationEstimate: 210 },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", durationEstimate: 215 },
-            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", durationEstimate: 220 },
-            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", durationEstimate: 205 },
-            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", durationEstimate: 210 },
-            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", durationEstimate: 200 },
-            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", durationEstimate: 205 },
-            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", durationEstimate: 210 },
-            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", durationEstimate: 215 },
-            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", durationEstimate: 220 },
-            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", durationEstimate: 205 },
-            { title: "Eu Sem Querer Amei Você", url: "EU%20SEM%20QUERER%20AMEI%20VOCE.mp3", durationEstimate: 210 }
-        ];
-
-        // 🎤 4. Bloco Pop (Incluindo All That Is Mine e as novas faixas)
-        const playlistPop = [
-            { title: "All That Is Mine", url: "ALL%20THAT%20IS%20MINE_2.mp3", durationEstimate: 210 },[cite: 3, 15]
-            { title: "Raízes e Consequências", url: "RAIZES%20E%20CONSEQUENCIAS.mp3", durationEstimate: 210 },[cite: 13]
-            { title: "Água Rasa", url: "AGUA%20RASA.mp3", durationEstimate: 205 },[cite: 14]
-            { title: "Entre a Coragem e o Medo", url: "ENTRE%20A%20CORAGEM%20E%20O%20MEDO.mp3", durationEstimate: 215 },[cite: 16]
-            { title: "Lado a Lado", url: "LADO%20A%20LADO.mp3", durationEstimate: 210 }[cite: 17]
-        ];
-
-        // 🎸 5. Bloco Rock
-        const playlistRock = [
-            { title: "Um Bom Lugar Pra Se Morar", url: "UM%20BOM%20LUGAR%20PRA%20SE%20MORAR.mp3", durationEstimate: 210 },[cite: 8]
-            { title: "A Chave", url: "A%20CHAVE.mp3", durationEstimate: 200 },[cite: 9]
-            { title: "Ainda Amo Te Conhecer", url: "AINDA%20AMO%20TE%20CONHECER.mp3", durationEstimate: 215 },[cite: 10]
-            { title: "Eros", url: "EROS.mp3", durationEstimate: 205 },[cite: 11]
-            { title: "Navegantes", url: "NAVEGANTES.mp3", durationEstimate: 220 },[cite: 12]
-            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix).mp3", durationEstimate: 220 }
-        ];
-
-        // Unindo o Ciclo Perpétuo do Dia na ordem exata: Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock (repetindo infinitamente)
-        const playlistRestoDia = [
-            ...playlistEletronica,
-            ...playlistSertanejo,
-            ...playlistPop,
-            ...playlistRock
-        ];
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rádio Ranzinza // Cyber Studio</title>
+    <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
+    <meta property="og:title" content="Rádio Ranzinza // Cyber Studio">
+    <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="website">
+    <style>
+        :root {
+            --card-bg: rgba(16, 20, 31, 0.82);
+            --neon-pink: #ff007f;
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffaa00;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(0, 240, 255, 0.35);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #050811;
+            color: var(--text-main);
+            margin: 0;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            filter: contrast(135%) saturate(160%) brightness(0.85);
+            z-index: -2;
+        }
+        body::after {
