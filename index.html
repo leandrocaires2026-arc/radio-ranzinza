@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rádio Ranzinza // Cyber Studio Teal</title>
+    <title>Rádio Ranzinza // Custom Studio</title>
     
     <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
-    <meta property="og:title" content="Rádio Ranzinza // Cyber Studio Teal">
+    <meta property="og:title" content="Rádio Ranzinza // Custom Studio">
     <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
     <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="website">
 
     <style>
         :root {
-            /* PALETA EXATA SOLICITADA: TONS FRIOS, CIANO, AZUL ANALÍTICO E PRATEADO */
-            --card-bg: rgba(6, 14, 26, 0.92);
+            /* COR SÓLIDA DA AMOSTRA ENVIADA */
+            --sample-solid-color: #060c14;
+            
             --neon-teal: #00f0ff;
             --neon-blue: #3b82f6;
             --neon-silver: #a5f3fc;
             --neon-green: #00ffaa;
             --neon-yellow: #facc15;
+            
+            --custom-sample-color: #4a0e0e;
             --text-main: #ffffff;
             --text-muted: #93c5fd;
-            --border-color: rgba(0, 240, 255, 0.45);
+            
+            --thick-border: 5px solid var(--custom-sample-color);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -37,16 +41,23 @@
             position: relative;
         }
 
-        /* FUNDO DA PÁGINA COM A IMAGEM FUNDO.jpg CLARA E NÍDIDA */
+        /* FUNDO DOURADO COM BRILHO METÁLICO REALISTA */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(2, 6, 23, 0.65), rgba(4, 15, 35, 0.70)), 
-                        url('FUNDO.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%),
+                linear-gradient(90deg, #594202 0%, #b8860b 20%, #ffe873 40%, #ffd700 50%, #ffe873 60%, #b8860b 80%, #594202 100%);
+            background-size: 250% 100%;
+            animation: metallicShine 12s ease-in-out infinite alternate;
             z-index: -2;
-            filter: saturate(150%) brightness(1.05) contrast(110%);
+            filter: brightness(0.85) contrast(125%) saturate(120%);
+        }
+
+        @keyframes metallicShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         
         header {
@@ -60,9 +71,9 @@
             justify-content: center;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid var(--neon-teal);
+            border: var(--thick-border);
             background: #040d1a;
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
         }
         header img {
             width: 100%; height: 100%;
@@ -72,21 +83,24 @@
             z-index: 1;
             filter: hue-rotate(180deg) brightness(0.35) saturate(150%);
         }
+        
+        /* CABEÇALHO DO TÍTULO PRINCIPAL */
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: rgba(3, 9, 20, 0.9);
+            background: var(--custom-sample-color);
             padding: 15px 30px;
             border-radius: 8px;
-            border: 1px solid var(--neon-teal);
+            border: 2px solid var(--custom-sample-color);
             backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
             font-size: 2rem;
             color: #ffffff;
-            text-shadow: 0 0 12px rgba(0, 240, 255, 0.9);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
             letter-spacing: 2px;
         }
         .header-content p {
@@ -110,30 +124,45 @@
             }
         }
 
-        /* ESTILO PADRÃO PARA O TOPO (GRADE E ESTÚDIO TEAL) */
-        .card {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(8px);
+        /* ---------------------------------------------------- */
+        /* APLICAÇÃO DA COR SÓLIDA DA AMOSTRA EM TODOS OS 4 QUADROS */
+        /* ---------------------------------------------------- */
+        .solid-color-card {
+            background-color: var(--sample-solid-color);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
             position: relative;
             overflow: hidden;
             margin-bottom: 20px;
+            box-sizing: border-box;
         }
-        .card::before {
+
+        /* BARRA SUPERIOR VERMELHA DO QUADRO */
+        .solid-color-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
+            z-index: 3;
         }
+
         .card-top {
             min-height: 230px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .side-profile-card {
+            height: 230px;
+            display: flex;
+            flex-direction: column;
             justify-content: flex-start;
-            box-sizing: border-box;
         }
         
         h3 {
@@ -154,6 +183,19 @@
         .player-box {
             background: radial-gradient(circle at center, rgba(6, 18, 36, 0.95) 0%, rgba(2, 8, 18, 0.98) 100%);
             text-align: center;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .player-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
         }
         .player-box h2 {
             color: var(--neon-teal);
@@ -195,7 +237,7 @@
 
         .volume-control-box {
             background: rgba(2, 6, 16, 0.8);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--custom-sample-color);
             border-radius: 10px;
             padding: 10px 15px;
             margin: 15px auto;
@@ -218,7 +260,7 @@
             border-radius: 3px;
             background: #040d1a;
             outline: none;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--custom-sample-color);
         }
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -230,16 +272,17 @@
             box-shadow: 0 0 8px var(--neon-teal);
         }
 
+        /* PAINEL DE TELEMETRIA DOS RELÓGIOS */
         .racing-telemetry-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: linear-gradient(135deg, rgba(2, 6, 16, 0.95), rgba(6, 18, 38, 0.95));
-            border: 2px solid var(--neon-teal);
+            background: var(--custom-sample-color);
+            border: var(--thick-border);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.12), 0 0 25px rgba(0, 240, 255, 0.25);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.8);
             align-items: center;
         }
         .telemetry-item {
@@ -247,10 +290,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(2, 6, 16, 0.9);
+            background: rgba(10, 2, 2, 0.9);
             padding: 15px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            border: 2px solid var(--custom-sample-color);
         }
         .telemetry-label {
             font-size: 0.72rem;
@@ -260,11 +303,12 @@
             margin-bottom: 12px;
             font-weight: bold;
         }
+        
         .analog-clock {
             width: 140px; height: 140px;
             background: radial-gradient(circle, #051326 0%, #010308 85%);
-            border: 6px solid #0a1c36;
-            outline: 2px solid var(--neon-teal);
+            border: 6px solid var(--custom-sample-color);
+            outline: 3px solid var(--custom-sample-color);
             border-radius: 50%;
             position: relative;
             display: flex;
@@ -280,13 +324,13 @@
             position: absolute;
             top: 50%; left: 50%;
             width: 2px; height: 6px;
-            background: rgba(0, 240, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
             transform-origin: 0 -50px;
         }
         .tick.major {
             width: 3.5px; height: 10px;
-            background: var(--neon-teal);
-            box-shadow: 0 0 6px var(--neon-teal);
+            background: #ffffff;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
         }
         .hand {
             position: absolute;
@@ -329,23 +373,25 @@
         }
         audio { display: none; }
         
-        .schedule-block {
-            font-size: 0.8rem;
-            border-left: 3px solid var(--neon-teal);
-            padding-left: 8px;
-            margin-top: 6px;
-            text-align: left;
-        }
-        .schedule-title {
-            font-weight: bold;
-            color: var(--neon-teal);
-            margin-bottom: 2px;
-        }
-        
         .chat-box {
             display: flex;
             flex-direction: column;
             height: 260px;
+            background-color: var(--sample-solid-color);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .chat-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
         }
         .chat-messages {
             flex: 1;
@@ -355,7 +401,7 @@
             overflow-y: auto;
             margin-bottom: 10px;
             font-size: 0.85rem;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--custom-sample-color);
             text-align: left;
         }
         .chat-input-area {
@@ -372,22 +418,26 @@
             flex: 1;
             background: #040d1a;
             color: white;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--custom-sample-color);
         }
         input:focus {
             outline: none;
-            border-color: var(--neon-teal);
+            border-color: var(--custom-sample-color);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
         }
+        
         button.chat-btn {
-            background: linear-gradient(135deg, var(--neon-teal), #0284c7);
-            color: #020617;
+            background: var(--custom-sample-color);
+            color: #ffffff;
             cursor: pointer;
             font-weight: bold;
+            border: 2px solid var(--custom-sample-color);
         }
         button.chat-btn:hover { opacity: 0.9; }
+        
         .admin-panel {
             background: #040d1a;
-            border: 1px solid var(--neon-teal);
+            border: 2px solid var(--custom-sample-color);
             border-radius: 8px;
             padding: 12px;
             margin-top: 10px;
@@ -419,22 +469,22 @@
             text-decoration: none;
             font-size: 0.82rem;
             font-weight: bold;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--custom-sample-color);
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
-        .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
-        .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
+        .platform-btn.soundcloud:hover { background: #ff5500; border-color: var(--custom-sample-color); }
+        .platform-btn.spotify:hover { background: #1db954; border-color: var(--custom-sample-color); }
         
         .radio-banner {
             width: 100%; height: 200px;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid var(--neon-teal);
+            border: var(--thick-border);
             position: relative;
             background: #040d1a;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
         }
         .radio-banner img {
             width: 100%; height: 100%;
@@ -442,16 +492,16 @@
             filter: hue-rotate(180deg) brightness(0.7) saturate(130%);
         }
 
-        /* PAINÉIS DE ARTE LATERAIS COM O TAMANHO ORIGINAL EXATO PRESERVADO */
+        /* ARTES LATERAIS */
         .side-art-banner {
             width: 100%;
             height: 440px;
             border-radius: 14px;
             overflow: hidden;
-            border: 2px solid var(--neon-teal);
+            border: var(--thick-border);
             position: relative;
             background: #030914;
-            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.15);
             margin-bottom: 20px;
         }
         .side-art-banner img {
@@ -461,34 +511,12 @@
             filter: hue-rotate(180deg) saturate(150%) brightness(0.85) contrast(110%);
         }
 
-        /* PAINEL DO SPOTIFY E SOUNDCLOUD COM A MESMA ALTURA DO QUADRO DE CIMA (card-top) */
-        .side-profile-card {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-            height: 230px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-        .side-profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
-        }
         .side-profile-card h4 {
             margin: 0 0 10px 0;
             color: var(--neon-teal);
             font-size: 1.1rem;
             letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.9);
         }
         .side-profile-btn {
             display: inline-flex;
@@ -503,18 +531,17 @@
             font-size: 0.85rem;
             color: #ffffff;
             box-sizing: border-box;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--custom-sample-color);
             margin-top: 15px;
+            background: var(--custom-sample-color);
         }
-        .side-profile-btn.spotify { background: rgba(29, 185, 84, 0.2); border-color: #1db954; }
-        .side-profile-btn.spotify:hover { background: #1db954; }
-        .side-profile-btn.soundcloud { background: rgba(255, 85, 0, 0.2); border-color: #ff5500; }
-        .side-profile-btn.soundcloud:hover { background: #ff5500; }
+        .side-profile-btn:hover { opacity: 0.9; }
 
         .info-box {
             font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.4;
+            text-shadow: 0 0 6px rgba(0,0,0,0.9);
         }
 
         .share-modal-overlay {
@@ -523,19 +550,19 @@
             display: none; align-items: center; justify-content: center; z-index: 999;
         }
         .share-modal-card {
-            background: rgba(6, 14, 26, 0.95); border: 2px solid var(--neon-teal); border-radius: 14px;
+            background: rgba(6, 14, 26, 0.95); border: var(--thick-border); border-radius: 14px;
             padding: 25px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.35); animation: fadeIn 0.3s ease-in-out;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9); animation: fadeIn 0.3s ease-in-out;
         }
         .share-modal-card h3 { color: var(--neon-teal); margin-top: 0; margin-bottom: 8px; }
         .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
         .share-option-btn {
-            background: #040d1a; color: white; border: 1px solid var(--border-color); padding: 10px;
+            background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); padding: 10px;
             border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; text-decoration: none; width: 100%; box-sizing: border-box;
         }
-        .share-option-btn:hover { border-color: var(--neon-teal); background: rgba(0, 240, 255, 0.1); }
-        .share-close-btn { background: var(--neon-teal); color: #020617; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        .share-option-btn:hover { border-color: var(--custom-sample-color); background: rgba(0, 240, 255, 0.15); }
+        .share-close-btn { background: var(--neon-teal); color: #020617; border: 2px solid var(--custom-sample-color); padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -574,27 +601,20 @@
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- 1. TOPO: GRADE DE PROGRAMAÇÃO -->
-                <div class="card card-top" style="border-color: var(--neon-teal);">
-                    <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
-                    <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🌅 Abertura Diária</div>
-                        <p class="info-box" style="margin: 0;">New Age (Apenas no 1º Ciclo).</p>
-                    </div>
-                    <div class="schedule-block" style="border-color: var(--neon-teal);">
-                        <div class="schedule-title">🌙 Resto do Dia</div>
-                        <p class="info-box" style="margin: 0;">Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
-                    </div>
+                <!-- 1. TOPO ESQUERDO -->
+                <div class="solid-color-card card-top">
+                    <h3 style="color: var(--neon-green); font-size: 1.3rem; margin-bottom: 12px; text-shadow: 0 0 10px rgba(0,0,0,0.9);">RÁDIO RANZINZA</h3>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.05rem; color: #ffffff; text-shadow: 0 0 8px rgba(0,0,0,0.9); line-height: 1.4;">Uma nova conexão com o futuro</p>
                 </div>
 
-                <!-- 2. MEIO: SPOTIFY (COM O MESMO TAMANHO DO QUADRO DE CIMA) -->
-                <div class="side-profile-card">
+                <!-- 2. MEIO ESQUERDO (SPOTIFY) -->
+                <div class="solid-color-card side-profile-card">
                     <h4>🟢 Ouça no Spotify</h4>
                     <p class="info-box" style="margin-bottom: 10px;">Catálogo completo de lançamentos oficiais.</p>
-                    <a href="https://spotify.com" target="_blank" class="side-profile-btn spotify">🎵 Perfil Spotify</a>
+                    <a href="https://spotify.com" target="_blank" class="side-profile-btn">🎵 Perfil Spotify</a>
                 </div>
 
-                <!-- 3. BAIXO: ARTE ESQUERDA (TAMANHO ORIGINAL PRESERVADO) -->
+                <!-- 3. BAIXO: ARTE ESQUERDA -->
                 <div class="side-art-banner">
                     <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Esquerdo">
                 </div>
@@ -608,7 +628,7 @@
         <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
             <div class="center-panel">
-                <div class="card player-box">
+                <div class="player-box">
                     <h2>🎙️ Emissão Oficial em Sequência</h2>
 
                     <div class="racing-telemetry-panel">
@@ -641,18 +661,18 @@
 
                     <p id="now-playing">Clique no botão abaixo para iniciar a transmissão...</p>
 
-                    <!-- BOTÃO DE DESTRAVAMENTO DE ÁUDIO -->
+                    <!-- BOTÃO LIGAR O SOM DA TRANSMISSÃO -->
                     <div id="playTriggerBox" style="margin-bottom: 12px;">
                         <button onclick="ligarSomOuvinte()" style="
-                            background: linear-gradient(135deg, var(--neon-green), #059669);
-                            color: #020617;
-                            border: none;
+                            background: var(--custom-sample-color);
+                            color: #ffffff;
+                            border: 2px solid var(--custom-sample-color);
                             padding: 12px 24px;
                             border-radius: 8px;
                             font-weight: bold;
                             font-size: 0.95rem;
                             cursor: pointer;
-                            box-shadow: 0 0 15px rgba(0, 255, 170, 0.6);
+                            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
                             transition: 0.2s;
                         ">
                             ▶ LIGAR O SOM DA TRANSMISSÃO
@@ -684,17 +704,18 @@
                         <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
                     </div>
 
+                    <!-- BOTÃO PARTILHAR RÁDIO RANZINZA -->
                     <div style="margin-top: 15px; text-align: center;">
                         <button onclick="abrirModalPartilha()" style="
-                            background: linear-gradient(135deg, var(--neon-teal), var(--neon-silver));
-                            color: #020617;
-                            border: none;
+                            background: var(--custom-sample-color);
+                            color: #ffffff;
+                            border: 2px solid var(--custom-sample-color);
                             padding: 10px 18px;
                             border-radius: 8px;
                             font-weight: bold;
                             font-size: 0.85rem;
                             cursor: pointer;
-                            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+                            box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
                             transition: 0.2s;
                             display: inline-flex;
                             align-items: center;
@@ -705,13 +726,14 @@
                     </div>
                 </div>
 
-                <div class="card chat-box" style="height: auto;">
+                <div class="chat-box">
                     <h3 style="color: var(--neon-teal);">💬 Chat & Mural ao Vivo</h3>
                     <div class="chat-messages" id="chatMessages" style="height: 180px;">
                         <p style="color: var(--neon-teal);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
                     </div>
                     <div class="chat-input-area" id="listenerInputArea">
                         <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
+                        <!-- BOTÃO ENVIAR -->
                         <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
                     </div>
 
@@ -721,7 +743,7 @@
                         <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-teal); font-weight: bold;">⚡ Emissão Oficial // Rádio Ranzinza</p>
                         <div style="display: flex; gap: 8px;">
                             <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza (Host)...">
-                            <button class="chat-btn" onclick="enviarMensagemAdmin()" style="background: linear-gradient(135deg, var(--neon-teal), #0284c7);">Transmitir Recado</button>
+                            <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir Recado</button>
                         </div>
                     </div>
                 </div>
@@ -735,25 +757,25 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
-                <!-- 1. TOPO: ESTÚDIO TEAL -->
-                <div class="card card-top" style="border-color: var(--neon-teal);">
-                    <h3 style="color: var(--neon-teal); margin-bottom: 8px;">🌌 Estúdio Teal</h3>
+                <!-- 1. TOPO DIREITO (ESTÚDIO TEAL) -->
+                <div class="solid-color-card card-top">
+                    <h3 style="color: var(--neon-teal); margin-bottom: 8px; text-shadow: 0 0 10px rgba(0,0,0,0.9);">🌌 Estúdio Teal</h3>
                     <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e imersão total.</p>
-                    <div class="schedule-block" style="border-color: var(--neon-teal);">
-                        <div class="schedule-title">🎚️ Alta Fidelidade</div>
+                    <div class="schedule-block" style="border-left: 4px solid var(--neon-teal); padding-left: 8px; margin-top: 6px; text-align: left;">
+                        <div style="font-weight: bold; color: var(--neon-teal); margin-bottom: 2px; text-shadow: 0 0 6px rgba(0,0,0,0.9);">🎚️ Alta Fidelidade</div>
                         <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
                     </div>
                 </div>
 
-                <!-- 2. MEIO: SOUNDCLOUD (COM O MESMO TAMANHO DO QUADRO DE CIMA) -->
-                <div class="side-profile-card">
-                    <h4>🎧 Ouça no SoundCloud</h4>
+                <!-- 2. MEIO DIREITO (SOUNDCLOUD) -->
+                <div class="solid-color-card side-profile-card">
+                    <h4 style="color: var(--neon-teal);">🎧 Ouça no SoundCloud</h4>
                     <p class="info-box" style="margin-bottom: 10px;">Faixas independentes e streams diretos.</p>
-                    <a href="https://soundcloud.com" target="_blank" class="side-profile-btn soundcloud">⚡ Perfil SoundCloud</a>
+                    <a href="https://soundcloud.com" target="_blank" class="side-profile-btn">⚡ Perfil SoundCloud</a>
                 </div>
 
-                <!-- 3. BAIXO: ARTE DIREITA (TAMANHO ORIGINAL PRESERVADO) -->
-                <div class="side-art-banner" style="border-color: var(--neon-teal);">
+                <!-- 3. BAIXO: ARTE DIREITA -->
+                <div class="side-art-banner">
                     <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Direito">
                 </div>
             </div>
