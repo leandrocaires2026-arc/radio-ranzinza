@@ -526,8 +526,8 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade Sequencial</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🎧 Ordem Fixa Estrita</div>
-                        <p class="info-box" style="margin: 0;">New Age (Abertura Diária Única) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
+                        <div class="schedule-title">🎧 Programação Fixa</div>
+                        <p class="info-box" style="margin: 0;">New Age (Apenas de Manhã) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
                     </div>
                 </div>
             </div>
@@ -675,7 +675,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE PROGRAMAÇÃO SEQUENCIAL PURA -->
+    <!-- SCRIPT DE PROGRAMAÇÃO SEQUENCIAL COM FILTRO DE MANHÃ -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -790,7 +790,7 @@
             document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
-        // BLOCOS DE MÚSICAS NA ORDEM EXATA SOLICITADA
+        // BLOCOS DE MÚSICAS
         const blocoNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3" },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3" },
@@ -882,7 +882,6 @@
         let executandoJingleVoz = false;
         let playerAtivo = 1;
 
-        // Injeta jingles a cada 3 músicas para manter o padrão profissional
         function inserirComJingles(bloco) {
             let contador = 0;
             bloco.forEach(musica => {
@@ -896,15 +895,19 @@
 
         function construirFilaMestre() {
             filaMestre = [];
-            
-            // 1. O New Age toca EXATAMENTE UMA VEZ no topo (na abertura da programação)
-            blocoNewAge.forEach(musica => {
-                filaMestre.push({ type: 'music', ...musica });
-            });
-            // Jingle logo após encerrar o bloco de abertura New Age
-            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+            const horaAtual = new Date().getHours();
 
-            // 2. Segue o ciclo contínuo com os demais blocos na ordem fixa (Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock)
+            // Verifica se está no horário de manhã (das 06:00 às 07:59) para incluir a abertura New Age
+            const ehManhaAbertura = (horaAtual >= 6 && horaAtual < 8);
+
+            if (ehManhaAbertura) {
+                blocoNewAge.forEach(musica => {
+                    filaMestre.push({ type: 'music', ...musica });
+                });
+                filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+            }
+
+            // Segue o ciclo contínuo padrão
             inserirComJingles(blocoEletronica);
             inserirComJingles(blocoSertanejo);
             inserirComJingles(blocoPop);
@@ -922,7 +925,7 @@
 
         function tocarItemDaFila() {
             if (indiceFilaAtual >= filaMestre.length) {
-                construirFilaMestre(); // Um novo ciclo diário inicia-se com o New Age novamente
+                construirFilaMestre(); 
             }
 
             const item = filaMestre[indiceFilaAtual];
