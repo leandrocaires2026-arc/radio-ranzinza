@@ -14,7 +14,7 @@
     <style>
         :root {
             /* PALETA EXATA SOLICITADA: TONS FRIOS, CIANO, AZUL ANALÍTICO E PRATEADO */
-            --card-bg: rgba(6, 14, 26, 0.94);
+            --card-bg: rgba(6, 14, 26, 0.92);
             --neon-teal: #00f0ff;
             --neon-blue: #3b82f6;
             --neon-silver: #a5f3fc;
@@ -37,16 +37,16 @@
             position: relative;
         }
 
-        /* FUNDO COM FILTRO FRIO E AZULADO (ATENDENDO À SUA PALETA) */
+        /* FUNDO DA PÁGINA COM A IMAGEM FUNDO.jpg CLARA E NÍDIDA */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(2, 6, 23, 0.96), rgba(4, 15, 35, 0.96)), 
-                        url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop') no-repeat center center fixed;
+            background: linear-gradient(135deg, rgba(2, 6, 23, 0.65), rgba(4, 15, 35, 0.70)), 
+                        url('FUNDO.jpg') no-repeat center center fixed;
             background-size: cover;
             z-index: -2;
-            filter: hue-rotate(180deg) saturate(140%) brightness(0.75);
+            filter: saturate(150%) brightness(1.05) contrast(110%);
         }
         
         header {
@@ -109,6 +109,8 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ESTILO PADRÃO PARA O TOPO (GRADE E ESTÚDIO TEAL) */
         .card {
             background-color: var(--card-bg);
             backdrop-filter: blur(8px);
@@ -127,12 +129,13 @@
             background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
         }
         .card-top {
-            min-height: 250px;
+            min-height: 230px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             box-sizing: border-box;
         }
+        
         h3 {
             margin-top: 0;
             font-size: 1.1rem;
@@ -325,6 +328,7 @@
             margin-top: 12px;
         }
         audio { display: none; }
+        
         .schedule-block {
             font-size: 0.8rem;
             border-left: 3px solid var(--neon-teal);
@@ -337,6 +341,7 @@
             color: var(--neon-teal);
             margin-bottom: 2px;
         }
+        
         .chat-box {
             display: flex;
             flex-direction: column;
@@ -437,10 +442,10 @@
             filter: hue-rotate(180deg) brightness(0.7) saturate(130%);
         }
 
-        /* PAINÉIS LATERAIS COM O NOME EXATO DO SEU ARQUIVO DO GITHUB E APLICAÇÃO DO FILTRO FRIO/TEAL */
+        /* PAINÉIS DE ARTE LATERAIS COM O TAMANHO ORIGINAL EXATO PRESERVADO */
         .side-art-banner {
             width: 100%;
-            height: 480px;
+            height: 440px;
             border-radius: 14px;
             overflow: hidden;
             border: 2px solid var(--neon-teal);
@@ -453,9 +458,58 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Filtro aplicado exatamente para puxar para a paleta fria azul/teal da sua referência */
             filter: hue-rotate(180deg) saturate(150%) brightness(0.85) contrast(110%);
         }
+
+        /* PAINEL DO SPOTIFY E SOUNDCLOUD COM A MESMA ALTURA DO QUADRO DE CIMA (card-top) */
+        .side-profile-card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            height: 230px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .side-profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
+        }
+        .side-profile-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--neon-teal);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .side-profile-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #ffffff;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
+        }
+        .side-profile-btn.spotify { background: rgba(29, 185, 84, 0.2); border-color: #1db954; }
+        .side-profile-btn.spotify:hover { background: #1db954; }
+        .side-profile-btn.soundcloud { background: rgba(255, 85, 0, 0.2); border-color: #ff5500; }
+        .side-profile-btn.soundcloud:hover { background: #ff5500; }
 
         .info-box {
             font-size: 0.8rem;
@@ -520,6 +574,7 @@
         <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
+                <!-- 1. TOPO: GRADE DE PROGRAMAÇÃO -->
                 <div class="card card-top" style="border-color: var(--neon-teal);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade de Programação</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
@@ -532,7 +587,14 @@
                     </div>
                 </div>
 
-                <!-- PAINEL ESQUERDO COM A FOTO REAL DO GITHUB E PALETA TEAL APLICADA -->
+                <!-- 2. MEIO: SPOTIFY (COM O MESMO TAMANHO DO QUADRO DE CIMA) -->
+                <div class="side-profile-card">
+                    <h4>🟢 Ouça no Spotify</h4>
+                    <p class="info-box" style="margin-bottom: 10px;">Catálogo completo de lançamentos oficiais.</p>
+                    <a href="https://spotify.com" target="_blank" class="side-profile-btn spotify">🎵 Perfil Spotify</a>
+                </div>
+
+                <!-- 3. BAIXO: ARTE ESQUERDA (TAMANHO ORIGINAL PRESERVADO) -->
                 <div class="side-art-banner">
                     <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Esquerdo">
                 </div>
@@ -673,16 +735,24 @@
         <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
+                <!-- 1. TOPO: ESTÚDIO TEAL -->
                 <div class="card card-top" style="border-color: var(--neon-teal);">
                     <h3 style="color: var(--neon-teal); margin-bottom: 8px;">🌌 Estúdio Teal</h3>
-                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e roteiros sônicos projetados para imersão total.</p>
+                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e imersão total.</p>
                     <div class="schedule-block" style="border-color: var(--neon-teal);">
                         <div class="schedule-title">🎚️ Alta Fidelidade</div>
                         <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
                     </div>
                 </div>
 
-                <!-- PAINEL DIREITO COM A FOTO REAL DO GITHUB E PALETA TEAL APLICADA -->
+                <!-- 2. MEIO: SOUNDCLOUD (COM O MESMO TAMANHO DO QUADRO DE CIMA) -->
+                <div class="side-profile-card">
+                    <h4>🎧 Ouça no SoundCloud</h4>
+                    <p class="info-box" style="margin-bottom: 10px;">Faixas independentes e streams diretos.</p>
+                    <a href="https://soundcloud.com" target="_blank" class="side-profile-btn soundcloud">⚡ Perfil SoundCloud</a>
+                </div>
+
+                <!-- 3. BAIXO: ARTE DIREITA (TAMANHO ORIGINAL PRESERVADO) -->
                 <div class="side-art-banner" style="border-color: var(--neon-teal);">
                     <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Direito">
                 </div>
