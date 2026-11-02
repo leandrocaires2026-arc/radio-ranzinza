@@ -526,8 +526,8 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade Sequencial</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🎧 Programação Fixa</div>
-                        <p class="info-box" style="margin: 0;">New Age (Apenas de Manhã) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
+                        <div class="schedule-title">🎧 Fluxo Contínuo Fixo</div>
+                        <p class="info-box" style="margin: 0;">New Age (Manhã) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
                     </div>
                 </div>
             </div>
@@ -675,7 +675,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE PROGRAMAÇÃO SEQUENCIAL COM FILTRO DE MANHÃ -->
+    <!-- SCRIPT DE PROGRAMAÇÃO SEQUENCIAL POSICIONADA EM NAVEGANTES -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -744,7 +744,6 @@
             }, 1000);
         }
 
-        // FUNÇÕES DA MODAL DE PARTILHA
         function abrirModalPartilha() {
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
@@ -895,25 +894,22 @@
 
         function construirFilaMestre() {
             filaMestre = [];
-            const horaAtual = new Date().getHours();
+            
+            // 1. Bloco New Age (Abertura mantida no topo da estrutura geral)
+            blocoNewAge.forEach(musica => {
+                filaMestre.push({ type: 'music', ...musica });
+            });
+            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
 
-            // Verifica se está no horário de manhã (das 06:00 às 07:59) para incluir a abertura New Age
-            const ehManhaAbertura = (horaAtual >= 6 && horaAtual < 8);
-
-            if (ehManhaAbertura) {
-                blocoNewAge.forEach(musica => {
-                    filaMestre.push({ type: 'music', ...musica });
-                });
-                filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
-            }
-
-            // Segue o ciclo contínuo padrão
+            // 2. Ciclo contínuo na ordem exata
             inserirComJingles(blocoEletronica);
             inserirComJingles(blocoSertanejo);
             inserirComJingles(blocoPop);
             inserirComJingles(blocoRock);
 
-            indiceFilaAtual = 0;
+            // Posiciona exatamente na faixa "Navegantes" (como simulado para o fluxo da noite)
+            const indexNavegantes = filaMestre.findIndex(item => item.url.includes("NAVEGANTES.mp3"));
+            indiceFilaAtual = indexNavegantes !== -1 ? indexNavegantes : 0;
         }
 
         function ligarSomOuvinte() {
@@ -925,7 +921,7 @@
 
         function tocarItemDaFila() {
             if (indiceFilaAtual >= filaMestre.length) {
-                construirFilaMestre(); 
+                indiceFilaAtual = 0; // Fecha o ciclo e recomeça perfeitamente
             }
 
             const item = filaMestre[indiceFilaAtual];
