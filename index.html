@@ -103,7 +103,6 @@
             letter-spacing: 1.5px;
         }
 
-        /* LAYOUT PRINCIPAL AMPLIADO PARA ABRIGAR AS ARTES NAS LATERAIS */
         .main-layout {
             display: grid;
             grid-template-columns: 280px 1fr 280px;
@@ -146,6 +145,7 @@
             flex-direction: column;
             justify-content: flex-start;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
         h3 {
             margin-top: 0;
@@ -479,14 +479,13 @@
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
         
-        /* BANNERS INFERIORES ORIGINAIS RESTAURADOS */
+        /* BANNERS DE RODAPÉ ORIGINAIS RESTAURADOS E INTACTOS NA PARTE INFERIOR */
         .radio-banner {
             width: 100%; height: 200px;
             border-radius: 14px;
             overflow: hidden;
             border: 2px solid var(--neon-blue);
             position: relative;
-            margin-bottom: 20px;
             background: #111;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
@@ -495,17 +494,17 @@
             object-fit: cover;
         }
 
-        /* ARTE DE 9:16 REDIMENSIONADA E ENCAIXADA PERFEITAMENTE NAS COLUNAS LATERAIS */
+        /* ARTE DE 9:16 POSICIONADA EXATAMENTE LOGO ABAIXO DOS CARDS DE DIVULGAÇÃO (SPOTIFY/SOUNDCLOUD) */
         .side-art-banner {
             width: 100%;
-            height: 480px;
+            height: 440px;
             border-radius: 14px;
             overflow: hidden;
             border: 2px solid var(--neon-blue);
             position: relative;
             background: #09090c;
             box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25);
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
         .side-art-banner img {
             width: 100%;
@@ -578,7 +577,7 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA (Grade, Player e a Arte de 9:16 Redimensionada na Lateral) -->
+        <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-blue);">
@@ -593,6 +592,7 @@
                     </div>
                 </div>
 
+                <!-- CARD DE DIVULGAÇÃO DO SPOTIFY/SOUNDCLOUD -->
                 <a href="https://spotify.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardLeft" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-green);">Patrocínio Oficial</span>
@@ -619,15 +619,20 @@
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Fonogramas independentes a 432Hz.</p>
                     </div>
                 </a>
+
+                <!-- ARTE 9:16 POSICIONADA LOGO ABAIXO DO CARD DE DIVULGAÇÃO ESQUERDO -->
+                <div class="side-art-banner">
+                    <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
+                </div>
             </div>
             
-            <!-- ARTE 9:16 ENCAIXADA NA LATERAL ESQUERDA -->
-            <div class="side-art-banner">
-                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
+            <!-- BANNER DE RODAPÉ INTACTO -->
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL (Player e Chat) -->
+        <!-- COLUNA CENTRAL -->
         <div class="column-wrapper">
             <div class="center-panel">
                 <div class="card player-box">
@@ -755,7 +760,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA (Estúdio Neon e a Arte de 9:16 Redimensionada na Lateral) -->
+        <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-blue);">
@@ -767,6 +772,7 @@
                     </div>
                 </div>
 
+                <!-- CARD DE DIVULGAÇÃO DO SPOTIFY/SOUNDCLOUD -->
                 <a href="https://soundcloud.com" target="_blank" class="card card-bottom ad-slider-card" id="adCardRight" style="border-color: var(--neon-blue);">
                     <div class="ad-slide active">
                         <span class="ad-tag" style="color: var(--neon-blue);">Destaque da Semana</span>
@@ -793,11 +799,16 @@
                         <p class="info-box" style="margin: 0; font-size: 0.7rem;">Siga o artista nas suas playlists.</p>
                     </div>
                 </a>
+
+                <!-- ARTE 9:16 POSICIONADA LOGO ABAIXO DO CARD DE DIVULGAÇÃO DIREITO -->
+                <div class="side-art-banner">
+                    <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
+                </div>
             </div>
             
-            <!-- ARTE 9:16 ENCAIXADA NA LATERAL DIREITA -->
-            <div class="side-art-banner">
-                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
+            <!-- BANNER DE RODAPÉ INTACTO -->
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
             </div>
         </div>
 
