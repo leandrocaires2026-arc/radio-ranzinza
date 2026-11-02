@@ -530,6 +530,15 @@
                         <p class="info-box" style="margin: 0;">New Age (1º Ciclo) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
                     </div>
                 </div>
+
+                <!-- LINKS OFICIAIS NAS LATERAIS -->
+                <div class="card" style="border-color: var(--neon-pink); padding: 15px;">
+                    <h3 style="color: var(--neon-pink); font-size: 0.95rem; margin-bottom: 10px;">⚡ Plataformas Ranzinza</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud" style="justify-content: center;">🎧 SoundCloud Oficial</a>
+                        <a href="https://spotify.com" target="_blank" class="platform-btn spotify" style="justify-content: center;">🎵 Spotify Ranzinza</a>
+                    </div>
+                </div>
             </div>
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Lateral">
@@ -609,11 +618,6 @@
                     <audio id="audioPlayer1" preload="auto"></audio>
                     <audio id="audioPlayer2" preload="auto"></audio>
 
-                    <div class="external-platforms">
-                        <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
-                        <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
-                    </div>
-
                     <div style="margin-top: 15px; text-align: center;">
                         <button onclick="abrirModalPartilha()" style="
                             background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
@@ -644,11 +648,13 @@
                         <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
                     </div>
                     
-                    <!-- PAINEL DO ADMIN SECRETO (Ativado com Ctrl + Shift + A) -->
+                    <!-- PAINEL DO ADMINISTRADOR / HOST (Ativado com Ctrl + Shift + A) -->
                     <div class="admin-panel" id="adminPanel">
-                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Painel Restrito do Estúdio // Rádio Ranzinza</p>
-                        <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza...">
-                        <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir como Rádio</button>
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-pink); font-weight: bold;">⚡ Painel Restrito do Host // Rádio Ranzinza</p>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="adminInput" placeholder="Escreva como Rádio Ranzinza (Host)...">
+                            <button class="chat-btn" onclick="enviarMensagemAdmin()" style="background: linear-gradient(135deg, var(--neon-blue), #0088cc);">Transmitir Recado</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -668,6 +674,12 @@
                         <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
                     </div>
                 </div>
+
+                <!-- PAINEL DE MENSAGEM DO HOST -->
+                <div class="card" style="border-color: var(--neon-blue); padding: 15px;">
+                    <h3 style="color: var(--neon-blue); font-size: 0.95rem; margin-bottom: 8px;">🎙️ Recado do Host</h3>
+                    <p class="info-box" style="margin: 0; font-style: italic;">"Bem-vindos ao fluxo contínuo. Aperte Ctrl+Shift+A para ativar o microfone do estúdio."</p>
+                </div>
             </div>
             <div class="radio-banner">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
@@ -675,7 +687,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DO MOTOR DE ARRANQUE POR TEMPO ACUMULADO -->
+    <!-- SCRIPT DE EXECUÇÃO E MOTOR DE ARRANQUE -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -748,7 +760,7 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareFacebook').href = `url?id=6sharer/sharer.php?u=${urlAtual}`;
             document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
             document.getElementById('shareModal').style.display = 'flex';
         }
@@ -928,23 +940,17 @@
             // MOTOR DE ARRANQUE POR TEMPO ACUMULADO
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            
-            // Estimativa baseada em média de 210s por faixa para calcular o tempo total do ciclo em segundos
             const segundosPorCiclo = tamanhoCicloComNewAge * 210; 
 
             if (segundosDesdeMeiaNoite < segundosPorCiclo) {
-                // Estamos no 1º Ciclo (com New Age)
-                // Proporção exata do tempo decorrido dentro deste ciclo
                 indiceFilaAtual = Math.floor((segundosDesdeMeiaNoite / segundosPorCiclo) * tamanhoCicloComNewAge);
             } else {
-                // Estamos nos ciclos seguintes (sem New Age)
                 const segundosAposPrimeiroCiclo = segundosDesdeMeiaNoite - segundosPorCiclo;
                 const tamanhoCicloNormal = filaSemNewAgeTemp.length;
                 const segundosPorCicloNormal = tamanhoCicloNormal * 210;
                 
                 const indiceNoCicloNormal = Math.floor(((segundosAposPrimeiroCiclo % segundosPorCicloNormal) / segundosPorCicloNormal) * tamanhoCicloNormal);
                 
-                // Adiciona a fila normal ao mestre e aponta o índice exato
                 filaMestre = filaMestre.concat(filaSemNewAgeTemp);
                 indiceFilaAtual = tamanhoCicloComNewAge + indiceNoCicloNormal;
             }
@@ -1053,7 +1059,7 @@
             const messages = document.getElementById('chatMessages');
             if(input && input.value.trim() !== '' && messages) {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Estúdio):</strong> ${input.value}`;
+                p.innerHTML = `<strong style="color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.6);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
