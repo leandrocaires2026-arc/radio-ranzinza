@@ -526,8 +526,8 @@
                 <div class="card card-top" style="border-color: var(--neon-blue);">
                     <h3 style="color: var(--neon-green); margin-bottom: 8px;">📅 Grade Sequencial</h3>
                     <div class="schedule-block" style="border-color: var(--neon-green);">
-                        <div class="schedule-title">🎧 Ciclo Contínuo Perpétuo</div>
-                        <p class="info-box" style="margin: 0;">New Age ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock (Loop Contínuo).</p>
+                        <div class="schedule-title">🎧 Motor de Arranque 24h</div>
+                        <p class="info-box" style="margin: 0;">New Age (1º Ciclo) ➔ Eletrônica ➔ Sertanejo ➔ Pop ➔ Rock.</p>
                     </div>
                 </div>
             </div>
@@ -675,7 +675,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CICLO CONTÍNUO INTEGRADO POSICIONADO EM NAVEGANTES -->
+    <!-- SCRIPT DO MOTOR DE ARRANQUE POR TEMPO ACUMULADO -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -698,7 +698,7 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            construirFilaMestre();
+            construirFilasDoDia();
             
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
@@ -892,21 +892,66 @@
             });
         }
 
-        function construirFilaMestre() {
+        function construirFilasDoDia() {
             filaMestre = [];
             
-            // 1. Bloco New Age entra como parte integrante do ciclo contínuo
-            inserirComJingles(blocoNewAge);
-            
-            // 2. Continua o ciclo na ordem exata solicitada
+            // 1. Abertura do Dia (1º Ciclo com New Age)
+            blocoNewAge.forEach(musica => {
+                filaMestre.push({ type: 'music', ...musica });
+            });
+            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+
             inserirComJingles(blocoEletronica);
             inserirComJingles(blocoSertanejo);
             inserirComJingles(blocoPop);
             inserirComJingles(blocoRock);
 
-            // Posiciona exatamente na faixa "Navegantes" mantendo o fluxo contínuo
-            const indexNavegantes = filaMestre.findIndex(item => item.url.includes("NAVEGANTES.mp3"));
-            indiceFilaAtual = indexNavegantes !== -1 ? indexNavegantes : 0;
+            const tamanhoCicloComNewAge = filaMestre.length;
+
+            // 2. Ciclos Subsequentes do Dia (Sem New Age, apenas Eletrônica ➔ Rock)
+            let filaSemNewAgeTemp = [];
+            function inserirSemNewAge(bloco) {
+                let contador = 0;
+                bloco.forEach(musica => {
+                    filaSemNewAgeTemp.push({ type: 'music', ...musica });
+                    contador++;
+                    if (contador % 3 === 0) {
+                        filaSemNewAgeTemp.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
+                    }
+                });
+            }
+            inserirSemNewAge(blocoEletronica);
+            inserirSemNewAge(blocoSertanejo);
+            inserirSemNewAge(blocoPop);
+            inserirSemNewAge(blocoRock);
+
+            // MOTOR DE ARRANQUE POR TEMPO ACUMULADO
+            const agora = new Date();
+            const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+            
+            // Estimativa baseada em média de 210s por faixa para calcular o tempo total do ciclo em segundos
+            const segundosPorCiclo = tamanhoCicloComNewAge * 210; 
+
+            if (segundosDesdeMeiaNoite < segundosPorCiclo) {
+                // Estamos no 1º Ciclo (com New Age)
+                // Proporção exata do tempo decorrido dentro deste ciclo
+                indiceFilaAtual = Math.floor((segundosDesdeMeiaNoite / segundosPorCiclo) * tamanhoCicloComNewAge);
+            } else {
+                // Estamos nos ciclos seguintes (sem New Age)
+                const segundosAposPrimeiroCiclo = segundosDesdeMeiaNoite - segundosPorCiclo;
+                const tamanhoCicloNormal = filaSemNewAgeTemp.length;
+                const segundosPorCicloNormal = tamanhoCicloNormal * 210;
+                
+                const indiceNoCicloNormal = Math.floor(((segundosAposPrimeiroCiclo % segundosPorCicloNormal) / segundosPorCicloNormal) * tamanhoCicloNormal);
+                
+                // Adiciona a fila normal ao mestre e aponta o índice exato
+                filaMestre = filaMestre.concat(filaSemNewAgeTemp);
+                indiceFilaAtual = tamanhoCicloComNewAge + indiceNoCicloNormal;
+            }
+
+            if (indiceFilaAtual >= filaMestre.length) {
+                indiceFilaAtual = 0;
+            }
         }
 
         function ligarSomOuvinte() {
@@ -918,7 +963,7 @@
 
         function tocarItemDaFila() {
             if (indiceFilaAtual >= filaMestre.length) {
-                indiceFilaAtual = 0; // Fecha o ciclo de 24h e recomeça perfeitamente nas New Ages
+                indiceFilaAtual = 0; 
             }
 
             const item = filaMestre[indiceFilaAtual];
