@@ -13,7 +13,7 @@
 
     <style>
         :root {
-            --card-bg: rgba(16, 20, 31, 0.82);
+            --card-bg: rgba(16, 20, 31, 0.85);
             --neon-pink: #ff007f;
             --neon-blue: #00f0ff;
             --neon-green: #00ff66;
@@ -57,7 +57,7 @@
         
         header {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1240px;
             height: 200px;
             margin-bottom: 25px;
             position: relative;
@@ -103,14 +103,15 @@
             letter-spacing: 1.5px;
         }
 
+        /* LAYOUT PRINCIPAL AMPLIADO PARA ABRIGAR AS ARTES NAS LATERAIS */
         .main-layout {
             display: grid;
             grid-template-columns: 280px 1fr 280px;
             gap: 20px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1240px;
         }
-        @media (max-width: 950px) {
+        @media (max-width: 1000px) {
             .main-layout {
                 grid-template-columns: 1fr;
             }
@@ -478,27 +479,43 @@
         .platform-btn.soundcloud:hover { background: #ff5500; border-color: #ff5500; }
         .platform-btn.spotify:hover { background: #1db954; border-color: #1db954; }
         
-        /* BANNERS LATERAIS COM A NOVA ARTE 9:16 */
+        /* BANNERS INFERIORES ORIGINAIS RESTAURADOS */
         .radio-banner {
-            width: 100%; 
-            height: 380px;
+            width: 100%; height: 200px;
             border-radius: 14px;
             overflow: hidden;
             border: 2px solid var(--neon-blue);
             position: relative;
             margin-bottom: 20px;
             background: #111;
-            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
         .radio-banner img {
-            width: 100%; 
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* ARTE DE 9:16 REDIMENSIONADA E ENCAIXADA PERFEITAMENTE NAS COLUNAS LATERAIS */
+        .side-art-banner {
+            width: 100%;
+            height: 480px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid var(--neon-blue);
+            position: relative;
+            background: #09090c;
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25);
+            margin-top: 20px;
+        }
+        .side-art-banner img {
+            width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.95) contrast(105%);
-            transition: transform 0.5s ease;
+            filter: brightness(0.95);
+            transition: transform 0.4s ease;
         }
-        .radio-banner:hover img {
-            transform: scale(1.03);
+        .side-art-banner:hover img {
+            transform: scale(1.02);
         }
 
         .info-box {
@@ -561,7 +578,7 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA -->
+        <!-- COLUNA ESQUERDA (Grade, Player e a Arte de 9:16 Redimensionada na Lateral) -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-blue);">
@@ -604,13 +621,13 @@
                 </a>
             </div>
             
-            <!-- BANNER ESQUERDO COM A NOVA ARTE 9:16 -->
-            <div class="radio-banner">
-                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Uma nova conexão para o futuro">
+            <!-- ARTE 9:16 ENCAIXADA NA LATERAL ESQUERDA -->
+            <div class="side-art-banner">
+                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
             </div>
         </div>
 
-        <!-- COLUNA CENTRAL -->
+        <!-- COLUNA CENTRAL (Player e Chat) -->
         <div class="column-wrapper">
             <div class="center-panel">
                 <div class="card player-box">
@@ -733,13 +750,12 @@
                 </div>
             </div>
             
-            <!-- BANNER CENTRAL INFERIOR COM A ARTE 9:16 -->
             <div class="radio-banner">
-                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - leandrocaires2026@gmail.com">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
             </div>
         </div>
 
-        <!-- COLUNA DIREITA -->
+        <!-- COLUNA DIREITA (Estúdio Neon e a Arte de 9:16 Redimensionada na Lateral) -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="card card-top" style="border-color: var(--neon-blue);">
@@ -779,15 +795,15 @@
                 </a>
             </div>
             
-            <!-- BANNER DIREITO COM A NOVA ARTE 9:16 -->
-            <div class="radio-banner">
-                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Uma nova conexão para o futuro">
+            <!-- ARTE 9:16 ENCAIXADA NA LATERAL DIREITA -->
+            <div class="side-art-banner">
+                <img src="watermarked_img_6207510493667339090.jpg" alt="Rádio Ranzinza - Conexão para o Futuro">
             </div>
         </div>
 
     </div>
 
-    <!-- SCRIPT DE EXECUÇÃO: MOTOR DE ARRANQUE 24H E BLOCOS COM OS NOMES CORRETOS -->
+    <!-- SCRIPT DE EXECUÇÃO MANTIDO COM A MESMA ESTRUTURA E BLOCOS -->
     <script>
         function criarMarcacoesRelogio(faceId) {
             const face = document.getElementById(faceId);
@@ -892,7 +908,7 @@
             document.getElementById('volumePercent').innerText = `${valor}%`;
         }
 
-        // BLOCOS DE MÚSICAS COM OS NOMES EXATOS DAS CAPTURAS DE TELA
+        // BLOCOS DE MÚSICAS ORGANIZADOS EXATAMENTE COMO ESTRUTURÁMOS
         const blocoNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3" },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3" },
@@ -998,7 +1014,6 @@
         function construirFilasDoDia() {
             filaMestre = [];
             
-            // 1. Abertura do Dia (1º Ciclo com New Age)
             blocoNewAge.forEach(musica => {
                 filaMestre.push({ type: 'music', ...musica });
             });
@@ -1011,7 +1026,6 @@
 
             const tamanhoCicloComNewAge = filaMestre.length;
 
-            // 2. Ciclos Subsequentes do Dia (Sem New Age)
             let filaSemNewAgeTemp = [];
             function inserirSemNewAge(bloco) {
                 let contador = 0;
@@ -1028,7 +1042,6 @@
             inserirSemNewAge(blocoPop);
             inserirSemNewAge(blocoRock);
 
-            // MOTOR DE ARRANQUE POR TEMPO ACUMULADO DESDE A MEIA-NOITE
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
             const segundosPorCiclo = tamanhoCicloComNewAge * 210; 
@@ -1058,7 +1071,6 @@
             tocarItemDaFila();
         }
 
-        // MOTOR DE REPRODUÇÃO SEGURO CONTRA TRAVAMENTOS
         function tocarItemDaFila() {
             if (indiceFilaAtual >= filaMestre.length) {
                 indiceFilaAtual = 0; 
@@ -1093,7 +1105,6 @@
                 const safetyTimeout = setTimeout(() => {
                     if (!audioIniciado) {
                         audioIniciado = true;
-                        console.warn("Áudio demorou a carregar, a saltar para o próximo:", item.title);
                         indiceFilaAtual++;
                         tocarItemDaFila();
                     }
@@ -1106,9 +1117,7 @@
                         nextAudio.play().then(() => {
                             activeAudio.pause();
                             playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        }).catch(e => {
-                            console.log("Erro de play:", e);
-                        });
+                        }).catch(e => console.log("Play error:", e));
                     }
                 };
 
@@ -1116,7 +1125,6 @@
                     if (!audioIniciado) {
                         audioIniciado = true;
                         clearTimeout(safetyTimeout);
-                        console.error("Erro 404/Incompatível no ficheiro:", item.url);
                         indiceFilaAtual++;
                         tocarItemDaFila();
                     }
@@ -1156,7 +1164,6 @@
             }
         }
 
-        // Carrossel de patrocínio lateral
         setInterval(() => {
             const cards = document.querySelectorAll('.ad-slider-card');
             cards.forEach(card => {
