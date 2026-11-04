@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rádio Ranzinza // Custom Studio</title>
     
+    <!-- SDK DO FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
     <meta property="og:title" content="Rádio Ranzinza // Custom Studio">
     <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
@@ -602,10 +606,10 @@
 
                     <!-- PAINEL DO ADMIN PROTEGIDO -->
                     <div class="admin-panel" id="adminPanel">
-                        <!-- CONTADOR DE VISITANTES EXCLUSIVO DO ADMIN -->
+                        <!-- CONTADOR DE VISITANTES EM NUVEM -->
                         <div class="admin-visitor-counter">
-                            <span>👥 Acessos Totais Registrados:</span>
-                            <span class="visitor-number" id="visitorCountDisplay">0</span>
+                            <span>👥 Acessos Totais (Firebase):</span>
+                            <span class="visitor-number" id="visitorCountDisplay">...</span>
                         </div>
 
                         <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-teal); font-weight: bold;">⚡ Painel de Controle // Rádio Ranzinza (Host)</p>
@@ -653,7 +657,21 @@
 
     <!-- SCRIPT DE EXECUÇÃO -->
     <script>
-        // BLOCOS DE MÚSICA COMPLETOS (COM TODAS AS FAIXAS ORIGINAIS)
+        // CONFIGURAÇÃO DO FIREBASE (COM AS CHAVES DA SUA TELA)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqnt1IvGA-UN-EUzoMQharvNxwjQCWcBE",
+            authDomain: "radio-ranzinza.firebaseapp.com",
+            projectId: "radio-ranzinza",
+            storageBucket: "radio-ranzinza.firebasestorage.app",
+            messagingSenderId: "586263777232",
+            appId: "1:586263777232:web:172599d5f12f44fea573d5",
+            measurementId: "G-YM3783SPZE"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // BLOCOS DE MÚSICA COMPLETOS
         const blocoNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
@@ -755,26 +773,36 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            // Monta o cronograma mestre de 24h e sintoniza direto na faixa em curso
             construirGradeDiariaEAfinar();
-            registrarVisitante();
-
-            // Auto-play contínuo sem intervenção do ouvinte
+            registrarVisitanteFirebase();
             iniciarTransmissaoContinua();
         });
 
-        function registrarVisitante() {
-            let totalVisitas = localStorage.getItem('radio_ranzinza_visitas');
-            if (!totalVisitas) {
-                totalVisitas = 120; 
-            } else {
-                if (!sessionStorage.getItem('visitante_contado')) {
-                    totalVisitas = parseInt(totalVisitas) + 1;
-                    localStorage.setItem('radio_ranzinza_visitas', totalVisitas);
+        // REGISTRA E SINCRONIZA VISITANTES NO FIREBASE EM TEMPO REAL
+        function registrarVisitanteFirebase() {
+            const docRef = db.collection("estatisticas").doc("visitas");
+
+            if (!sessionStorage.getItem('visitante_contado')) {
+                db.runTransaction((transaction) => {
+                    return transaction.get(docRef).then((doc) => {
+                        let novoTotal = 120; // Base inicial
+                        if (doc.exists) {
+                            novoTotal = doc.data().total + 1;
+                        }
+                        transaction.set(docRef, { total: novoTotal });
+                        return novoTotal;
+                    });
+                }).then((totalAtualizado) => {
+                    document.getElementById('visitorCountDisplay').innerText = totalAtualizado;
                     sessionStorage.setItem('visitante_contado', 'true');
-                }
+                }).catch((err) => console.log("Erro ao atualizar visitas:", err));
+            } else {
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        document.getElementById('visitorCountDisplay').innerText = doc.data().total;
+                    }
+                });
             }
-            document.getElementById('visitorCountDisplay').innerText = totalVisitas;
         }
 
         function solicitarSenhaAdmin() {
@@ -785,7 +813,7 @@
                 const panel = document.getElementById('adminPanel');
                 panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
                 if(panel.style.display === 'block') {
-                    alert("Acesso autorizado! Painel de controle e contador de visitantes revelados.");
+                    alert("Acesso autorizado! Painel de controle e contador global em nuvem revelados.");
                 }
             } else if (tentativa !== null) {
                 alert("Senha incorreta! Acesso negado.");
@@ -803,11 +831,9 @@
             });
         }
 
-        // MOTOR DE CRONOGRAMA DIÁRIO (ZERA À MEIA-NOITE)
         function construirGradeDiariaEAfinar() {
             filaMestre = [];
             
-            // 1ª Volta do dia começa com New Age às 0h (horário simbólico de partida)
             blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
             filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
 
@@ -816,17 +842,11 @@
             inserirComJingles(blocoPop, filaMestre);
             inserirComJingles(blocoRock, filaMestre);
 
-            // Calcula o tempo total em segundos da grade completa
             let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
-
-            // Descobre quantos segundos já se passaram desde a meia-noite de hoje
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-
-            // Faz o módulo para ciclar perfeitamente ao longo das 24 horas
             let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
 
-            // Varre o cronograma somando durações para achar exatamente qual item está tocando agora
             let acumulado = 0;
             indiceFilaAtual = 0;
             for (let i = 0; i < filaMestre.length; i++) {
@@ -846,7 +866,6 @@
 
         function tocarItemDaFilaEmAndamento() {
             if (indiceFilaAtual >= filaMestre.length) {
-                // Virada automática diária à meia-noite (recalcula a grade)
                 construirGradeDiariaEAfinar();
             }
 
@@ -871,11 +890,10 @@
                 nextAudio.load();
 
                 nextAudio.oncanplaythrough = () => {
-                    // Pula direto para o segundo exato onde a música estaria tocando globalmente
                     if (tempoDecorridoNaFita > 0 && tempoDecorridoNaFita < (nextAudio.duration || 210)) {
                         nextAudio.currentTime = tempoDecorridoNaFita;
                     }
-                    tempoDecorridoNaFita = 0; // Reseta o offset para as próximas faixas
+                    tempoDecorridoNaFita = 0;
 
                     nextAudio.play().then(() => {
                         activeAudio.pause();
@@ -890,7 +908,7 @@
 
                 nextAudio.onended = () => {
                     indiceFilaAtual++;
-                    tocarItemDaFitaEmAndamento();
+                    tocarItemDaFilaEmAndamento();
                 };
             }
         }
