@@ -549,18 +549,9 @@
                         </div>
                     </div>
 
-                    <p id="now-playing">Clique no botão abaixo para iniciar a transmissão...</p>
+                    <p id="now-playing">Sintonizando na transmissão em curso...</p>
 
-                    <div id="playTriggerBox" style="margin-bottom: 12px;">
-                        <button onclick="ligarSomOuvinte()" style="
-                            background: var(--custom-sample-color); color: #ffffff;
-                            border: 2px solid var(--custom-sample-color); padding: 12px 24px;
-                            border-radius: 8px; font-weight: bold; font-size: 0.95rem; cursor: pointer;
-                            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-                        ">
-                            ▶ LIGAR O SOM DA TRANSMISSÃO
-                        </button>
-                    </div>
+                    <div id="playTriggerBox" style="display: none; margin-bottom: 12px;"></div>
                     
                     <div class="equalizer">
                         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -662,6 +653,98 @@
 
     <!-- SCRIPT DE EXECUÇÃO -->
     <script>
+        // BLOCOS DE MÚSICA COMPLETOS (COM TODAS AS FAIXAS ORIGINAIS)
+        const blocoNewAge = [
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 210 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 210 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 210 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 210 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 210 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 210 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 210 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 210 }
+        ];
+
+        const blocoEletronica = [
+            { title: "Always Been With You", url: "ALWAYS%20BEEN%20WITH%20YOU.mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 210 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 210 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 210 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 210 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 210 },
+            { title: "Event Horizon", url: "EVENT%20HORIZON.mp3", duration: 210 },
+            { title: "Everything I Give", url: "EVERYTHING%20I%20GIVE(REMIX).mp3", duration: 210 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 210 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 210 },
+            { title: "In Life's Illusion", url: "IN%20LIFE%60S%20ILLUSION%20-%20RANZINZA.mp3", duration: 210 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 210 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 210 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 210 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 210 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 210 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 210 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 210 },
+            { title: "Tomorrow I Try Again (Chipmunki Remix)", url: "TOMORROW%20I%20TRY%20AGAIN%20(CHIPMUNKI%20CHILDREN%20VOCALS%20REMIX).mp3", duration: 210 },
+            { title: "Who Is This Stranger", url: "WHO%20IS%20THIS%20STRANGER.mp3", duration: 210 }
+        ];
+
+        const blocoSertanejo = [
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 210 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 210 }
+        ];
+
+        const blocoPop = [
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 210 },
+            { title: "Água Rasa", url: "AGUA%20RASA.mp3", duration: 210 },
+            { title: "All That Is Mine", url: "ALL%20THAT%20IS%20MINE.mp3", duration: 210 },
+            { title: "Entre a Coragem e o Medo", url: "ENTRE%20A%20CORAGEM%20E%20O%20MEDO.mp3", duration: 210 },
+            { title: "Lado a Lado", url: "LADO%20A%20LADO.mp3", duration: 210 },
+            { title: "Raízes e Consequências", url: "RAIZES%20E%20CONSEQUENCIAS.mp3", duration: 210 }
+        ];
+
+        const blocoRock = [
+            { title: "A Chave", url: "A%20CHAVE.mp3", duration: 210 },
+            { title: "Ainda Amo Te Conhecer", url: "AINDA%20AMO%20TE%20CONHECER.mp3", duration: 210 },
+            { title: "Eros", url: "EROS.mp3", duration: 210 },
+            { title: "Navegantes", url: "NAVEGANTES.mp3", duration: 210 },
+            { title: "Um Bom Lugar Pra Se Morar", url: "UM%20BOM%20LUGAR%20PRA%20SE%20MORAR.mp3", duration: 210 }
+        ];
+
+        let filaMestre = [];
+        let indiceFilaAtual = 0;
+        let tempoDecorridoNaFita = 0;
+        let executandoJingleVoz = false;
+        let playerAtivo = 1;
+
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
             criarMarcacoesRelogio('faceUptime');
@@ -672,8 +755,12 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            construirFilasDoDia();
+            // Monta o cronograma mestre de 24h e sintoniza direto na faixa em curso
+            construirGradeDiariaEAfinar();
             registrarVisitante();
+
+            // Auto-play contínuo sem intervenção do ouvinte
+            iniciarTransmissaoContinua();
         });
 
         function registrarVisitante() {
@@ -691,7 +778,6 @@
         }
 
         function solicitarSenhaAdmin() {
-            // Nova senha de Administrador configurada:
             const senhaAdmin = "ranzinza11235813"; 
             let tentativa = prompt("Digite a senha de Administrador (Host):");
             
@@ -703,6 +789,136 @@
                 }
             } else if (tentativa !== null) {
                 alert("Senha incorreta! Acesso negado.");
+            }
+        }
+
+        function inserirComJingles(bloco, listaDestino) {
+            let contador = 0;
+            bloco.forEach(musica => {
+                listaDestino.push({ type: 'music', ...musica });
+                contador++;
+                if (contador % 3 === 0) {
+                    listaDestino.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+                }
+            });
+        }
+
+        // MOTOR DE CRONOGRAMA DIÁRIO (ZERA À MEIA-NOITE)
+        function construirGradeDiariaEAfinar() {
+            filaMestre = [];
+            
+            // 1ª Volta do dia começa com New Age às 0h (horário simbólico de partida)
+            blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
+            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+
+            inserirComJingles(blocoEletronica, filaMestre);
+            inserirComJingles(blocoSertanejo, filaMestre);
+            inserirComJingles(blocoPop, filaMestre);
+            inserirComJingles(blocoRock, filaMestre);
+
+            // Calcula o tempo total em segundos da grade completa
+            let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
+
+            // Descobre quantos segundos já se passaram desde a meia-noite de hoje
+            const agora = new Date();
+            const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+
+            // Faz o módulo para ciclar perfeitamente ao longo das 24 horas
+            let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
+
+            // Varre o cronograma somando durações para achar exatamente qual item está tocando agora
+            let acumulado = 0;
+            indiceFilaAtual = 0;
+            for (let i = 0; i < filaMestre.length; i++) {
+                let duracaoItem = filaMestre[i].duration || 210;
+                if (tempoAlvoNoDia >= acumulado && tempoAlvoNoDia < (acumulado + duracaoItem)) {
+                    indiceFilaAtual = i;
+                    tempoDecorridoNaFita = tempoAlvoNoDia - acumulado;
+                    break;
+                }
+                acumulado += duracaoItem;
+            }
+        }
+
+        function iniciarTransmissaoContinua() {
+            tocarItemDaFilaEmAndamento();
+        }
+
+        function tocarItemDaFilaEmAndamento() {
+            if (indiceFilaAtual >= filaMestre.length) {
+                // Virada automática diária à meia-noite (recalcula a grade)
+                construirGradeDiariaEAfinar();
+            }
+
+            const item = filaMestre[indiceFilaAtual];
+            const audio1 = document.getElementById('audioPlayer1');
+            const audio2 = document.getElementById('audioPlayer2');
+            const nowPlayingText = document.getElementById('now-playing');
+            
+            if (!audio1 || !audio2 || !nowPlayingText) return;
+
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
+
+            if (item.type === 'jingle') {
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
+                audio1.pause();
+                audio2.pause();
+                falarJingleNarrador();
+            } else {
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                nextAudio.src = item.url;
+                nextAudio.load();
+
+                nextAudio.oncanplaythrough = () => {
+                    // Pula direto para o segundo exato onde a música estaria tocando globalmente
+                    if (tempoDecorridoNaFita > 0 && tempoDecorridoNaFita < (nextAudio.duration || 210)) {
+                        nextAudio.currentTime = tempoDecorridoNaFita;
+                    }
+                    tempoDecorridoNaFita = 0; // Reseta o offset para as próximas faixas
+
+                    nextAudio.play().then(() => {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    }).catch(e => console.log("Erro de autoplay contínuo:", e));
+                };
+
+                nextAudio.onerror = () => {
+                    indiceFilaAtual++;
+                    tocarItemDaFilaEmAndamento();
+                };
+
+                nextAudio.onended = () => {
+                    indiceFilaAtual++;
+                    tocarItemDaFitaEmAndamento();
+                };
+            }
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarItemDaFilaEmAndamento();
+                };
+                frase.onerror = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarItemDaFilaEmAndamento();
+                };
+                window.speechSynthesis.speak(frase);
+            } else {
+                setTimeout(() => {
+                    indiceFilaAtual++;
+                    tocarItemDaFilaEmAndamento();
+                }, 4000);
             }
         }
 
@@ -785,105 +1001,6 @@
             if (a1) a1.volume = vol;
             if (a2) a2.volume = vol;
             document.getElementById('volumePercent').innerText = `${valor}%`;
-        }
-
-        const blocoNewAge = [
-            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3" },
-            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3" },
-            { title: "Streamside Relief", url: "Streamside%20Relief.mp3" }
-        ];
-        const blocoEletronica = [
-            { title: "Event Horizon", url: "EVENT%20HORIZON.mp3" },
-            { title: "Persistence", url: "PERSISTENCE.mp3" },
-            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3" }
-        ];
-        const blocoSertanejo = [
-            { title: "Escolha", url: "ESCOLHA.mp3" },
-            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3" }
-        ];
-        const blocoPop = [
-            { title: "Nostalgia", url: "NOSTALGIA.mp3" },
-            { title: "Água Rasa", url: "AGUA%20RASA.mp3" }
-        ];
-        const blocoRock = [
-            { title: "A Chave", url: "A%20CHAVE.mp3" },
-            { title: "Eros", url: "EROS.mp3" }
-        ];
-
-        let filaMestre = [];
-        let indiceFilaAtual = 0;
-        let somLiberadoOuvinte = false;
-        let executandoJingleVoz = false;
-        let playerAtivo = 1;
-
-        function inserirComJingles(bloco) {
-            let contador = 0;
-            bloco.forEach(musica => {
-                filaMestre.push({ type: 'music', ...musica });
-                contador++;
-                if (contador % 3 === 0) {
-                    filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
-                }
-            });
-        }
-
-        function construirFilasDoDia() {
-            filaMestre = [];
-            blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
-            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza' });
-            inserirComJingles(blocoEletronica);
-            inserirComJingles(blocoSertanejo);
-            inserirComJingles(blocoPop);
-            inserirComJingles(blocoRock);
-        }
-
-        function ligarSomOuvinte() {
-            somLiberadoOuvinte = true;
-            document.getElementById('playTriggerBox').style.display = 'none';
-            tocarItemDaFila();
-        }
-
-        function tocarItemDaFila() {
-            if (indiceFilaAtual >= filaMestre.length) indiceFilaAtual = 0;
-            const item = filaMestre[indiceFilaAtual];
-            const audio1 = document.getElementById('audioPlayer1');
-            const audio2 = document.getElementById('audioPlayer2');
-            const nowPlayingText = document.getElementById('now-playing');
-            
-            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
-
-            if (item.type === 'jingle') {
-                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
-                audio1.pause(); audio2.pause();
-                falarJingleNarrador();
-            } else {
-                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
-                nextAudio.src = item.url;
-                nextAudio.load();
-                nextAudio.oncanplaythrough = () => {
-                    if (somLiberadoOuvinte) {
-                        nextAudio.play().then(() => {
-                            activeAudio.pause();
-                            playerAtivo = playerAtivo === 1 ? 2 : 1;
-                        }).catch(e => console.log(e));
-                    }
-                };
-                nextAudio.onended = () => { indiceFilaAtual++; tocarItemDaFila(); };
-            }
-        }
-
-        function falarJingleNarrador() {
-            if ('speechSynthesis' in window && !executandoJingleVoz) {
-                executandoJingleVoz = true;
-                window.speechSynthesis.cancel();
-                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
-                frase.lang = 'pt-BR';
-                frase.onend = () => { executandoJingleVoz = false; indiceFilaAtual++; tocarItemDaFila(); };
-                window.speechSynthesis.speak(frase);
-            } else {
-                setTimeout(() => { indiceFilaAtual++; tocarItemDaFila(); }, 4000);
-            }
         }
 
         function enviarMensagemOuvinte() {
