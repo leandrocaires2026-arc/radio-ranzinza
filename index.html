@@ -657,7 +657,7 @@
 
     <!-- SCRIPT DE EXECUÇÃO -->
     <script>
-        // CONFIGURAÇÃO DO FIREBASE (COM AS CHAVES DA SUA TELA)
+        // CONFIGURAÇÃO DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCqnt1IvGA-UN-EUzoMQharvNxwjQCWcBE",
             authDomain: "radio-ranzinza.firebaseapp.com",
@@ -671,7 +671,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // BLOCOS DE MÚSICA COMPLETOS
+        // BLOCOS DE MÚSICA COMPLETOS (Com duração média estimada de 210 segundos por faixa para o cálculo de tempo)
         const blocoNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
@@ -759,7 +759,6 @@
 
         let filaMestre = [];
         let indiceFilaAtual = 0;
-        let tempoDecorridoNaFita = 0;
         let executandoJingleVoz = false;
         let playerAtivo = 1;
 
@@ -773,19 +772,143 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            construirGradeDiariaEAfinar();
+            // 1. Monta a grade sequencial e descobre qual música deve estar tocando desde a meia-noite
+            construirGradeDoDiaEAfinarIndice();
             registrarVisitanteFirebase();
-            iniciarTransmissaoContinua();
+
+            // 2. Inicia a reprodução limpa a partir da faixa correta, sem travamentos de buffer
+            tocarFaixaAtual();
         });
 
-        // REGISTRA E SINCRONIZA VISITANTES NO FIREBASE EM TEMPO REAL
+        function inserirComJingles(bloco, listaDestino) {
+            let contador = 0;
+            bloco.forEach(musica => {
+                listaDestino.push({ type: 'music', ...musica });
+                contador++;
+                if (contador % 3 === 0) {
+                    listaDestino.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+                }
+            });
+        }
+
+        // CALCULA EXATAMENTE QUAL MÚSICA ESTÁ PROGRAMADA DESDE A MEIA-NOITE DO DIA
+        function construirGradeDoDiaEAfinarIndice() {
+            filaMestre = [];
+            
+            blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
+            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+
+            inserirComJingles(blocoEletronica, filaMestre);
+            inserirComJingles(blocoSertanejo, filaMestre);
+            inserirComJingles(blocoPop, filaMestre);
+            inserirComJingles(blocoRock, filaMestre);
+
+            // Calcula o tempo total em segundos de uma volta completa na grade
+            let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
+
+            // Descobre quantos segundos já se passaram desde a meia-noite de hoje
+            const agora = new Date();
+            const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+
+            // Encontra em qual ciclo do dia estamos
+            let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
+
+            // Varre a fila somando as durações para descobrir qual é o índice exato da música atual
+            let acumulado = 0;
+            indiceFilaAtual = 0;
+            for (let i = 0; i < filaMestre.length; i++) {
+                let duracaoItem = filaMestre[i].duration || 210;
+                if (tempoAlvoNoDia >= acumulado && tempoAlvoNoDia < (acumulado + duracaoItem)) {
+                    indiceFilaAtual = i;
+                    break;
+                }
+                acumulado += duracaoItem;
+            }
+        }
+
+        function tocarFaixaAtual() {
+            if (indiceFilaAtual >= filaMestre.length) {
+                indiceFilaAtual = 0; // Reinicia o ciclo se passar do fim
+            }
+
+            const item = filaMestre[indiceFilaAtual];
+            const audio1 = document.getElementById('audioPlayer1');
+            const audio2 = document.getElementById('audioPlayer2');
+            const nowPlayingText = document.getElementById('now-playing');
+            
+            if (!audio1 || !audio2 || !nowPlayingText) return;
+
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
+
+            if (item.type === 'jingle') {
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
+                audio1.pause();
+                audio2.pause();
+                falarJingleNarrador();
+            } else {
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                nextAudio.src = item.url;
+                nextAudio.load();
+
+                nextAudio.oncanplaythrough = () => {
+                    nextAudio.play().then(() => {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    }).catch(e => {
+                        console.log("Aguardando interação para reprodução automática:", e);
+                    });
+                };
+
+                // Quando a música terminar naturalmente, avança para a próxima da fila sequencial
+                nextAudio.onended = () => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+
+                // Se houver erro de carregamento, pula para a frente para não parar a rádio
+                nextAudio.onerror = () => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+            }
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+                frase.onerror = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+                window.speechSynthesis.speak(frase);
+            } else {
+                setTimeout(() => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                }, 4000);
+            }
+        }
+
+        // REGISTRA E SINCRONIZA VISITANTES NO FIREBASE
         function registrarVisitanteFirebase() {
             const docRef = db.collection("estatisticas").doc("visitas");
 
             if (!sessionStorage.getItem('visitante_contado')) {
                 db.runTransaction((transaction) => {
                     return transaction.get(docRef).then((doc) => {
-                        let novoTotal = 120; // Base inicial
+                        let novoTotal = 120;
                         if (doc.exists) {
                             novoTotal = doc.data().total + 1;
                         }
@@ -813,130 +936,10 @@
                 const panel = document.getElementById('adminPanel');
                 panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
                 if(panel.style.display === 'block') {
-                    alert("Acesso autorizado! Painel de controle e contador global em nuvem revelados.");
+                    alert("Acesso autorizado! Painel de controle e contador global revelados.");
                 }
             } else if (tentativa !== null) {
                 alert("Senha incorreta! Acesso negado.");
-            }
-        }
-
-        function inserirComJingles(bloco, listaDestino) {
-            let contador = 0;
-            bloco.forEach(musica => {
-                listaDestino.push({ type: 'music', ...musica });
-                contador++;
-                if (contador % 3 === 0) {
-                    listaDestino.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
-                }
-            });
-        }
-
-        function construirGradeDiariaEAfinar() {
-            filaMestre = [];
-            
-            blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
-            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
-
-            inserirComJingles(blocoEletronica, filaMestre);
-            inserirComJingles(blocoSertanejo, filaMestre);
-            inserirComJingles(blocoPop, filaMestre);
-            inserirComJingles(blocoRock, filaMestre);
-
-            let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
-            const agora = new Date();
-            const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-            let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
-
-            let acumulado = 0;
-            indiceFilaAtual = 0;
-            for (let i = 0; i < filaMestre.length; i++) {
-                let duracaoItem = filaMestre[i].duration || 210;
-                if (tempoAlvoNoDia >= acumulado && tempoAlvoNoDia < (acumulado + duracaoItem)) {
-                    indiceFilaAtual = i;
-                    tempoDecorridoNaFita = tempoAlvoNoDia - acumulado;
-                    break;
-                }
-                acumulado += duracaoItem;
-            }
-        }
-
-        function iniciarTransmissaoContinua() {
-            tocarItemDaFilaEmAndamento();
-        }
-
-        function tocarItemDaFilaEmAndamento() {
-            if (indiceFilaAtual >= filaMestre.length) {
-                construirGradeDiariaEAfinar();
-            }
-
-            const item = filaMestre[indiceFilaAtual];
-            const audio1 = document.getElementById('audioPlayer1');
-            const audio2 = document.getElementById('audioPlayer2');
-            const nowPlayingText = document.getElementById('now-playing');
-            
-            if (!audio1 || !audio2 || !nowPlayingText) return;
-
-            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
-            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
-
-            if (item.type === 'jingle') {
-                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
-                audio1.pause();
-                audio2.pause();
-                falarJingleNarrador();
-            } else {
-                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
-                nextAudio.src = item.url;
-                nextAudio.load();
-
-                nextAudio.oncanplaythrough = () => {
-                    if (tempoDecorridoNaFita > 0 && tempoDecorridoNaFita < (nextAudio.duration || 210)) {
-                        nextAudio.currentTime = tempoDecorridoNaFita;
-                    }
-                    tempoDecorridoNaFita = 0;
-
-                    nextAudio.play().then(() => {
-                        activeAudio.pause();
-                        playerAtivo = playerAtivo === 1 ? 2 : 1;
-                    }).catch(e => console.log("Erro de autoplay contínuo:", e));
-                };
-
-                nextAudio.onerror = () => {
-                    indiceFilaAtual++;
-                    tocarItemDaFilaEmAndamento();
-                };
-
-                nextAudio.onended = () => {
-                    indiceFilaAtual++;
-                    tocarItemDaFilaEmAndamento();
-                };
-            }
-        }
-
-        function falarJingleNarrador() {
-            if ('speechSynthesis' in window && !executandoJingleVoz) {
-                executandoJingleVoz = true;
-                window.speechSynthesis.cancel();
-                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
-                frase.lang = 'pt-BR';
-                frase.rate = 1.05;
-                frase.pitch = 0.95;
-                frase.onend = () => { 
-                    executandoJingleVoz = false;
-                    indiceFilaAtual++;
-                    tocarItemDaFilaEmAndamento();
-                };
-                frase.onerror = () => { 
-                    executandoJingleVoz = false;
-                    indiceFilaAtual++;
-                    tocarItemDaFilaEmAndamento();
-                };
-                window.speechSynthesis.speak(frase);
-            } else {
-                setTimeout(() => {
-                    indiceFilaAtual++;
-                    tocarItemDaFilaEmAndamento();
-                }, 4000);
             }
         }
 
