@@ -151,7 +151,6 @@
         }
 
         .side-profile-card {
-            height: 230px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -504,10 +503,9 @@
                     <p style="margin: 0; font-weight: bold; font-size: 1.05rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
                 </div>
 
-                <div class="solid-color-card side-profile-card">
-                    <h4>🟢 Ouça no Spotify</h4>
-                    <p class="info-box" style="margin-bottom: 10px;">Catálogo completo de lançamentos oficiais.</p>
-                    <a href="https://spotify.com" target="_blank" class="side-profile-btn">🎵 Perfil Spotify</a>
+                <div class="solid-color-card side-profile-card" style="padding: 15px;">
+                    <h4 style="margin-bottom: 10px;">🟢 Ouça no Spotify</h4>
+                    <iframe data-testid="embed-iframe" style="border-radius:12px; width:100%; height:152px; border:0;" src="https://open.spotify.com/embed/track/0hXLbaCqIXoNVheEmioD0t?utm_source=generator&si=58c2e72284464928" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
 
                 <div class="side-art-banner">
@@ -772,11 +770,8 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            // 1. Monta a grade sequencial e descobre qual música deve estar tocando desde a meia-noite
             construirGradeDoDiaEAfinarIndice();
             registrarVisitanteFirebase();
-
-            // 2. Inicia a reprodução limpa a partir da faixa correta, sem travamentos de buffer
             tocarFaixaAtual();
         });
 
@@ -791,7 +786,6 @@
             });
         }
 
-        // CALCULA EXATAMENTE QUAL MÚSICA ESTÁ PROGRAMADA DESDE A MEIA-NOITE DO DIA
         function construirGradeDoDiaEAfinarIndice() {
             filaMestre = [];
             
@@ -803,17 +797,13 @@
             inserirComJingles(blocoPop, filaMestre);
             inserirComJingles(blocoRock, filaMestre);
 
-            // Calcula o tempo total em segundos de uma volta completa na grade
             let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
 
-            // Descobre quantos segundos já se passaram desde a meia-noite de hoje
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
 
-            // Encontra em qual ciclo do dia estamos
             let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
 
-            // Varre a fila somando as durações para descobrir qual é o índice exato da música atual
             let acumulado = 0;
             indiceFilaAtual = 0;
             for (let i = 0; i < filaMestre.length; i++) {
@@ -828,7 +818,7 @@
 
         function tocarFaixaAtual() {
             if (indiceFilaAtual >= filaMestre.length) {
-                indiceFilaAtual = 0; // Reinicia o ciclo se passar do fim
+                indiceFilaAtual = 0;
             }
 
             const item = filaMestre[indiceFilaAtual];
@@ -860,13 +850,11 @@
                     });
                 };
 
-                // Quando a música terminar naturalmente, avança para a próxima da fila sequencial
                 nextAudio.onended = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
                 };
 
-                // Se houver erro de carregamento, pula para a frente para não parar a rádio
                 nextAudio.onerror = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
@@ -901,7 +889,6 @@
             }
         }
 
-        // REGISTRA E SINCRONIZA VISITANTES NO FIREBASE
         function registrarVisitanteFirebase() {
             const docRef = db.collection("estatisticas").doc("visitas");
 
