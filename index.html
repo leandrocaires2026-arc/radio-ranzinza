@@ -151,6 +151,7 @@
         }
 
         .side-profile-card {
+            height: 230px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -495,7 +496,7 @@
 
     <div class="main-layout">
         
-        <!-- COLUNA ESQUERDA (BECAME JUST ONE) -->
+        <!-- COLUNA ESQUERDA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="solid-color-card card-top">
@@ -503,9 +504,10 @@
                     <p style="margin: 0; font-weight: bold; font-size: 1.05rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
                 </div>
 
-                <div class="solid-color-card side-profile-card" style="padding: 15px;">
-                    <h4 style="margin-bottom: 10px;">🟢 Ouça no Spotify</h4>
-                    <iframe data-testid="embed-iframe" style="border-radius:12px; width:100%; height:152px; border:0;" src="https://open.spotify.com/embed/track/0hXLbaCqIXoNVheEmioD0t?utm_source=generator&si=58c2e72284464928" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <div class="solid-color-card side-profile-card">
+                    <h4>🟢 Ouça no Spotify</h4>
+                    <p class="info-box" style="margin-bottom: 10px;">Catálogo completo de lançamentos oficiais.</p>
+                    <a href="https://spotify.com" target="_blank" class="side-profile-btn">🎵 Perfil Spotify</a>
                 </div>
 
                 <div class="side-art-banner">
@@ -624,7 +626,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA (ESCOLHA) -->
+        <!-- COLUNA DIREITA -->
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="solid-color-card card-top">
@@ -636,9 +638,10 @@
                     </div>
                 </div>
 
-                <div class="solid-color-card side-profile-card" style="padding: 15px;">
-                    <h4 style="color: var(--neon-teal); margin-bottom: 10px;">🎧 Spotify (Destaque)</h4>
-                    <iframe data-testid="embed-iframe" style="border-radius:12px; width:100%; height:152px; border:0;" src="https://open.spotify.com/embed/track/6CpDRcYuMM7WDplXvPhFgM?utm_source=generator&si=43d494fcefd142e5" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <div class="solid-color-card side-profile-card">
+                    <h4 style="color: var(--neon-teal);">🎧 Ouça no SoundCloud</h4>
+                    <p class="info-box" style="margin-bottom: 10px;">Faixas independentes e streams diretos.</p>
+                    <a href="https://soundcloud.com" target="_blank" class="side-profile-btn">⚡ Perfil SoundCloud</a>
                 </div>
 
                 <div class="side-art-banner">
@@ -668,7 +671,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // BLOCOS DE MÚSICA COMPLETOS (Com duração média estimada de 210 segundos por faixa para o cálculo de tempo)
+        // BLOCOS DE MÚSICA (Com duração padrão de 210 segundos por faixa)
         const blocoNewAge = [
             { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
             { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
@@ -742,7 +745,7 @@
             { title: "Água Rasa", url: "AGUA%20RASA.mp3", duration: 210 },
             { title: "All That Is Mine", url: "ALL%20THAT%20IS%20MINE.mp3", duration: 210 },
             { title: "Entre a Coragem e o Medo", url: "ENTRE%20A%20CORAGEM%20E%20O%20MEDO.mp3", duration: 210 },
-            { title: "Lado a Lado", url: "LADO%20A%20LADO.mp3", duration: 210 },
+            { title: "Lado a Lado", url: "Lado%20a%20Lado.mp3", duration: 210 },
             { title: "Raízes e Consequências", url: "RAIZES%20E%20CONSEQUENCIAS.mp3", duration: 210 }
         ];
 
@@ -769,8 +772,15 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
-            construirGradeDoDiaEAfinarIndice();
+            // 1. Monta a grade sequencial única mestre (24h linear)
+            construirGradeMestreUnica();
+            
+            // 2. ÚNICO MOMENTO DE USO DO RELÓGIO: Calcula o tempo acumulado desde as 00:00:00 até agora
+            sincronizarComSomaDaMeiaNoiteApenasNoCarregamento();
+            
             registrarVisitanteFirebase();
+
+            // 3. Inicia a transmissão natural e contínua sem intervenção externa
             tocarFaixaAtual();
         });
 
@@ -785,22 +795,28 @@
             });
         }
 
-        function construirGradeDoDiaEAfinarIndice() {
+        // MONTA A ESCALA SEQUENCIAL COMPLETA DE 24 HORAS
+        function construirGradeMestreUnica() {
             filaMestre = [];
             
+            // Bloco New Age exclusivo da primeira etapa do dia (toca apenas uma vez)
             blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
             filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
 
+            // Blocos seguintes em ordem cronológica contínua
             inserirComJingles(blocoEletronica, filaMestre);
             inserirComJingles(blocoSertanejo, filaMestre);
             inserirComJingles(blocoPop, filaMestre);
             inserirComJingles(blocoRock, filaMestre);
+        }
 
+        // SOMA EXATA DO TEMPO DECORRIDO DESDE A MEIA-NOITE EXCLUSIVAMENTE NO LOAD DA PÁGINA
+        function sincronizarComSomaDaMeiaNoiteApenasNoCarregamento() {
             let duracaoTotalGrade = filaMestre.reduce((acc, item) => acc + (item.duration || 210), 0);
 
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
-
+            
             let tempoAlvoNoDia = segundosDesdeMeiaNoite % duracaoTotalGrade;
 
             let acumulado = 0;
@@ -817,7 +833,7 @@
 
         function tocarFaixaAtual() {
             if (indiceFilaAtual >= filaMestre.length) {
-                indiceFilaAtual = 0;
+                indiceFilaAtual = 0; // Reinicia apenas quando o dia inteiro de programação se encerra
             }
 
             const item = filaMestre[indiceFilaAtual];
@@ -849,11 +865,13 @@
                     });
                 };
 
+                // Quando a música termina naturalmente, avança puramente pela fila, sem usar relógio
                 nextAudio.onended = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
                 };
 
+                // Se houver falha de rede na faixa, pula para a próxima sem travar
                 nextAudio.onerror = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
@@ -888,6 +906,7 @@
             }
         }
 
+        // REGISTRA E SINCRONIZA VISITANTES NO FIREBASE
         function registrarVisitanteFirebase() {
             const docRef = db.collection("estatisticas").doc("visitas");
 
