@@ -30,7 +30,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0a010c;
+            background-color: #fdf6fa;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -41,33 +41,31 @@
             position: relative;
         }
 
-        /* FUNDO ELEGANTE BASEADO NA REFERÊNCIA (MAGENTA PROFUNDO COM CURVAS E DETALHES DOURADOS) */
+        /* FUNDO CLARO, LUMINOSO E BRILHANTE (GRADIENTE MAGENTA CLARO COM REFLEXOS DOURADOS VIVOS) */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                /* Luz de brilho sutil simulando o reflexo da referência */
-                radial-gradient(circle at 35% 45%, rgba(212, 175, 55, 0.18) 0%, transparent 40%),
-                /* Sombra radial profunda nas bordas */
-                radial-gradient(circle at 70% 30%, rgba(25, 2, 30, 0.9) 0%, rgba(8, 0, 10, 0.98) 85%),
-                /* Ondas e faixas dinâmicas simulando o design de curvas em camadas */
-                linear-gradient(135deg, #18021f 0%, #2e033d 30%, #110017 60%, #050007 100%);
+                /* Ponto de luz central radiante simulando brilho acetinado */
+                radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 220, 245, 0.6) 45%, transparent 75%),
+                /* Gradiente principal claro misturando magenta suave e marfim */
+                linear-gradient(135deg, #fff0f8 0%, #fce4f3 35%, #f5d0ec 70%, #ead0e6 100%);
             z-index: -2;
         }
 
-        /* FAIXAS / CURVAS DOURADAS ELEGANTES EM CSS PURO */
+        /* CURVAS E DETALHES ELEGANTES EM DOURADO BRILHANTE */
         body::after {
             content: '';
             position: fixed;
             top: -50%; left: -50%; width: 200%; height: 200%;
             background: 
-                radial-gradient(ellipse at 25% 35%, transparent 48%, rgba(212, 175, 55, 0.35) 49%, rgba(255, 215, 0, 0.85) 50%, rgba(184, 134, 11, 0.4) 52%, transparent 55%),
-                radial-gradient(ellipse at 20% 40%, transparent 58%, rgba(212, 175, 55, 0.2) 59%, rgba(238, 203, 55, 0.6) 60%, transparent 63%);
+                radial-gradient(ellipse at 30% 30%, transparent 45%, rgba(212, 175, 55, 0.3) 47%, rgba(255, 215, 0, 0.75) 50%, rgba(184, 134, 11, 0.35) 53%, transparent 56%),
+                radial-gradient(ellipse at 25% 35%, transparent 55%, rgba(255, 215, 0, 0.4) 58%, transparent 62%);
             transform: rotate(-25deg);
             pointer-events: none;
             z-index: -1;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.25));
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
         }
         
         header {
@@ -83,7 +81,7 @@
             overflow: hidden;
             border: var(--thick-border);
             background: #040d1a;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.15);
         }
         header img {
             width: 100%; height: 100%;
@@ -135,7 +133,7 @@
             background-color: var(--sample-solid-color);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -176,7 +174,7 @@
             text-align: center;
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -272,7 +270,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.8);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.3);
             align-items: center;
         }
         .telemetry-item {
@@ -339,7 +337,7 @@
             backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -388,13 +386,14 @@
         .admin-toggle {
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: #4a0e0e;
             font-size: 0.75rem;
             cursor: pointer;
             margin-top: 5px;
             text-align: right;
             display: block;
             width: 100%;
+            font-weight: bold;
         }
         .admin-toggle:hover { color: var(--neon-teal); }
 
@@ -431,7 +430,7 @@
             width: 100%; height: 200px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) brightness(0.7) saturate(130%); }
 
@@ -439,7 +438,7 @@
             width: 100%; height: 440px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
         .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) saturate(150%) brightness(0.85); }
