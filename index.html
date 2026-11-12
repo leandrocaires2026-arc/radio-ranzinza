@@ -30,7 +30,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #020617;
+            background-color: #0a010c;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -41,22 +41,33 @@
             position: relative;
         }
 
+        /* FUNDO ELEGANTE BASEADO NA REFERÊNCIA (MAGENTA PROFUNDO COM CURVAS E DETALHES DOURADOS) */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%),
-                linear-gradient(90deg, #594202 0%, #b8860b 20%, #ffe873 40%, #ffd700 50%, #ffe873 60%, #b8860b 80%, #594202 100%);
-            background-size: 250% 100%;
-            animation: metallicShine 12s ease-in-out infinite alternate;
+                /* Luz de brilho sutil simulando o reflexo da referência */
+                radial-gradient(circle at 35% 45%, rgba(212, 175, 55, 0.18) 0%, transparent 40%),
+                /* Sombra radial profunda nas bordas */
+                radial-gradient(circle at 70% 30%, rgba(25, 2, 30, 0.9) 0%, rgba(8, 0, 10, 0.98) 85%),
+                /* Ondas e faixas dinâmicas simulando o design de curvas em camadas */
+                linear-gradient(135deg, #18021f 0%, #2e033d 30%, #110017 60%, #050007 100%);
             z-index: -2;
-            filter: brightness(0.85) contrast(125%) saturate(120%);
         }
 
-        @keyframes metallicShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+        /* FAIXAS / CURVAS DOURADAS ELEGANTES EM CSS PURO */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: 
+                radial-gradient(ellipse at 25% 35%, transparent 48%, rgba(212, 175, 55, 0.35) 49%, rgba(255, 215, 0, 0.85) 50%, rgba(184, 134, 11, 0.4) 52%, transparent 55%),
+                radial-gradient(ellipse at 20% 40%, transparent 58%, rgba(212, 175, 55, 0.2) 59%, rgba(238, 203, 55, 0.6) 60%, transparent 63%);
+            transform: rotate(-25deg);
+            pointer-events: none;
+            z-index: -1;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.25));
         }
         
         header {
