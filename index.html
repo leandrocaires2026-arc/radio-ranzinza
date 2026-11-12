@@ -30,7 +30,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fdf6fa;
+            background-color: #0b010f;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -41,31 +41,30 @@
             position: relative;
         }
 
-        /* FUNDO CLARO, LUMINOSO E BRILHANTE (GRADIENTE MAGENTA CLARO COM REFLEXOS DOURADOS VIVOS) */
+        /* FUNDO BASEADO EXATAMENTE NA REFERÊNCIA: ROXO/MAGENTA ESCURO PROFUNDO COM LUZ E CURVAS DOURADAS */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                /* Ponto de luz central radiante simulando brilho acetinado */
-                radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 220, 245, 0.6) 45%, transparent 75%),
-                /* Gradiente principal claro misturando magenta suave e marfim */
-                linear-gradient(135deg, #fff0f8 0%, #fce4f3 35%, #f5d0ec 70%, #ead0e6 100%);
+                radial-gradient(circle at 35% 65%, rgba(255, 220, 100, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 75% 25%, rgba(12, 1, 18, 0.9) 0%, rgba(5, 0, 8, 0.98) 80%),
+                linear-gradient(135deg, #230233 0%, #170124 40%, #0c0012 100%);
             z-index: -2;
         }
 
-        /* CURVAS E DETALHES ELEGANTES EM DOURADO BRILHANTE */
+        /* CURVAS METÁLICAS E DETALHES EM DOURADO RICO (SOMBRAS MAIS SUAVES) */
         body::after {
             content: '';
             position: fixed;
             top: -50%; left: -50%; width: 200%; height: 200%;
             background: 
-                radial-gradient(ellipse at 30% 30%, transparent 45%, rgba(212, 175, 55, 0.3) 47%, rgba(255, 215, 0, 0.75) 50%, rgba(184, 134, 11, 0.35) 53%, transparent 56%),
-                radial-gradient(ellipse at 25% 35%, transparent 55%, rgba(255, 215, 0, 0.4) 58%, transparent 62%);
+                radial-gradient(ellipse at 28% 38%, transparent 46%, rgba(212, 175, 55, 0.35) 48%, rgba(255, 215, 0, 0.8) 50%, rgba(160, 110, 10, 0.35) 53%, transparent 57%),
+                radial-gradient(ellipse at 22% 42%, transparent 56%, rgba(255, 215, 0, 0.35) 59%, transparent 63%);
             transform: rotate(-25deg);
             pointer-events: none;
             z-index: -1;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.15));
         }
         
         header {
@@ -81,7 +80,7 @@
             overflow: hidden;
             border: var(--thick-border);
             background: #040d1a;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
         header img {
             width: 100%; height: 100%;
@@ -101,7 +100,7 @@
             border-radius: 8px;
             border: 2px solid var(--custom-sample-color);
             backdrop-filter: blur(6px);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
@@ -133,7 +132,7 @@
             background-color: var(--sample-solid-color);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -174,7 +173,7 @@
             text-align: center;
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -270,7 +269,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             align-items: center;
         }
         .telemetry-item {
@@ -337,7 +336,7 @@
             backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -364,7 +363,7 @@
         .chat-input-area { display: flex; gap: 8px; }
         input, button.chat-btn { padding: 9px 12px; border-radius: 6px; border: none; font-size: 0.9rem; }
         input { flex: 1; background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); }
-        input:focus { outline: none; border-color: var(--custom-sample-color); box-shadow: 0 0 8px rgba(0, 0, 0, 0.8); }
+        input:focus { outline: none; border-color: var(--custom-sample-color); box-shadow: 0 0 6px rgba(0, 0, 0, 0.4); }
         
         button.chat-btn {
             background: var(--custom-sample-color);
@@ -386,14 +385,13 @@
         .admin-toggle {
             background: transparent;
             border: none;
-            color: #4a0e0e;
+            color: var(--text-muted);
             font-size: 0.75rem;
             cursor: pointer;
             margin-top: 5px;
             text-align: right;
             display: block;
             width: 100%;
-            font-weight: bold;
         }
         .admin-toggle:hover { color: var(--neon-teal); }
 
@@ -430,7 +428,7 @@
             width: 100%; height: 200px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #040d1a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) brightness(0.7) saturate(130%); }
 
@@ -438,7 +436,7 @@
             width: 100%; height: 440px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: #030914; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
         .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) saturate(150%) brightness(0.85); }
@@ -461,7 +459,7 @@
         .share-modal-card {
             background: rgba(6, 14, 26, 0.95); border: var(--thick-border); border-radius: 14px;
             padding: 25px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         .share-modal-card h3 { color: var(--neon-teal); margin-top: 0; margin-bottom: 8px; }
         .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
