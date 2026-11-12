@@ -1,155 +1,1065 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rádio Ranzinza</title>
+    <title>Rádio Ranzinza // Custom Studio</title>
+    
+    <!-- SDK DO FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- METADADOS DE PARTILHA (OPEN GRAPH) -->
+    <meta property="og:title" content="Rádio Ranzinza // Custom Studio">
+    <meta property="og:description" content="Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="website">
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --sample-solid-color: #060c14;
+            --neon-teal: #00f0ff;
+            --neon-blue: #3b82f6;
+            --neon-silver: #a5f3fc;
+            --neon-green: #00ffaa;
+            --neon-yellow: #facc15;
+            --custom-sample-color: #4a0e0e;
+            --text-main: #ffffff;
+            --text-muted: #93c5fd;
+            --thick-border: 5px solid var(--custom-sample-color);
         }
-
         body {
-            background-color: #050508;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            width: 100vw;
-            overflow-x: hidden;
-        }
-
-        /* ---------------------------------------------------------
-           PADRÃO DESKTOP (Computador fica totalmente livre e normal)
-           --------------------------------------------------------- */
-        .app-container {
-            width: 85vw;
-            max-width: 1000px;
-            height: 85vh;
-            background: #0b0b12;
-            border: 2px solid #00ffcc;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.4);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #020617;
+            color: var(--text-main);
+            margin: 0;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 30px;
-        }
-
-        .video-box {
-            width: 100%;
-            flex-grow: 1;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            margin: 15px 0;
+            min-height: 100vh;
+            position: relative;
         }
 
-        .video-box video, .video-box iframe {
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%),
+                linear-gradient(90deg, #594202 0%, #b8860b 20%, #ffe873 40%, #ffd700 50%, #ffe873 60%, #b8860b 80%, #594202 100%);
+            background-size: 250% 100%;
+            animation: metallicShine 12s ease-in-out infinite alternate;
+            z-index: -2;
+            filter: brightness(0.85) contrast(125%) saturate(120%);
+        }
+
+        @keyframes metallicShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        header {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            max-width: 1240px;
+            height: 180px;
+            margin-bottom: 25px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            overflow: hidden;
+            border: var(--thick-border);
+            background: #040d1a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
         }
-
-        header h1 {
-            font-size: 1.6rem;
+        header img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+            filter: hue-rotate(180deg) brightness(0.35) saturate(150%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
             text-align: center;
+            background: var(--custom-sample-color);
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid var(--custom-sample-color);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+        .header-content h1 {
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
             letter-spacing: 2px;
         }
+        .header-content p {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--neon-silver);
+            letter-spacing: 1.5px;
+        }
 
-        footer {
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 20px;
+            width: 100%;
+            max-width: 1240px;
+        }
+        @media (max-width: 1000px) {
+            .main-layout { grid-template-columns: 1fr; }
+        }
+
+        .solid-color-card {
+            background-color: var(--sample-solid-color);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .solid-color-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
+            z-index: 3;
+        }
+
+        .card-top {
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding: 30px 20px;
+        }
+
+        .side-profile-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        h3 { margin-top: 0; font-size: 1.1rem; letter-spacing: 1px; }
+        .side-panel, .center-panel { display: flex; flex-direction: column; gap: 20px; }
+        .column-wrapper { display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .player-box {
+            background: radial-gradient(circle at center, rgba(6, 18, 36, 0.95) 0%, rgba(2, 8, 18, 0.98) 100%);
+            text-align: center;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .player-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
+        }
+        .player-box h2 {
+            color: var(--neon-teal);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        #now-playing {
+            color: var(--neon-green);
+            font-weight: 600;
             font-size: 1rem;
-            opacity: 0.8;
+            margin-bottom: 12px;
+            text-shadow: 0 0 6px rgba(0, 255, 170, 0.5);
+        }
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin: 15px 0;
+        }
+        .bar {
+            width: 6px;
+            background: var(--neon-teal);
+            border-radius: 3px;
+            animation: bounce 1.2s infinite ease-in-out alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; background: var(--neon-silver); }
+        .bar:nth-child(3) { animation-delay: 0.4s; background: var(--neon-green); }
+        .bar:nth-child(4) { animation-delay: 0.1s; background: var(--neon-yellow); }
+        .bar:nth-child(5) { animation-delay: 0.3s; background: var(--neon-teal); }
+        .bar:nth-child(6) { animation-delay: 0.5s; background: var(--neon-blue); }
+
+        @keyframes bounce {
+            0% { height: 8px; }
+            100% { height: 36px; }
         }
 
-
-        /* ---------------------------------------------------------
-           APENAS PARA SMARTPHONE EM PÉ (Retrato - Menor que 768px)
-           --------------------------------------------------------- */
-        @media (max-width: 767px) and (orientation: portrait) {
-            body {
-                padding: 0;
-            }
-
-            .app-container {
-                width: 100vw;
-                height: 100vh;
-                max-width: 450px;
-                max-height: 800px;
-                aspect-ratio: 9 / 16; /* Trava em 9:16 só no celular em pé */
-                border: 2px solid #00ffcc;
-                border-radius: 0;
-                padding: 15px;
-            }
-
-            .video-box video, .video-box iframe {
-                object-fit: cover; /* Preenche a tela vertical 9:16 */
-            }
-
-            header h1 {
-                font-size: 1.2rem;
-            }
+        .volume-control-box {
+            background: rgba(2, 6, 16, 0.8);
+            border: 2px solid var(--custom-sample-color);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 15px auto;
+            max-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .volume-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--neon-teal);
+            font-weight: bold;
+        }
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #040d1a;
+            outline: none;
+            border: 1px solid var(--custom-sample-color);
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--neon-teal);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--neon-teal);
         }
 
-
-        /* ---------------------------------------------------------
-           QUANDO O CELULAR É VIRADO NA HORIZONTAL (Landscape)
-           --------------------------------------------------------- */
-        @media (max-width: 900px) and (orientation: landscape) {
-            body {
-                padding: 0;
-            }
-            
-            .app-container {
-                width: 100vw;
-                height: 100vh;
-                max-width: 100vw;
-                max-height: 100vh;
-                border: none;
-                border-radius: 0;
-                padding: 10px;
-            }
-
-            .video-box {
-                max-height: calc(100vh - 80px);
-            }
-
-            .video-box video, .video-box iframe {
-                object-fit: contain;
-            }
+        .racing-telemetry-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--custom-sample-color);
+            border: var(--thick-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.8);
+            align-items: center;
         }
+        .telemetry-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(10, 2, 2, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--custom-sample-color);
+        }
+        .telemetry-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neon-teal);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        
+        .analog-clock {
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, #051326 0%, #010308 85%);
+            border: 6px solid var(--custom-sample-color);
+            outline: 3px solid var(--custom-sample-color);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clock-face { width: 120px; height: 120px; position: relative; border-radius: 50%; }
+        .tick {
+            position: absolute; top: 50%; left: 50%;
+            width: 2px; height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            transform-origin: 0 -50px;
+        }
+        .tick.major {
+            width: 3.5px; height: 10px;
+            background: #ffffff;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+        }
+        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; border-radius: 4px; }
+        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); box-shadow: 0 0 8px rgba(250, 204, 21, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .minute-hand { width: 3.5px; height: 44px; background: var(--neon-silver); box-shadow: 0 0 8px rgba(165, 243, 252, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .second-hand { width: 1.5px; height: 50px; background: var(--neon-teal); box-shadow: 0 0 8px var(--neon-teal); transform: translateX(-50%) rotate(0deg); }
+        .clock-center {
+            position: absolute; top: 50%; left: 50%;
+            width: 9px; height: 9px;
+            background: var(--neon-teal);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px var(--neon-teal);
+        }
+        .digital-subtext { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-teal); margin-top: 12px; }
+        audio { display: none; }
+        
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--sample-solid-color);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            border: var(--thick-border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .chat-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--custom-sample-color);
+        }
+        .chat-messages {
+            flex: 1;
+            background: rgba(3, 9, 20, 0.9);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            border: 2px solid var(--custom-sample-color);
+            text-align: left;
+            height: 180px;
+        }
+        .chat-input-area { display: flex; gap: 8px; }
+        input, button.chat-btn { padding: 9px 12px; border-radius: 6px; border: none; font-size: 0.9rem; }
+        input { flex: 1; background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); }
+        input:focus { outline: none; border-color: var(--custom-sample-color); box-shadow: 0 0 8px rgba(0, 0, 0, 0.8); }
+        
+        button.chat-btn {
+            background: var(--custom-sample-color);
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid var(--custom-sample-color);
+        }
+        button.chat-btn:hover { opacity: 0.9; }
+        
+        .admin-panel {
+            background: #040d1a;
+            border: 2px solid var(--neon-teal);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        .admin-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 5px;
+            text-align: right;
+            display: block;
+            width: 100%;
+        }
+        .admin-toggle:hover { color: var(--neon-teal); }
+
+        .admin-visitor-counter {
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px dashed var(--neon-teal);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.82rem;
+            color: var(--neon-silver);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .visitor-number {
+            color: var(--neon-green);
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+        }
+
+        .external-platforms { margin-top: 15px; display: flex; justify-content: center; gap: 12px; }
+        .platform-btn {
+            background: #040d1a; color: white; padding: 8px 14px;
+            border-radius: 6px; text-decoration: none; font-size: 0.82rem;
+            font-weight: bold; border: 2px solid var(--custom-sample-color);
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .platform-btn.soundcloud:hover { background: #ff5500; }
+        .platform-btn.spotify:hover { background: #1db954; }
+        
+        .radio-banner {
+            width: 100%; height: 200px;
+            border-radius: 14px; overflow: hidden;
+            border: var(--thick-border); position: relative;
+            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+        }
+        .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) brightness(0.7) saturate(130%); }
+
+        .side-art-banner {
+            width: 100%; height: 440px;
+            border-radius: 14px; overflow: hidden;
+            border: var(--thick-border); position: relative;
+            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+            margin-bottom: 20px;
+        }
+        .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) saturate(150%) brightness(0.85); }
+
+        .side-profile-card h4 { margin: 0 0 10px 0; color: var(--neon-teal); font-size: 1.1rem; letter-spacing: 1px; }
+        .side-profile-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; padding: 10px; border-radius: 8px; text-decoration: none;
+            font-weight: bold; font-size: 0.85rem; color: #ffffff; box-sizing: border-box;
+            border: 2px solid var(--custom-sample-color); margin-top: 15px; background: var(--custom-sample-color);
+        }
+        .side-profile-btn:hover { opacity: 0.9; }
+        .info-box { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+        .share-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 999;
+        }
+        .share-modal-card {
+            background: rgba(6, 14, 26, 0.95); border: var(--thick-border); border-radius: 14px;
+            padding: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+        }
+        .share-modal-card h3 { color: var(--neon-teal); margin-top: 0; margin-bottom: 8px; }
+        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .share-option-btn {
+            background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); padding: 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; width: 100%; box-sizing: border-box;
+        }
+        .share-option-btn:hover { background: rgba(0, 240, 255, 0.15); }
+        .share-close-btn { background: var(--neon-teal); color: #020617; border: 2px solid var(--custom-sample-color); padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- Topo da Rádio -->
-        <header>
-            <h1>RÁDIO RANZINZA</h1>
-        </header>
-
-        <!-- Player de Vídeo / Programação -->
-        <div class="video-box">
-            <!-- Insira aqui o link do seu vídeo, stream ou tag de áudio/vídeo da rádio -->
-            <video autoplay muted loop playsinline>
-                <source src="seu-video-programacao.mp4" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
+    <!-- MODAL DE PARTILHA -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal-card">
+            <h3>🌐 Partilhar Rádio Ranzinza</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            <div class="share-grid">
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
+            </div>
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
         </div>
-
-        <!-- Rodapé -->
-        <footer>
-            <p>Transmitindo ao vivo...</p>
-        </footer>
     </div>
 
+    <!-- CABEÇALHO -->
+    <header>
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Estúdio de Transmissão">
+        <div class="header-content">
+            <h1>RÁDIO RANZINZA</h1>
+            <p>ESTÚDIO DE TRANSMISSÃO 432Hz</p>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        
+        <!-- COLUNA ESQUERDA -->
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="solid-color-card card-top">
+                    <h3 style="color: var(--neon-green); font-size: 1.3rem; margin-bottom: 12px;">RÁDIO RANZINZA</h3>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.05rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
+                </div>
+
+                <div class="solid-color-card side-profile-card" style="padding: 15px;">
+                    <h4 style="margin-bottom: 10px;">🟢 Ouça no Spotify</h4>
+                    <iframe data-testid="embed-iframe" style="border-radius:12px; width:100%; height:152px; border:0;" src="https://open.spotify.com/embed/track/0hXLbaCqIXoNVheEmioD0t?utm_source=generator&si=58c2e72284464928" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+
+                <div class="side-art-banner">
+                    <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Esquerdo">
+                </div>
+            </div>
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Esquerdo">
+            </div>
+        </div>
+
+        <!-- COLUNA CENTRAL -->
+        <div class="column-wrapper">
+            <div class="center-panel">
+                <div class="player-box">
+                    <h2>🎙️ Emissão Oficial em Sequência</h2>
+
+                    <div class="racing-telemetry-panel">
+                        <div class="telemetry-item">
+                            <div class="telemetry-label">🏁 UTC (Greenwich)</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUTC">
+                                    <div class="hand hour-hand" id="utcHour"></div>
+                                    <div class="hand minute-hand" id="utcMin"></div>
+                                    <div class="hand second-hand" id="utcSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="utcDigital">00:00:00</div>
+                        </div>
+
+                        <div class="telemetry-item">
+                            <div class="telemetry-label">⏱️ Tempo de Sessão</div>
+                            <div class="analog-clock">
+                                <div class="clock-face" id="faceUptime">
+                                    <div class="hand hour-hand" id="upHour"></div>
+                                    <div class="hand minute-hand" id="upMin"></div>
+                                    <div class="hand second-hand" id="upSec"></div>
+                                    <div class="clock-center"></div>
+                                </div>
+                            </div>
+                            <div class="digital-subtext" id="uptimeDigital">00:00:00</div>
+                        </div>
+                    </div>
+
+                    <p id="now-playing">Clique no botão abaixo para sintonizar a rádio...</p>
+
+                    <!-- BOTÃO OBRIGATÓRIO PARA LIBERTAR O ÁUDIO NO NAVEGADOR -->
+                    <div id="playTriggerBox" style="margin-bottom: 15px;">
+                        <button onclick="ligarSomOuvinte()" style="
+                            background: var(--neon-teal);
+                            color: #020617;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 0.95rem;
+                            cursor: pointer;
+                            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+                            transition: 0.2s;
+                        ">
+                            ▶ LIGAR O SOM DA TRANSMISSÃO
+                        </button>
+                    </div>
+                    
+                    <div class="equalizer">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+
+                    <div class="volume-control-box">
+                        <div class="volume-header">
+                            <span>🔊 Volume do Ouvinte</span>
+                            <span id="volumePercent">80%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" oninput="mudarVolumeOuvinte(this.value)">
+                    </div>
+
+                    <audio id="audioPlayer1" preload="auto"></audio>
+                    <audio id="audioPlayer2" preload="auto"></audio>
+
+                    <div class="external-platforms">
+                        <a href="https://soundcloud.com" target="_blank" class="platform-btn soundcloud">🎧 SoundCloud</a>
+                        <a href="https://spotify.com" target="_blank" class="platform-btn spotify">🎵 Spotify</a>
+                    </div>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="abrirModalPartilha()" style="
+                            background: var(--custom-sample-color); color: #ffffff;
+                            border: 2px solid var(--custom-sample-color); padding: 10px 18px;
+                            border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
+                            display: inline-flex; align-items: center; gap: 8px;
+                        ">
+                            🔗 Partilhar Rádio Ranzinza
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-box">
+                    <h3 style="color: var(--neon-teal);">💬 Chat & Mural ao Vivo</h3>
+                    <div class="chat-messages" id="chatMessages">
+                        <p style="color: var(--neon-teal);"><strong>Sistema:</strong> Conectado ao estúdio virtual da Rádio Ranzinza!</p>
+                    </div>
+                    
+                    <div class="chat-input-area" id="listenerInputArea">
+                        <input type="text" id="chatInput" placeholder="Escreva a sua mensagem...">
+                        <button class="chat-btn" onclick="enviarMensagemOuvinte()">Enviar</button>
+                    </div>
+
+                    <!-- BOTÃO DISCRETO PARA ACESSAR O PAINEL COM SENHA -->
+                    <button class="admin-toggle" onclick="solicitarSenhaAdmin()">🔒 Painel do Estúdio (Admin)</button>
+
+                    <!-- PAINEL DO ADMIN PROTEGIDO -->
+                    <div class="admin-panel" id="adminPanel">
+                        <!-- CONTADOR DE VISITANTES EM NUVEM -->
+                        <div class="admin-visitor-counter">
+                            <span>👥 Acessos Totais (Firebase):</span>
+                            <span class="visitor-number" id="visitorCountDisplay">...</span>
+                        </div>
+
+                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-teal); font-weight: bold;">⚡ Painel de Controle // Rádio Ranzinza (Host)</p>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="adminInput" placeholder="Transmitir recado oficial como Host...">
+                            <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir Recado</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Central">
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="column-wrapper">
+            <div class="side-panel">
+                <div class="solid-color-card card-top">
+                    <h3 style="color: var(--neon-teal); margin-bottom: 8px;">🌌 Estúdio Teal</h3>
+                    <p class="info-box" style="margin-bottom: 10px;">Masterização independente, ajustes finos de frequência e imersão total.</p>
+                    <div class="schedule-block" style="border-left: 4px solid var(--neon-teal); padding-left: 8px; margin-top: 6px; text-align: left;">
+                        <div style="font-weight: bold; color: var(--neon-teal); margin-bottom: 2px;">🎚️ Alta Fidelidade</div>
+                        <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
+                    </div>
+                </div>
+
+                <div class="solid-color-card side-profile-card" style="padding: 15px;">
+                    <h4 style="color: var(--neon-teal); margin-bottom: 10px;">🎧 Spotify (Destaque)</h4>
+                    <iframe data-testid="embed-iframe" style="border-radius:12px; width:100%; height:152px; border:0;" src="https://open.spotify.com/embed/track/6CpDRcYuMM7WDplXvPhFgM?utm_source=generator&si=43d494fcefd142e5" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+
+                <div class="side-art-banner">
+                    <img src="painel%20lateral%20fotos.jpg" alt="Rádio Ranzinza - Painel Direito">
+                </div>
+            </div>
+            <div class="radio-banner">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop" alt="Painel Inferior Direito">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT DE EXECUÇÃO -->
+    <script>
+        // CONFIGURAÇÃO DO FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqnt1IvGA-UN-EUzoMQharvNxwjQCWcBE",
+            authDomain: "radio-ranzinza.firebaseapp.com",
+            projectId: "radio-ranzinza",
+            storageBucket: "radio-ranzinza.firebasestorage.app",
+            messagingSenderId: "586263777232",
+            appId: "1:586263777232:web:172599d5f12f44fea573d5",
+            measurementId: "G-YM3783SPZE"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const blocoNewAge = [
+            { title: "Gentele Strom (1) (1)", url: "Gentele%20Strom%20(1)%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (1)", url: "Gentele%20Strom%20(1).mp3", duration: 210 },
+            { title: "Gentele Strom (10)", url: "Gentele%20Strom%20(10).mp3", duration: 210 },
+            { title: "Gentele Strom (11)", url: "Gentele%20Strom%20(11).mp3", duration: 210 },
+            { title: "Gentele Strom (12)", url: "Gentele%20Strom%20(12).mp3", duration: 210 },
+            { title: "Gentele Strom (15)", url: "Gentele%20Strom%20(15).mp3", duration: 210 },
+            { title: "Gentele Strom (16)", url: "Gentele%20Strom%20(16).mp3", duration: 210 },
+            { title: "Gentele Strom (2)", url: "Gentele%20Strom%20(2).mp3", duration: 210 },
+            { title: "Gentele Strom (3)", url: "Gentele%20Strom%20(3).mp3", duration: 210 },
+            { title: "Gentele Strom (4)", url: "Gentele%20Strom%20(4).mp3", duration: 210 },
+            { title: "Gentele Strom (5)", url: "Gentele%20Strom%20(5).mp3", duration: 210 },
+            { title: "Gentele Strom (6)", url: "Gentele%20Strom%20(6).mp3", duration: 210 },
+            { title: "Gentele Strom (7)", url: "Gentele%20Strom%20(7).mp3", duration: 210 },
+            { title: "Gentele Strom (8)", url: "Gentele%20Strom%20(8).mp3", duration: 210 },
+            { title: "Gentele Strom (9)", url: "Gentele%20Strom%20(9).mp3", duration: 210 },
+            { title: "Streamside Comfort (1)", url: "Streamside%20Comfort%20(1).mp3", duration: 210 },
+            { title: "Streamside Comfort (2)", url: "Streamside%20Comfort%20(2).mp3", duration: 210 },
+            { title: "Streamside Comfort", url: "Streamside%20Comfort.mp3", duration: 210 },
+            { title: "Streamside Glow (1)", url: "Streamside%20Glow%20(1).mp3", duration: 210 },
+            { title: "Streamside Relief (1)", url: "Streamside%20Relief%20(1).mp3", duration: 210 },
+            { title: "Streamside Relief (2)", url: "Streamside%20Relief%20(2).mp3", duration: 210 },
+            { title: "Streamside Relief", url: "Streamside%20Relief.mp3", duration: 210 },
+            { title: "Streamside Rest", url: "Streamside%20Rest.mp3", duration: 210 }
+        ];
+
+        const blocoEletronica = [
+            { title: "Always Been With You", url: "ALWAYS%20BEEN%20WITH%20YOU.mp3", duration: 210 },
+            { title: "Became Just One", url: "BECAME%20JUST%20ONE.mp3", duration: 210 },
+            { title: "Bride to the Feeling", url: "BRIDE%20TO%20THE%20FEELING.mp3", duration: 210 },
+            { title: "Burning Fire", url: "BURNING%20FIRE%20.mp3", duration: 210 },
+            { title: "Diviny Made Flesh", url: "DIVINY%20MADE%20FLESH.mp3", duration: 210 },
+            { title: "Down In This Obsession", url: "DOWN%20IN%20THIS%20OBSESSION.mp3", duration: 210 },
+            { title: "Event Horizon", url: "EVENT%20HORIZON.mp3", duration: 210 },
+            { title: "Everything I Give", url: "EVERYTHING%20I%20GIVE(REMIX).mp3", duration: 210 },
+            { title: "Forever We Glow", url: "FOREVER%20WE%20GLOW%20.mp3", duration: 210 },
+            { title: "Hacking Shot", url: "HACKING%20SHOT.mp3", duration: 210 },
+            { title: "In Life's Illusion", url: "IN%20LIFE%60S%20ILLUSION%20-%20RANZINZA.mp3", duration: 210 },
+            { title: "Masterpiece (Parte 2)", url: "MASTERPIECE(PARTE2).mp3", duration: 210 },
+            { title: "Tomorrow I Try Again", url: "TOMORROW%20I%20TRY%20AGAIN.mp3", duration: 210 },
+            { title: "Persistence", url: "PERSISTENCE.mp3", duration: 210 },
+            { title: "Soul's Essential Food", url: "SOUL'S%20ESSENTIAL%20FOOD.mp3", duration: 210 },
+            { title: "Spinning Through (Disco Version)", url: "SPINNING%20THROUGH%20(DISCO%20VERSION).mp3", duration: 210 },
+            { title: "Start The Joy (Uplifting)", url: "START%20THE%20JOY%20(UPLIFTING).mp3", duration: 210 },
+            { title: "The Price Is Paid", url: "THE%20PRICE%20IS%20PAID%20.mp3", duration: 210 },
+            { title: "Tomorrow I Try Again (Chipmunki Remix)", url: "TOMORROW%20I%20TRY%20AGAIN%20(CHIPMUNKI%20CHILDREN%20VOCALS%20REMIX).mp3", duration: 210 },
+            { title: "Who Is This Stranger", url: "WHO%20IS%20THIS%20STRANGER.mp3", duration: 210 }
+        ];
+
+        const blocoSertanejo = [
+            { title: "Aquele Sonho (Pop)", url: "AQUELE%20SONHO%20(POP).mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO.mp3", duration: 210 },
+            { title: "Escolha", url: "ESCOLHA.mp3", duration: 210 },
+            { title: "Eu Não Quero Ter Razão", url: "EU%20N%C3%83O%20QUERO%20TER%20RAZ%C3%83O.mp3", duration: 210 },
+            { title: "Entre O Te Amo E O Te Adoro (1)", url: "ENTRE%20O%20TE%20AMO%20E%20O%20TE%20ADORO%20(1).mp3", duration: 210 },
+            { title: "Me Cansei Do Seu Tanto Faz", url: "ME%20CANSEI%20DO%20SEU%20TANTO%20FAZ.mp3", duration: 210 },
+            { title: "Me Diz Por Que Você Sumiu Assim", url: "ME%20DIZ%20POR%20QUE%20VOC%C3%8A%20SUMIU%20ASSIM.mp3", duration: 210 },
+            { title: "Meio Louco Por Você", url: "MEIO%20LOUCO%20POR%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Não Importa O Lugar", url: "N%C3%83O%20IMPORTA%20O%20LUGAR.mp3", duration: 210 },
+            { title: "Não Me Procure Mais", url: "N%C3%83O%20ME%20PROCURE%20MAIS.mp3", duration: 210 },
+            { title: "Se Você Ligar...", url: "SE%20VOC%C3%8A%20LIGAR....mp3", duration: 210 },
+            { title: "Sem Querer Amei Você", url: "SEM%20QUERER%20AMEI%20VOC%C3%8A.mp3", duration: 210 },
+            { title: "Uma Aposta Ruim", url: "UMA%20APOSTA%20RUIM.mp3", duration: 210 },
+            { title: "Uma Mulher Fatal", url: "UMA%20MULHER%20FATAL.mp3", duration: 210 },
+            { title: "Volta Logo Pra Mim", url: "VOLTA%20LOGO%20PRA%20MIM.mp3", duration: 210 },
+            { title: "Sem Limites Pra Amar (Electric Guitar Remix)", url: "SEM%20LIMITES%20PRA%20AMAR%20(Electric%20Guitar%20Remix)%20(1).mp3", duration: 210 }
+        ];
+
+        const blocoPop = [
+            { title: "Nostalgia", url: "NOSTALGIA.mp3", duration: 210 },
+            { title: "Água Rasa", url: "AGUA%20RASA.mp3", duration: 210 },
+            { title: "All That Is Mine", url: "ALL%20THAT%20IS%20MINE.mp3", duration: 210 },
+            { title: "Entre a Coragem e o Medo", url: "ENTRE%20A%20CORAGEM%20E%20O%20MEDO.mp3", duration: 210 },
+            { title: "Lado a Lado", url: "LADO%20A%20LADO.mp3", duration: 210 },
+            { title: "Raízes e Consequências", url: "RAIZES%20E%20CONSEQUENCIAS.mp3", duration: 210 }
+        ];
+
+        const blocoRock = [
+            { title: "A Chave", url: "A%20CHAVE.mp3", duration: 210 },
+            { title: "Ainda Amo Te Conhecer", url: "AINDA%20AMO%20TE%20CONHECER.mp3", duration: 210 },
+            { title: "Eros", url: "EROS.mp3", duration: 210 },
+            { title: "Navegantes", url: "NAVEGANTES.mp3", duration: 210 },
+            { title: "Um Bom Lugar Pra Se Morar", url: "UM%20BOM%20LUGAR%20PRA%20SE%20MORAR.mp3", duration: 210 }
+        ];
+
+        let filaMestre = [];
+        let indiceFilaAtual = 0;
+        let somLiberadoOuvinte = false;
+        let executandoJingleVoz = false;
+        let playerAtivo = 1;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            criarMarcacoesRelogio('faceUTC');
+            criarMarcacoesRelogio('faceUptime');
+            iniciarRelogiosVisuais();
+            
+            const audio1Ref = document.getElementById('audioPlayer1');
+            const audio2Ref = document.getElementById('audioPlayer2');
+            if (audio1Ref) audio1Ref.volume = 0.8;
+            if (audio2Ref) audio2Ref.volume = 0.8;
+
+            construirGradeDoDiaEAfinarIndice();
+            registrarVisitanteFirebase();
+        });
+
+        // FUNÇÃO EXECUTADA AO CLICAR NO BOTÃO DE LIGAR O SOM (LIBERADO PELO NAVEGADOR)
+        function ligarSomOuvinte() {
+            somLiberadoOuvinte = true;
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) triggerBox.style.display = 'none';
+            tocarFaixaAtual();
+        }
+
+        function inserirComJingles(bloco, listaDestino) {
+            let contador = 0;
+            bloco.forEach(musica => {
+                listaDestino.push({ type: 'music', ...musica });
+                contador++;
+                if (contador % 3 === 0) {
+                    listaDestino.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+                }
+            });
+        }
+
+        function construirGradeDoDiaEAfinarIndice() {
+            filaMestre = [];
+            
+            blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
+            filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
+
+            let blocoCicloBase = [];
+            inserirComJingles(blocoEletronica, blocoCicloBase);
+            inserirComJingles(blocoSertanejo, blocoCicloBase);
+            inserirComJingles(blocoPop, blocoCicloBase);
+            inserirComJingles(blocoRock, blocoCicloBase);
+
+            for (let c = 0; c < 10; c++) {
+                blocoCicloBase.forEach(item => filaMestre.push(item));
+            }
+
+            const agora = new Date();
+            const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
+
+            let acumulado = 0;
+            indiceFilaAtual = 0;
+
+            for (let i = 0; i < filaMestre.length; i++) {
+                let duracaoItem = filaMestre[i].duration || 210;
+                if (segundosDesdeMeiaNoite >= acumulado && segundosDesdeMeiaNoite < (acumulado + duracaoItem)) {
+                    indiceFilaAtual = i;
+                    break;
+                }
+                acumulado += duracaoItem;
+            }
+        }
+
+        function tocarFaixaAtual() {
+            if (!somLiberadoOuvinte) return; // Só toca se o ouvinte tiver ativado o som
+
+            if (indiceFilaAtual >= filaMestre.length) {
+                indiceFilaAtual = 0;
+            }
+
+            const item = filaMestre[indiceFilaAtual];
+            const audio1 = document.getElementById('audioPlayer1');
+            const audio2 = document.getElementById('audioPlayer2');
+            const nowPlayingText = document.getElementById('now-playing');
+            
+            if (!audio1 || !audio2 || !nowPlayingText) return;
+
+            const activeAudio = playerAtivo === 1 ? audio1 : audio2;
+            const nextAudio = playerAtivo === 1 ? audio2 : audio1;
+
+            if (item.type === 'jingle') {
+                nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
+                audio1.pause();
+                audio2.pause();
+                falarJingleNarrador();
+            } else {
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                nextAudio.src = item.url;
+                nextAudio.load();
+
+                nextAudio.oncanplaythrough = () => {
+                    nextAudio.play().then(() => {
+                        activeAudio.pause();
+                        playerAtivo = playerAtivo === 1 ? 2 : 1;
+                    }).catch(e => {
+                        console.log("Erro de reprodução:", e);
+                    });
+                };
+
+                nextAudio.onended = () => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+
+                nextAudio.onerror = () => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+            }
+        }
+
+        function falarJingleNarrador() {
+            if ('speechSynthesis' in window && !executandoJingleVoz) {
+                executandoJingleVoz = true;
+                window.speechSynthesis.cancel();
+                const frase = new SpeechSynthesisUtterance("Rádio Ranzinza, uma nova conexão para o futuro!");
+                frase.lang = 'pt-BR';
+                frase.rate = 1.05;
+                frase.pitch = 0.95;
+                frase.onend = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+                frase.onerror = () => { 
+                    executandoJingleVoz = false;
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                };
+                window.speechSynthesis.speak(frase);
+            } else {
+                setTimeout(() => {
+                    indiceFilaAtual++;
+                    tocarFaixaAtual();
+                }, 4000);
+            }
+        }
+
+        function registrarVisitanteFirebase() {
+            const docRef = db.collection("estatisticas").doc("visitas");
+
+            if (!sessionStorage.getItem('visitante_contado')) {
+                db.runTransaction((transaction) => {
+                    return transaction.get(docRef).then((doc) => {
+                        let novoTotal = 120;
+                        if (doc.exists) {
+                            novoTotal = doc.data().total + 1;
+                        }
+                        transaction.set(docRef, { total: novoTotal });
+                        return novoTotal;
+                    });
+                }).then((totalAtualizado) => {
+                    document.getElementById('visitorCountDisplay').innerText = totalAtualizado;
+                    sessionStorage.setItem('visitante_contado', 'true');
+                }).catch((err) => console.log("Erro ao atualizar visitas:", err));
+            } else {
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        document.getElementById('visitorCountDisplay').innerText = doc.data().total;
+                    }
+                });
+            }
+        }
+
+        function solicitarSenhaAdmin() {
+            const senhaAdmin = "ranzinza11235813"; 
+            let tentativa = prompt("Digite a senha de Administrador (Host):");
+            
+            if (tentativa === senhaAdmin) {
+                const panel = document.getElementById('adminPanel');
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+                if(panel.style.display === 'block') {
+                    alert("Acesso autorizado! Painel de controle e contador global revelados.");
+                }
+            } else if (tentativa !== null) {
+                alert("Senha incorreta! Acesso negado.");
+            }
+        }
+
+        function criarMarcacoesRelogio(faceId) {
+            const face = document.getElementById(faceId);
+            if (!face) return;
+            for (let i = 0; i < 60; i++) {
+                const tick = document.createElement('div');
+                tick.className = i % 5 === 0 ? 'tick major' : 'tick';
+                tick.style.transform = `translate(60px, 60px) rotate(${i * 6}deg) translate(0, -48px)`;
+                face.appendChild(tick);
+            }
+        }
+
+        function iniciarRelogiosVisuais() {
+            setInterval(() => {
+                const agora = new Date();
+                const hUTC = agora.getUTCHours();
+                const mUTC = agora.getUTCMinutes();
+                const sUTC = agora.getUTCSeconds();
+
+                const secEl = document.getElementById('utcSec');
+                const minEl = document.getElementById('utcMin');
+                const hourEl = document.getElementById('utcHour');
+                const digEl = document.getElementById('utcDigital');
+
+                if (secEl) secEl.style.transform = `translateX(-50%) rotate(${sUTC * 6}deg)`;
+                if (minEl) minEl.style.transform = `translateX(-50%) rotate(${mUTC * 6 + sUTC * 0.1}deg)`;
+                if (hourEl) hourEl.style.transform = `translateX(-50%) rotate(${(hUTC % 12) * 30 + mUTC * 0.5}deg)`;
+                if (digEl) digEl.innerText = `${String(hUTC).padStart(2,'0')}:${String(mUTC).padStart(2,'0')}:${String(sUTC).padStart(2,'0')}`;
+
+                const uptimeSec = Math.floor(performance.now() / 1000);
+                const upH = Math.floor(uptimeSec / 3600);
+                const upM = Math.floor((uptimeSec % 3600) / 60);
+                const upS = uptimeSec % 60;
+
+                const upSecEl = document.getElementById('upSec');
+                const upMinEl = document.getElementById('upMin');
+                const upHourEl = document.getElementById('upHour');
+                const upDigEl = document.getElementById('uptimeDigital');
+
+                if (upSecEl) upSecEl.style.transform = `translateX(-50%) rotate(${upS * 6}deg)`;
+                if (upMinEl) upMinEl.style.transform = `translateX(-50%) rotate(${upM * 6 + upS * 0.1}deg)`;
+                if (upHourEl) upHourEl.style.transform = `translateX(-50%) rotate(${(upH % 12) * 30 + upM * 0.5}deg)`;
+                if (upDigEl) upDigEl.innerText = `${String(upH).padStart(2,'0')}:${String(upM).padStart(2,'0')}:${String(upS).padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function abrirModalPartilha() {
+            const urlAtual = encodeURIComponent(window.location.href);
+            const textoMensagem = encodeURIComponent("Ouça a Rádio Ranzinza, uma nova conexão para o futuro a 432Hz!");
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
+            document.getElementById('shareThreads').href = `https://threads.net/intent/post?text=${textoMensagem}%20${urlAtual}`;
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function partilharNativoRedes() {
+            const urlAtual = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'Rádio Ranzinza', text: 'Ouça a Rádio Ranzinza a 432Hz!', url: urlAtual });
+            } else {
+                copiarLinkRadio();
+            }
+        }
+
+        function fecharModalPartilha() { document.getElementById('shareModal').style.display = 'none'; }
+
+        function copiarLinkRadio() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copiado para a área de transferência!');
+                fecharModalPartilha();
+            });
+        }
+
+        function mudarVolumeOuvinte(valor) {
+            const vol = valor / 100;
+            const a1 = document.getElementById('audioPlayer1');
+            const a2 = document.getElementById('audioPlayer2');
+            if (a1) a1.volume = vol;
+            if (a2) a2.volume = vol;
+            document.getElementById('volumePercent').innerText = `${valor}%`;
+        }
+
+        function enviarMensagemOuvinte() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if(input && input.value.trim() !== '' && messages) {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-teal);">Ouvinte:</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function enviarMensagemAdmin() {
+            const input = document.getElementById('adminInput');
+            const messages = document.getElementById('chatMessages');
+            if(input && input.value.trim() !== '' && messages) {
+                const p = document.createElement('p');
+                p.innerHTML = `<strong style="color: var(--neon-teal); text-shadow: 0 0 8px rgba(0,240,255,0.6);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
+                messages.appendChild(p);
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
 </body>
 </html>
