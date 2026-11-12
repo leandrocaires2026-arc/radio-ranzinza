@@ -17,21 +17,20 @@
 
     <style>
         :root {
-            --sample-solid-color: #260538;
+            --sample-solid-color: #060c14;
             --neon-teal: #00f0ff;
             --neon-blue: #3b82f6;
             --neon-silver: #a5f3fc;
             --neon-green: #00ffaa;
             --neon-yellow: #facc15;
-            --custom-sample-color: #520c1f;
+            --custom-sample-color: #4a0e0e;
             --text-main: #ffffff;
-            --text-muted: #e2e8f0;
-            --thick-border: 4px solid var(--custom-sample-color);
+            --text-muted: #93c5fd;
+            --thick-border: 5px solid var(--custom-sample-color);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Cor base exatamente no tom roxo-magenta profundo da sua imagem */
-            background-color: #310842;
+            background-color: #020617;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -42,29 +41,22 @@
             position: relative;
         }
 
-        /* FUNDO PURO COM AS CORES E ILUMINAÇÃO DA REFERÊNCIA (SEM SOMBRAS PESADAS) */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                /* Foco de luz suave e brilhante idêntico ao da referência */
-                radial-gradient(circle at 38% 68%, rgba(255, 225, 120, 0.28) 0%, transparent 42%),
-                /* Gradiente fluido com a tonalidade exata de roxo e magenta da imagem */
-                linear-gradient(135deg, #480a63 0%, #310842 50%, #1c0228 100%);
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%),
+                linear-gradient(90deg, #594202 0%, #b8860b 20%, #ffe873 40%, #ffd700 50%, #ffe873 60%, #b8860b 80%, #594202 100%);
+            background-size: 250% 100%;
+            animation: metallicShine 12s ease-in-out infinite alternate;
             z-index: -2;
+            filter: brightness(0.85) contrast(125%) saturate(120%);
         }
 
-        /* CURVAS ORGÂNICAS E ELEGANTE INSPIRADAS NA REFERÊNCIA */
-        body::after {
-            content: '';
-            position: fixed;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: 
-                radial-gradient(ellipse at 30% 36%, transparent 48%, rgba(212, 175, 55, 0.4) 50%, rgba(255, 215, 0, 0.75) 52%, transparent 56%);
-            transform: rotate(-22deg);
-            pointer-events: none;
-            z-index: -1;
+        @keyframes metallicShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         
         header {
@@ -79,7 +71,8 @@
             border-radius: 14px;
             overflow: hidden;
             border: var(--thick-border);
-            background: #260538;
+            background: #040d1a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
         }
         header img {
             width: 100%; height: 100%;
@@ -87,7 +80,7 @@
             position: absolute;
             top: 0; left: 0;
             z-index: 1;
-            filter: hue-rotate(280deg) brightness(0.4) saturate(140%);
+            filter: hue-rotate(180deg) brightness(0.35) saturate(150%);
         }
         
         .header-content {
@@ -99,12 +92,13 @@
             border-radius: 8px;
             border: 2px solid var(--custom-sample-color);
             backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
         }
         .header-content h1 {
             margin: 0 0 5px 0;
             font-size: 2rem;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
             letter-spacing: 2px;
         }
         .header-content p {
@@ -127,9 +121,10 @@
         }
 
         .solid-color-card {
-            background-color: #3b0a54;
+            background-color: var(--sample-solid-color);
             border-radius: 14px;
             padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -166,10 +161,11 @@
         .column-wrapper { display: flex; flex-direction: column; justify-content: space-between; }
         
         .player-box {
-            background: linear-gradient(135deg, #3b0a54 0%, #260538 100%);
+            background: radial-gradient(circle at center, rgba(6, 18, 36, 0.95) 0%, rgba(2, 8, 18, 0.98) 100%);
             text-align: center;
             border-radius: 14px;
             padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -183,7 +179,7 @@
         }
         .player-box h2 {
             color: var(--neon-teal);
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
             margin-top: 0;
             font-size: 1.3rem;
         }
@@ -192,7 +188,7 @@
             font-weight: 600;
             font-size: 1rem;
             margin-bottom: 12px;
-            text-shadow: 0 0 6px rgba(0, 255, 170, 0.4);
+            text-shadow: 0 0 6px rgba(0, 255, 170, 0.5);
         }
         .equalizer {
             display: flex;
@@ -220,7 +216,7 @@
         }
 
         .volume-control-box {
-            background: rgba(43, 8, 62, 0.9);
+            background: rgba(2, 6, 16, 0.8);
             border: 2px solid var(--custom-sample-color);
             border-radius: 10px;
             padding: 10px 15px;
@@ -242,7 +238,7 @@
             width: 100%;
             height: 6px;
             border-radius: 3px;
-            background: #1c0228;
+            background: #040d1a;
             outline: none;
             border: 1px solid var(--custom-sample-color);
         }
@@ -253,6 +249,7 @@
             border-radius: 50%;
             background: var(--neon-teal);
             cursor: pointer;
+            box-shadow: 0 0 8px var(--neon-teal);
         }
 
         .racing-telemetry-panel {
@@ -264,6 +261,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.8);
             align-items: center;
         }
         .telemetry-item {
@@ -271,7 +269,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(30, 4, 45, 0.9);
+            background: rgba(10, 2, 2, 0.9);
             padding: 15px;
             border-radius: 12px;
             border: 2px solid var(--custom-sample-color);
@@ -287,7 +285,7 @@
         
         .analog-clock {
             width: 140px; height: 140px;
-            background: radial-gradient(circle, #3b0a54 0%, #1c0228 85%);
+            background: radial-gradient(circle, #051326 0%, #010308 85%);
             border: 6px solid var(--custom-sample-color);
             outline: 3px solid var(--custom-sample-color);
             border-radius: 50%;
@@ -306,17 +304,19 @@
         .tick.major {
             width: 3.5px; height: 10px;
             background: #ffffff;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
         }
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; border-radius: 4px; }
-        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); transform: translateX(-50%) rotate(0deg); }
-        .minute-hand { width: 3.5px; height: 44px; background: var(--neon-silver); transform: translateX(-50%) rotate(0deg); }
-        .second-hand { width: 1.5px; height: 50px; background: var(--neon-teal); transform: translateX(-50%) rotate(0deg); }
+        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); box-shadow: 0 0 8px rgba(250, 204, 21, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .minute-hand { width: 3.5px; height: 44px; background: var(--neon-silver); box-shadow: 0 0 8px rgba(165, 243, 252, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .second-hand { width: 1.5px; height: 50px; background: var(--neon-teal); box-shadow: 0 0 8px var(--neon-teal); transform: translateX(-50%) rotate(0deg); }
         .clock-center {
             position: absolute; top: 50%; left: 50%;
             width: 9px; height: 9px;
             background: var(--neon-teal);
             border-radius: 50%;
             transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px var(--neon-teal);
         }
         .digital-subtext { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-teal); margin-top: 12px; }
         audio { display: none; }
@@ -324,10 +324,11 @@
         .chat-box {
             display: flex;
             flex-direction: column;
-            background-color: #3b0a54;
+            background-color: var(--sample-solid-color);
             backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -341,7 +342,7 @@
         }
         .chat-messages {
             flex: 1;
-            background: rgba(28, 2, 40, 0.9);
+            background: rgba(3, 9, 20, 0.9);
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
@@ -353,8 +354,8 @@
         }
         .chat-input-area { display: flex; gap: 8px; }
         input, button.chat-btn { padding: 9px 12px; border-radius: 6px; border: none; font-size: 0.9rem; }
-        input { flex: 1; background: #260538; color: white; border: 2px solid var(--custom-sample-color); }
-        input:focus { outline: none; border-color: var(--neon-teal); }
+        input { flex: 1; background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); }
+        input:focus { outline: none; border-color: var(--custom-sample-color); box-shadow: 0 0 8px rgba(0, 0, 0, 0.8); }
         
         button.chat-btn {
             background: var(--custom-sample-color);
@@ -366,7 +367,7 @@
         button.chat-btn:hover { opacity: 0.9; }
         
         .admin-panel {
-            background: #260538;
+            background: #040d1a;
             border: 2px solid var(--neon-teal);
             border-radius: 8px;
             padding: 12px;
@@ -407,7 +408,7 @@
 
         .external-platforms { margin-top: 15px; display: flex; justify-content: center; gap: 12px; }
         .platform-btn {
-            background: #260538; color: white; padding: 8px 14px;
+            background: #040d1a; color: white; padding: 8px 14px;
             border-radius: 6px; text-decoration: none; font-size: 0.82rem;
             font-weight: bold; border: 2px solid var(--custom-sample-color);
             display: inline-flex; align-items: center; gap: 6px;
@@ -419,18 +420,18 @@
             width: 100%; height: 200px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #260538;
+            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
         }
-        .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(280deg) brightness(0.6) saturate(130%); }
+        .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) brightness(0.7) saturate(130%); }
 
         .side-art-banner {
             width: 100%; height: 440px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #1c0228;
+            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
             margin-bottom: 20px;
         }
-        .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(280deg) saturate(150%) brightness(0.8); }
+        .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) saturate(150%) brightness(0.85); }
 
         .side-profile-card h4 { margin: 0 0 10px 0; color: var(--neon-teal); font-size: 1.1rem; letter-spacing: 1px; }
         .side-profile-btn {
@@ -444,17 +445,18 @@
 
         .share-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(28, 2, 40, 0.85); backdrop-filter: blur(5px);
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 999;
         }
         .share-modal-card {
-            background: #3b0a54; border: var(--thick-border); border-radius: 14px;
+            background: rgba(6, 14, 26, 0.95); border: var(--thick-border); border-radius: 14px;
             padding: 25px; width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
         }
         .share-modal-card h3 { color: var(--neon-teal); margin-top: 0; margin-bottom: 8px; }
         .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
         .share-option-btn {
-            background: #260538; color: white; border: 2px solid var(--custom-sample-color); padding: 10px;
+            background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); padding: 10px;
             border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; width: 100%; box-sizing: border-box;
         }
@@ -560,7 +562,7 @@
                             background: var(--neon-teal); color: #020617;
                             border: none; padding: 12px 24px; border-radius: 8px;
                             font-weight: bold; font-size: 0.95rem; cursor: pointer;
-                            text-transform: uppercase; letter-spacing: 1px;
+                            box-shadow: 0 0 15px rgba(0,240,255,0.4); text-transform: uppercase; letter-spacing: 1px;
                         ">
                             ▶ Sintonizar Rádio Ranzinza
                         </button>
@@ -770,7 +772,7 @@
         let indiceFilaAtual = 0;
         let executandoJingleVoz = false;
         let playerAtivo = 1;
-        let proximaFuncaoPlay = null;
+        let proximaFuncaoPlay = null; // Variável para segurar o gatilho manual de sintonia
 
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
@@ -782,6 +784,7 @@
             if (audio1Ref) audio1Ref.volume = 0.8;
             if (audio2Ref) audio2Ref.volume = 0.8;
 
+            // MONTAGEM DA GRADE E EXCEÇÃO ÚNICA DE SINCRONIZAÇÃO POR RELÓGIO (APENAS NA ATUALIZAÇÃO/LOAD)
             construirGradeDoDiaEAfinarIndice();
             registrarVisitanteFirebase();
             tocarFaixaAtual();
@@ -798,27 +801,34 @@
             });
         }
 
+        // LÓGICA DO CICLO CONSTANTE E EXCEÇÃO DE SINCRONIZAÇÃO MATINAL/ATUALIZAÇÃO
         function construirGradeDoDiaEAfinarIndice() {
             filaMestre = [];
+            
+            // 1. Inicia obrigatoriamente com o bloco fixo de New Age às 00:00:00 do dia
             blocoNewAge.forEach(musica => filaMestre.push({ type: 'music', ...musica }));
             filaMestre.push({ type: 'jingle', title: '🎙️ [JINGLE] Rádio Ranzinza', duration: 15 });
 
+            // 2. Cria o pool de blocos que formam o ciclo constante subsequente
             let blocoCicloBase = [];
             inserirComJingles(blocoEletronica, blocoCicloBase);
             inserirComJingles(blocoSertanejo, blocoCicloBase);
             inserirComJingles(blocoPop, blocoCicloBase);
             inserirComJingles(blocoRock, blocoCicloBase);
 
+            // Adiciona o ciclo repetido na fila mestre para cobrir amplamente as 24 horas do dia
             for (let c = 0; c < 10; c++) {
                 blocoCicloBase.forEach(item => filaMestre.push(item));
             }
 
+            // --- EXCEÇÃO CONTROLADA DE RELÓGIO (USADA APENAS NO MOMENTO DA SUA ATUALIZAÇÃO/LOAD) ---
             const agora = new Date();
             const segundosDesdeMeiaNoite = (agora.getHours() * 3600) + (agora.getMinutes() * 60) + agora.getSeconds();
 
             let acumulado = 0;
             indiceFilaAtual = 0;
 
+            // Soma a duração item por item desde as 00:00:00 para encontrar o ponto exato da atualização
             for (let i = 0; i < filaMestre.length; i++) {
                 let duracaoItem = filaMestre[i].duration || 210;
                 if (segundosDesdeMeiaNoite >= acumulado && segundosDesdeMeiaNoite < (acumulado + duracaoItem)) {
@@ -861,12 +871,16 @@
                     
                     if (promessaPlay !== undefined) {
                         promessaPlay.then(() => {
+                            // Autoplay permitido nativamente pelo navegador
                             if (triggerBox) triggerBox.style.display = 'none';
                             nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
                             activeAudio.pause();
                             playerAtivo = playerAtivo === 1 ? 2 : 1;
                         }).catch(error => {
+                            // Navegador bloqueou: exibe o botão e a mensagem de afinação solicitada
+                            console.log("Bloqueio de autoplay detectado. Aguardando clique do ouvinte.");
                             if (triggerBox) triggerBox.style.display = 'block';
+                            
                             proximaFuncaoPlay = () => {
                                 nextAudio.play().then(() => {
                                     if (triggerBox) triggerBox.style.display = 'none';
@@ -879,6 +893,7 @@
                     }
                 };
 
+                // A partir deste momento, a reprodução avança puramente pelo término natural da faixa (onended)
                 nextAudio.onended = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
@@ -891,6 +906,7 @@
             }
         }
 
+        // Função acionada pelo botão customizado do ouvinte
         function sintonizarRadioManual() {
             const triggerBox = document.getElementById('playTriggerBox');
             if (triggerBox) {
@@ -1068,7 +1084,7 @@
             const messages = document.getElementById('chatMessages');
             if(input && input.value.trim() !== '' && messages) {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-teal);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
+                p.innerHTML = `<strong style="color: var(--neon-teal); text-shadow: 0 0 8px rgba(0,240,255,0.6);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
