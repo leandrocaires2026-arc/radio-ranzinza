@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rádio Ranzinza // Custom Studio</title>
     
     <!-- SDK DO FIREBASE -->
@@ -39,6 +39,7 @@
             align-items: center;
             min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -462,6 +463,63 @@
         }
         .share-option-btn:hover { background: rgba(0, 240, 255, 0.15); }
         .share-close-btn { background: var(--neon-teal); color: #020617; border: 2px solid var(--custom-sample-color); padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+
+
+        /* --------------------------------------------------------------------------
+           ADAPTAÇÃO MOBILE INTELIGENTE (9:16 APENAS NO CELULAR EM PÉ / PORTRAIT)
+           -------------------------------------------------------------------------- */
+        @media (max-width: 767px) and (orientation: portrait) {
+            body {
+                padding: 0;
+                justify-content: center;
+            }
+
+            /* Força o container principal a virar um layout vertical compacto 9:16 centralizado */
+            .main-layout {
+                display: flex;
+                flex-direction: column;
+                width: 100vw;
+                height: 100vh;
+                max-width: 450px;
+                max-height: 800px;
+                aspect-ratio: 9 / 16;
+                padding: 10px;
+                box-sizing: border-box;
+                gap: 10px;
+                overflow-y: auto;
+            }
+
+            header {
+                height: 100px;
+                margin-bottom: 10px;
+            }
+
+            .header-content h1 {
+                font-size: 1.2rem;
+            }
+
+            .column-wrapper {
+                width: 100%;
+            }
+
+            /* Oculta elementos secundários no modo estrito 9:16 mobile para focar no player */
+            .side-panel > .solid-color-card:not(:first-child), 
+            .side-art-banner, 
+            .radio-banner {
+                display: none;
+            }
+        }
+
+        /* QUANDO O CELULAR ESTIVER NA HORIZONTAL (LANDSCAPE), PREENCHE A TELA */
+        @media (max-width: 900px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+            }
+            .main-layout {
+                max-width: 100%;
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
