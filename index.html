@@ -553,7 +553,20 @@
 
                     <p id="now-playing">Sintonizando na transmissão em curso...</p>
 
-                    <div id="playTriggerBox" style="display: none; margin-bottom: 12px;"></div>
+                    <!-- BOTÃO DE GATILHO DE SINTONIA (AUTOPLAY MANUAL) -->
+                    <div id="playTriggerBox" style="display: none; margin: 15px 0; text-align: center; background: rgba(0, 240, 255, 0.08); border: 2px dashed var(--neon-teal); padding: 15px; border-radius: 10px;">
+                        <p id="triggerMessage" style="color: var(--neon-teal); font-weight: bold; margin-bottom: 10px; font-size: 0.9rem;">
+                            AGUARDE UM MOMENTO, ESTAMOS AFINANDO OS INSTRUMENTOS!
+                        </p>
+                        <button onclick="sintonizarRadioManual()" style="
+                            background: var(--neon-teal); color: #020617;
+                            border: none; padding: 12px 24px; border-radius: 8px;
+                            font-weight: bold; font-size: 0.95rem; cursor: pointer;
+                            box-shadow: 0 0 15px rgba(0,240,255,0.4); text-transform: uppercase; letter-spacing: 1px;
+                        ">
+                            ▶ Sintonizar Rádio Ranzinza
+                        </button>
+                    </div>
                     
                     <div class="equalizer">
                         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -759,6 +772,7 @@
         let indiceFilaAtual = 0;
         let executandoJingleVoz = false;
         let playerAtivo = 1;
+        let proximaFuncaoPlay = null; // Variável para segurar o gatilho manual de sintonia
 
         window.addEventListener('DOMContentLoaded', () => {
             criarMarcacoesRelogio('faceUTC');
@@ -834,6 +848,7 @@
             const audio1 = document.getElementById('audioPlayer1');
             const audio2 = document.getElementById('audioPlayer2');
             const nowPlayingText = document.getElementById('now-playing');
+            const triggerBox = document.getElementById('playTriggerBox');
             
             if (!audio1 || !audio2 || !nowPlayingText) return;
 
@@ -842,25 +857,43 @@
 
             if (item.type === 'jingle') {
                 nowPlayingText.innerHTML = `No ar agora: <strong style="color: var(--neon-teal);">${item.title}</strong>`;
+                if (triggerBox) triggerBox.style.display = 'none';
                 audio1.pause();
                 audio2.pause();
                 falarJingleNarrador();
             } else {
-                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong> (Sincronizando...)`;
                 nextAudio.src = item.url;
                 nextAudio.load();
 
                 nextAudio.oncanplaythrough = () => {
-                    nextAudio.play().then(() => {
-                        activeAudio.pause();
-                        playerAtivo = playerAtivo === 1 ? 2 : 1;
-                    }).catch(e => {
-                        console.log("Aguardando interação para reprodução automática:", e);
-                    });
+                    const promessaPlay = nextAudio.play();
+                    
+                    if (promessaPlay !== undefined) {
+                        promessaPlay.then(() => {
+                            // Autoplay permitido nativamente pelo navegador
+                            if (triggerBox) triggerBox.style.display = 'none';
+                            nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                            activeAudio.pause();
+                            playerAtivo = playerAtivo === 1 ? 2 : 1;
+                        }).catch(error => {
+                            // Navegador bloqueou: exibe o botão e a mensagem de afinação solicitada
+                            console.log("Bloqueio de autoplay detectado. Aguardando clique do ouvinte.");
+                            if (triggerBox) triggerBox.style.display = 'block';
+                            
+                            proximaFuncaoPlay = () => {
+                                nextAudio.play().then(() => {
+                                    if (triggerBox) triggerBox.style.display = 'none';
+                                    nowPlayingText.innerHTML = `No ar agora: <strong>${item.title}</strong>`;
+                                    activeAudio.pause();
+                                    playerAtivo = playerAtivo === 1 ? 2 : 1;
+                                });
+                            };
+                        });
+                    }
                 };
 
                 // A partir deste momento, a reprodução avança puramente pelo término natural da faixa (onended)
-                // O relógio NUNCA mais é consultado durante a execução para evitar qualquer falha ou travamento.
                 nextAudio.onended = () => {
                     indiceFilaAtual++;
                     tocarFaixaAtual();
@@ -870,6 +903,18 @@
                     indiceFilaAtual++;
                     tocarFaixaAtual();
                 };
+            }
+        }
+
+        // Função acionada pelo botão customizado do ouvinte
+        function sintonizarRadioManual() {
+            const triggerBox = document.getElementById('playTriggerBox');
+            if (triggerBox) {
+                document.getElementById('triggerMessage').innerText = "CONECTANDO AO ESTÚDIO...";
+            }
+            if (proximaFuncaoPlay) {
+                proximaFuncaoPlay();
+                proximaFuncaoPlay = null;
             }
         }
 
