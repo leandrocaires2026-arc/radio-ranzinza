@@ -294,6 +294,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.3s ease;
         }
         .clock-face { width: 120px; height: 120px; position: relative; border-radius: 50%; }
         .tick {
@@ -466,43 +467,55 @@
 
 
         /* --------------------------------------------------------------------------
-           ADAPTAÇÃO MOBILE INTELIGENTE (9:16 APENAS NO CELULAR EM PÉ / PORTRAIT)
+           ADAPTAÇÃO MOBILE INTELIGENTE (9:16 VERTICAL E 16:9 HORIZONTAL)
            -------------------------------------------------------------------------- */
         @media (max-width: 767px) and (orientation: portrait) {
             body {
                 padding: 0;
-                justify-content: center;
+                justify-content: flex-start;
             }
 
-            /* Força o container principal a virar um layout vertical compacto 9:16 centralizado */
             .main-layout {
                 display: flex;
                 flex-direction: column;
                 width: 100vw;
-                height: 100vh;
-                max-width: 450px;
-                max-height: 800px;
-                aspect-ratio: 9 / 16;
-                padding: 10px;
+                max-width: 100%;
+                padding: 8px;
                 box-sizing: border-box;
                 gap: 10px;
-                overflow-y: auto;
             }
 
             header {
-                height: 100px;
-                margin-bottom: 10px;
+                height: 110px;
+                margin-bottom: 5px;
             }
 
             .header-content h1 {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
 
             .column-wrapper {
                 width: 100%;
             }
 
-            /* Oculta elementos secundários no modo estrito 9:16 mobile para focar no player */
+            /* Reduz proporcionalmente a arte dos relógios em formato retrato no celular para evitar corte */
+            .analog-clock {
+                width: 110px;
+                height: 110px;
+                transform: scale(0.85);
+            }
+
+            .racing-telemetry-panel {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .telemetry-item {
+                padding: 8px;
+            }
+
+            /* Oculta elementos secundários no modo mobile retrato estreito para focar na experiência da rádio */
             .side-panel > .solid-color-card:not(:first-child), 
             .side-art-banner, 
             .radio-banner {
@@ -510,14 +523,18 @@
             }
         }
 
-        /* QUANDO O CELULAR ESTIVER NA HORIZONTAL (LANDSCAPE), PREENCHE A TELA */
+        /* QUANDO O CELULAR ESTIVER NA HORIZONTAIS (LANDSCAPE / 16:9) */
         @media (max-width: 900px) and (orientation: landscape) {
             body {
-                padding: 5px;
+                padding: 10px;
             }
             .main-layout {
                 max-width: 100%;
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+            }
+            .analog-clock {
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
