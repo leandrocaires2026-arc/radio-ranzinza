@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rádio Ranzinza // Custom Studio</title>
     
+    <!-- FONTES DO ESTÚDIO -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
     <!-- SDK DO FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -17,20 +22,21 @@
 
     <style>
         :root {
-            --sample-solid-color: #060c14;
-            --neon-teal: #00f0ff;
-            --neon-blue: #3b82f6;
-            --neon-silver: #a5f3fc;
-            --neon-green: #00ffaa;
-            --neon-yellow: #facc15;
-            --custom-sample-color: #4a0e0e;
+            /* PALETA PANTONE AZUL DA IMAGEM */
+            --sample-solid-color: #03152e;      /* PMS 2767 - Azul Marinho Profundo */
+            --neon-teal: #00a9e0;               /* PMS 298 - Azul Ciano Vibrante */
+            --neon-blue: #0033a0;               /* PMS 286 - Azul Royal Intenso */
+            --neon-silver: #9bcbeb;             /* PMS 277 - Azul Celeste Claro */
+            --neon-green: #00b5e2;              /* PMS 2985 - Azul Turquesa Luminoso */
+            --neon-yellow: #7ba4db;             /* PMS 2718 - Azul Pervinca Claro */
+            --custom-sample-color: #00205b;     /* PMS 281 - Azul Marinho Estrutural */
             --text-main: #ffffff;
-            --text-muted: #93c5fd;
-            --thick-border: 5px solid var(--custom-sample-color);
+            --text-muted: #9bcbeb;              /* PMS 277 */
+            --thick-border: 5px solid #0033a0;  /* Borda PMS 286 */
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #020617;
+            font-family: 'Rajdhani', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #020813;
             color: var(--text-main);
             margin: 0;
             padding: 25px;
@@ -46,18 +52,11 @@
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%),
-                linear-gradient(90deg, #594202 0%, #b8860b 20%, #ffe873 40%, #ffd700 50%, #ffe873 60%, #b8860b 80%, #594202 100%);
-            background-size: 250% 100%;
-            animation: metallicShine 12s ease-in-out infinite alternate;
+            background-color: #020813;
+            background-image: url('background.jpg');
+            background-repeat: repeat;
+            background-size: 320px 320px;
             z-index: -2;
-            filter: brightness(0.85) contrast(125%) saturate(120%);
-        }
-
-        @keyframes metallicShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
         }
         
         header {
@@ -72,8 +71,8 @@
             border-radius: 14px;
             overflow: hidden;
             border: var(--thick-border);
-            background: #040d1a;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.15);
+            background: #03152e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(155, 203, 235, 0.15);
         }
         header img {
             width: 100%; height: 100%;
@@ -81,30 +80,31 @@
             position: absolute;
             top: 0; left: 0;
             z-index: 1;
-            filter: hue-rotate(180deg) brightness(0.35) saturate(150%);
+            filter: hue-rotate(190deg) brightness(0.35) saturate(150%);
         }
         
         .header-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            background: var(--custom-sample-color);
+            background: rgba(0, 32, 91, 0.88);
             padding: 15px 30px;
             border-radius: 8px;
-            border: 2px solid var(--custom-sample-color);
+            border: 2px solid #005eb8;
             backdrop-filter: blur(6px);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
         }
         .header-content h1 {
+            font-family: 'Orbitron', sans-serif;
             margin: 0 0 5px 0;
             font-size: 2rem;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+            text-shadow: 0 0 12px rgba(0, 169, 224, 0.85);
             letter-spacing: 2px;
         }
         .header-content p {
             margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
             font-size: 0.9rem;
             color: var(--neon-silver);
             letter-spacing: 1.5px;
@@ -125,7 +125,7 @@
             background-color: var(--sample-solid-color);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(155, 203, 235, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -137,7 +137,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--custom-sample-color);
+            background: #0072ce;
             z-index: 3;
         }
 
@@ -157,16 +157,21 @@
             justify-content: flex-start;
         }
         
-        h3 { margin-top: 0; font-size: 1.1rem; letter-spacing: 1px; }
+        h3 { 
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 0; 
+            font-size: 1.05rem; 
+            letter-spacing: 1px; 
+        }
         .side-panel, .center-panel { display: flex; flex-direction: column; gap: 20px; }
         .column-wrapper { display: flex; flex-direction: column; justify-content: space-between; }
         
         .player-box {
-            background: radial-gradient(circle at center, rgba(6, 18, 36, 0.95) 0%, rgba(2, 8, 18, 0.98) 100%);
+            background: radial-gradient(circle at center, rgba(0, 32, 91, 0.95) 0%, rgba(3, 21, 46, 0.98) 100%);
             text-align: center;
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(155, 203, 235, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -176,20 +181,21 @@
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--custom-sample-color);
+            background: #0072ce;
         }
         .player-box h2 {
+            font-family: 'Orbitron', sans-serif;
             color: var(--neon-teal);
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            text-shadow: 0 0 10px rgba(0, 169, 224, 0.5);
             margin-top: 0;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
         }
         #now-playing {
-            color: var(--neon-green);
+            color: var(--neon-silver);
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-bottom: 12px;
-            text-shadow: 0 0 6px rgba(0, 255, 170, 0.5);
+            text-shadow: 0 0 6px rgba(0, 169, 224, 0.5);
         }
         .equalizer {
             display: flex;
@@ -206,10 +212,10 @@
             animation: bounce 1.2s infinite ease-in-out alternate;
         }
         .bar:nth-child(2) { animation-delay: 0.2s; background: var(--neon-silver); }
-        .bar:nth-child(3) { animation-delay: 0.4s; background: var(--neon-green); }
+        .bar:nth-child(3) { animation-delay: 0.4s; background: #0072ce; }
         .bar:nth-child(4) { animation-delay: 0.1s; background: var(--neon-yellow); }
         .bar:nth-child(5) { animation-delay: 0.3s; background: var(--neon-teal); }
-        .bar:nth-child(6) { animation-delay: 0.5s; background: var(--neon-blue); }
+        .bar:nth-child(6) { animation-delay: 0.5s; background: #1d428a; }
 
         @keyframes bounce {
             0% { height: 8px; }
@@ -217,8 +223,8 @@
         }
 
         .volume-control-box {
-            background: rgba(2, 6, 16, 0.8);
-            border: 2px solid var(--custom-sample-color);
+            background: rgba(3, 21, 46, 0.85);
+            border: 2px solid #005eb8;
             border-radius: 10px;
             padding: 10px 15px;
             margin: 15px auto;
@@ -230,7 +236,7 @@
         .volume-header {
             display: flex;
             justify-content: space-between;
-            font-size: 0.78rem;
+            font-size: 0.85rem;
             color: var(--neon-teal);
             font-weight: bold;
         }
@@ -239,9 +245,9 @@
             width: 100%;
             height: 6px;
             border-radius: 3px;
-            background: #040d1a;
+            background: #020813;
             outline: none;
-            border: 1px solid var(--custom-sample-color);
+            border: 1px solid #005eb8;
         }
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -257,7 +263,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: var(--custom-sample-color);
+            background: #001a4d;
             border: var(--thick-border);
             border-radius: 16px;
             padding: 20px;
@@ -270,25 +276,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(10, 2, 2, 0.9);
+            background: rgba(3, 18, 42, 0.92);
             padding: 15px;
             border-radius: 12px;
-            border: 2px solid var(--custom-sample-color);
+            border: 2px solid #005eb8;
         }
         .telemetry-label {
-            font-size: 0.72rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--neon-teal);
+            color: var(--neon-silver);
             margin-bottom: 12px;
             font-weight: bold;
         }
         
         .analog-clock {
             width: 140px; height: 140px;
-            background: radial-gradient(circle, #051326 0%, #010308 85%);
-            border: 6px solid var(--custom-sample-color);
-            outline: 3px solid var(--custom-sample-color);
+            background: radial-gradient(circle, #00205b 0%, #020813 85%);
+            border: 6px solid #0033a0;
+            outline: 3px solid #0072ce;
             border-radius: 50%;
             position: relative;
             display: flex;
@@ -300,17 +307,17 @@
         .tick {
             position: absolute; top: 50%; left: 50%;
             width: 2px; height: 6px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(155, 203, 235, 0.35);
             transform-origin: 0 -50px;
         }
         .tick.major {
             width: 3.5px; height: 10px;
             background: #ffffff;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 6px rgba(155, 203, 235, 0.6);
         }
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; border-radius: 4px; }
-        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); box-shadow: 0 0 8px rgba(250, 204, 21, 0.8); transform: translateX(-50%) rotate(0deg); }
-        .minute-hand { width: 3.5px; height: 44px; background: var(--neon-silver); box-shadow: 0 0 8px rgba(165, 243, 252, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .hour-hand { width: 4.5px; height: 30px; background: var(--neon-yellow); box-shadow: 0 0 8px rgba(123, 164, 219, 0.8); transform: translateX(-50%) rotate(0deg); }
+        .minute-hand { width: 3.5px; height: 44px; background: var(--neon-silver); box-shadow: 0 0 8px rgba(155, 203, 235, 0.8); transform: translateX(-50%) rotate(0deg); }
         .second-hand { width: 1.5px; height: 50px; background: var(--neon-teal); box-shadow: 0 0 8px var(--neon-teal); transform: translateX(-50%) rotate(0deg); }
         .clock-center {
             position: absolute; top: 50%; left: 50%;
@@ -320,7 +327,7 @@
             transform: translate(-50%, -50%);
             box-shadow: 0 0 8px var(--neon-teal);
         }
-        .digital-subtext { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-teal); margin-top: 12px; }
+        .digital-subtext { font-family: 'JetBrains Mono', 'Courier New', Courier, monospace; font-size: 0.9rem; color: var(--neon-teal); margin-top: 12px; }
         audio { display: none; }
         
         .chat-box {
@@ -330,7 +337,7 @@
             backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(155, 203, 235, 0.12);
             border: var(--thick-border);
             position: relative;
             overflow: hidden;
@@ -340,36 +347,42 @@
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--custom-sample-color);
+            background: #0072ce;
         }
         .chat-messages {
             flex: 1;
-            background: rgba(3, 9, 20, 0.9);
+            background: rgba(2, 12, 27, 0.9);
             border-radius: 8px;
             padding: 10px;
             overflow-y: auto;
             margin-bottom: 10px;
-            font-size: 0.85rem;
-            border: 2px solid var(--custom-sample-color);
+            font-size: 0.92rem;
+            border: 2px solid #0033a0;
             text-align: left;
             height: 180px;
         }
         .chat-input-area { display: flex; gap: 8px; }
-        input, button.chat-btn { padding: 9px 12px; border-radius: 6px; border: none; font-size: 0.9rem; }
-        input { flex: 1; background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); }
-        input:focus { outline: none; border-color: var(--custom-sample-color); box-shadow: 0 0 8px rgba(0, 0, 0, 0.8); }
+        input, button.chat-btn { 
+            font-family: 'Rajdhani', sans-serif;
+            padding: 9px 12px; 
+            border-radius: 6px; 
+            border: none; 
+            font-size: 0.95rem; 
+        }
+        input { flex: 1; background: #020813; color: white; border: 2px solid #005eb8; }
+        input:focus { outline: none; border-color: var(--neon-teal); box-shadow: 0 0 8px rgba(0, 169, 224, 0.5); }
         
         button.chat-btn {
-            background: var(--custom-sample-color);
+            background: #0033a0;
             color: #ffffff;
             cursor: pointer;
             font-weight: bold;
-            border: 2px solid var(--custom-sample-color);
+            border: 2px solid #0072ce;
         }
-        button.chat-btn:hover { opacity: 0.9; }
+        button.chat-btn:hover { background: #005eb8; }
         
         .admin-panel {
-            background: #040d1a;
+            background: #020c1b;
             border: 2px solid var(--neon-teal);
             border-radius: 8px;
             padding: 12px;
@@ -380,7 +393,7 @@
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             cursor: pointer;
             margin-top: 5px;
             text-align: right;
@@ -390,80 +403,87 @@
         .admin-toggle:hover { color: var(--neon-teal); }
 
         .admin-visitor-counter {
-            background: rgba(0, 240, 255, 0.08);
+            background: rgba(0, 169, 224, 0.1);
             border: 1px dashed var(--neon-teal);
             padding: 8px 12px;
             border-radius: 6px;
             margin-bottom: 10px;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: var(--neon-silver);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .visitor-number {
-            color: var(--neon-green);
+            color: var(--neon-teal);
             font-weight: bold;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
             font-size: 1rem;
         }
 
         .external-platforms { margin-top: 15px; display: flex; justify-content: center; gap: 12px; }
         .platform-btn {
-            background: #040d1a; color: white; padding: 8px 14px;
-            border-radius: 6px; text-decoration: none; font-size: 0.82rem;
-            font-weight: bold; border: 2px solid var(--custom-sample-color);
+            background: #020c1b; color: white; padding: 8px 14px;
+            border-radius: 6px; text-decoration: none; font-size: 0.88rem;
+            font-weight: bold; border: 2px solid #005eb8;
             display: inline-flex; align-items: center; gap: 6px;
         }
-        .platform-btn.soundcloud:hover { background: #ff5500; }
-        .platform-btn.spotify:hover { background: #1db954; }
+        .platform-btn.soundcloud:hover { background: #005eb8; }
+        .platform-btn.spotify:hover { background: #0072ce; }
         
         .radio-banner {
             width: 100%; height: 200px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #040d1a; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+            background: #03152e; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
         }
-        .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) brightness(0.7) saturate(130%); }
+        .radio-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(190deg) brightness(0.7) saturate(130%); }
 
         .side-art-banner {
             width: 100%; height: 440px;
             border-radius: 14px; overflow: hidden;
             border: var(--thick-border); position: relative;
-            background: #030914; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+            background: #03152e; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
             margin-bottom: 20px;
         }
-        .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg) saturate(150%) brightness(0.85); }
+        .side-art-banner img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(190deg) saturate(150%) brightness(0.85); }
 
-        .side-profile-card h4 { margin: 0 0 10px 0; color: var(--neon-teal); font-size: 1.1rem; letter-spacing: 1px; }
+        .side-profile-card h4 { 
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 0 10px 0; 
+            color: var(--neon-teal); 
+            font-size: 1rem; 
+            letter-spacing: 1px; 
+        }
         .side-profile-btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
             width: 100%; padding: 10px; border-radius: 8px; text-decoration: none;
-            font-weight: bold; font-size: 0.85rem; color: #ffffff; box-sizing: border-box;
-            border: 2px solid var(--custom-sample-color); margin-top: 15px; background: var(--custom-sample-color);
+            font-weight: bold; font-size: 0.9rem; color: #ffffff; box-sizing: border-box;
+            border: 2px solid #0072ce; margin-top: 15px; background: #0033a0;
         }
         .side-profile-btn:hover { opacity: 0.9; }
-        .info-box { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+        .info-box { font-size: 0.88rem; color: var(--text-muted); line-height: 1.4; }
 
         .share-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px);
+            background: rgba(2, 8, 19, 0.88); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 999;
         }
         .share-modal-card {
-            background: rgba(6, 14, 26, 0.95); border: var(--thick-border); border-radius: 14px;
+            background: rgba(3, 21, 46, 0.96); border: var(--thick-border); border-radius: 14px;
             padding: 25px; width: 90%; max-width: 400px; text-align: center;
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
         }
         .share-modal-card h3 { color: var(--neon-teal); margin-top: 0; margin-bottom: 8px; }
         .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
         .share-option-btn {
-            background: #040d1a; color: white; border: 2px solid var(--custom-sample-color); padding: 10px;
-            border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            background: #020c1b; color: white; border: 2px solid #005eb8; padding: 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; width: 100%; box-sizing: border-box;
         }
-        .share-option-btn:hover { background: rgba(0, 240, 255, 0.15); }
-        .share-close-btn { background: var(--neon-teal); color: #020617; border: 2px solid var(--custom-sample-color); padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        .share-option-btn:hover { background: rgba(0, 169, 224, 0.18); }
+        .share-close-btn { background: var(--neon-teal); color: #020813; border: 2px solid #005eb8; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
 
 
         /* --------------------------------------------------------------------------
@@ -545,16 +565,16 @@
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-modal-card">
             <h3>🌐 Partilhar Rádio Ranzinza</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Escolha a rede social:</p>
             <div class="share-grid">
-                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #25d366;">🟢 WhatsApp</a>
-                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #1877f2;">🔵 Facebook</a>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #e1306c;">📸 Instagram</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff0050;">🎵 TikTok</button>
-                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #ff7700;">⚡ Kwai</button>
+                <a href="#" id="shareWhatsapp" target="_blank" class="share-option-btn" style="color: #9bcbeb;">🟢 WhatsApp</a>
+                <a href="#" id="shareFacebook" target="_blank" class="share-option-btn" style="color: #7ba4db;">🔵 Facebook</a>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #00a9e0;">📸 Instagram</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #9bcbeb;">🎵 TikTok</button>
+                <button onclick="partilharNativoRedes()" class="share-option-btn" style="color: #00b5e2;">⚡ Kwai</button>
                 <a href="#" id="shareThreads" target="_blank" class="share-option-btn" style="color: #ffffff;">🧵 Threads</a>
             </div>
-            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-yellow); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
+            <button class="share-option-btn" onclick="copiarLinkRadio()" style="color: var(--neon-silver); margin-bottom: 10px; justify-content: center;">📋 Copiar Link Direto</button>
             <button class="share-close-btn" onclick="fecharModalPartilha()">Fechar</button>
         </div>
     </div>
@@ -574,8 +594,8 @@
         <div class="column-wrapper">
             <div class="side-panel">
                 <div class="solid-color-card card-top">
-                    <h3 style="color: var(--neon-green); font-size: 1.3rem; margin-bottom: 12px;">RÁDIO RANZINZA</h3>
-                    <p style="margin: 0; font-weight: bold; font-size: 1.05rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
+                    <h3 style="color: var(--neon-teal); font-size: 1.25rem; margin-bottom: 12px;">RÁDIO RANZINZA</h3>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.1rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
                 </div>
 
                 <div class="solid-color-card side-profile-card" style="padding: 15px;">
@@ -631,15 +651,16 @@
                     <!-- BOTÃO OBRIGATÓRIO PARA LIBERTAR O ÁUDIO NO NAVEGADOR -->
                     <div id="playTriggerBox" style="margin-bottom: 15px;">
                         <button onclick="ligarSomOuvinte()" style="
+                            font-family: 'Orbitron', sans-serif;
                             background: var(--neon-teal);
-                            color: #020617;
+                            color: #020813;
                             border: none;
                             padding: 12px 24px;
                             border-radius: 8px;
                             font-weight: bold;
-                            font-size: 0.95rem;
+                            font-size: 0.9rem;
                             cursor: pointer;
-                            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+                            box-shadow: 0 0 15px rgba(0, 169, 224, 0.5);
                             transition: 0.2s;
                         ">
                             ▶ LIGAR O SOM DA TRANSMISSÃO
@@ -669,9 +690,10 @@
 
                     <div style="margin-top: 15px; text-align: center;">
                         <button onclick="abrirModalPartilha()" style="
-                            background: var(--custom-sample-color); color: #ffffff;
-                            border: 2px solid var(--custom-sample-color); padding: 10px 18px;
-                            border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
+                            font-family: 'Rajdhani', sans-serif;
+                            background: #0033a0; color: #ffffff;
+                            border: 2px solid #0072ce; padding: 10px 18px;
+                            border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer;
                             display: inline-flex; align-items: center; gap: 8px;
                         ">
                             🔗 Partilhar Rádio Ranzinza
@@ -701,7 +723,7 @@
                             <span class="visitor-number" id="visitorCountDisplay">...</span>
                         </div>
 
-                        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: var(--neon-teal); font-weight: bold;">⚡ Painel de Controle // Rádio Ranzinza (Host)</p>
+                        <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: var(--neon-teal); font-weight: bold;">⚡ Painel de Controle // Rádio Ranzinza (Host)</p>
                         <div style="display: flex; gap: 8px;">
                             <input type="text" id="adminInput" placeholder="Transmitir recado oficial como Host...">
                             <button class="chat-btn" onclick="enviarMensagemAdmin()">Transmitir Recado</button>
@@ -1129,7 +1151,7 @@
             const messages = document.getElementById('chatMessages');
             if(input && input.value.trim() !== '' && messages) {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong style="color: var(--neon-teal); text-shadow: 0 0 8px rgba(0,240,255,0.6);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
+                p.innerHTML = `<strong style="color: var(--neon-teal); text-shadow: 0 0 8px rgba(0, 169, 224, 0.6);">📻 Rádio Ranzinza (Host):</strong> ${input.value}`;
                 messages.appendChild(p);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
