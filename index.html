@@ -660,9 +660,9 @@
                     </p>
                     <div class="pix-key-box">
                         <span class="pix-key-label">Chave Pix (Celular)</span>
-                        <span class="pix-key-value" id="pixKeyText">67996576211</span>
+                        <span class="pix-key-value">67996576211</span>
                     </div>
-                    <button type="button" class="pix-copy-btn" id="copyPixBtn" onclick="copiarChavePix()">
+                    <button type="button" class="pix-copy-btn" onclick="copiarChavePix(this)">
                         📋 Copiar Chave Pix
                     </button>
                 </div>
@@ -811,6 +811,20 @@
                         <div style="font-weight: bold; color: var(--neon-teal); margin-bottom: 2px;">🎚️ Alta Fidelidade</div>
                         <p class="info-box" style="margin: 0;">Frequências a 432Hz.</p>
                     </div>
+                </div>
+
+                <div class="solid-color-card side-profile-card donation-card" style="padding: 15px;">
+                    <h4>💙 Apoie o Projeto</h4>
+                    <p class="donation-appeal">
+                        A música e esta rádio são o meu trabalho e um sonho construído com muita dedicação. Se o som faz sentido para você, qualquer contribuição via Pix ajuda a manter a rádio no ar e a seguir produzindo novas faixas.
+                    </p>
+                    <div class="pix-key-box">
+                        <span class="pix-key-label">Chave Pix (Celular)</span>
+                        <span class="pix-key-value">67996576211</span>
+                    </div>
+                    <button type="button" class="pix-copy-btn" onclick="copiarChavePix(this)">
+                        📋 Copiar Chave Pix
+                    </button>
                 </div>
 
                 <div class="side-art-banner">
@@ -1184,9 +1198,8 @@
             });
         }
 
-        function copiarChavePix() {
+        function copiarChavePix(btn) {
             const chavePix = "67996576211";
-            const btn = document.getElementById('copyPixBtn');
             const restaurarBotao = () => {
                 if (!btn) return;
                 btn.innerText = "✅ Chave Pix copiada!";
