@@ -159,6 +159,58 @@
             flex-direction: column;
             justify-content: flex-start;
         }
+
+        .donation-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 0 10px 0;
+            color: var(--neon-teal);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        .donation-appeal {
+            font-size: 0.92rem;
+            color: var(--text-main);
+            line-height: 1.45;
+            margin: 0 0 12px 0;
+            text-align: left;
+        }
+        .pix-key-box {
+            background: #020813;
+            border: 2px solid #005eb8;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .pix-key-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pix-key-value {
+            font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--neon-teal);
+        }
+        .pix-copy-btn {
+            font-family: 'Rajdhani', sans-serif;
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 2px solid #0072ce;
+            background: #0033a0;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pix-copy-btn:hover {
+            background: #005eb8;
+        }
         
         h3 { 
             font-family: 'Orbitron', sans-serif;
@@ -599,6 +651,20 @@
                 <div class="solid-color-card card-top">
                     <h3 style="color: var(--neon-teal); font-size: 1.25rem; margin-bottom: 12px;">RÁDIO RANZINZA</h3>
                     <p style="margin: 0; font-weight: bold; font-size: 1.1rem; color: #ffffff; line-height: 1.4;">Uma nova conexão com o futuro</p>
+                </div>
+
+                <div class="solid-color-card side-profile-card donation-card" style="padding: 15px;">
+                    <h4>💙 Apoie o Projeto</h4>
+                    <p class="donation-appeal">
+                        A música e esta rádio são o meu trabalho e um sonho construído com muita dedicação. Se o som faz sentido para você, qualquer contribuição via Pix ajuda a manter a rádio no ar e a seguir produzindo novas faixas.
+                    </p>
+                    <div class="pix-key-box">
+                        <span class="pix-key-label">Chave Pix (Celular)</span>
+                        <span class="pix-key-value" id="pixKeyText">67996576211</span>
+                    </div>
+                    <button type="button" class="pix-copy-btn" id="copyPixBtn" onclick="copiarChavePix()">
+                        📋 Copiar Chave Pix
+                    </button>
                 </div>
 
                 <div class="side-art-banner">
@@ -1116,6 +1182,37 @@
                 alert('Link copiado para a área de transferência!');
                 fecharModalPartilha();
             });
+        }
+
+        function copiarChavePix() {
+            const chavePix = "67996576211";
+            const btn = document.getElementById('copyPixBtn');
+            const restaurarBotao = () => {
+                if (!btn) return;
+                btn.innerText = "✅ Chave Pix copiada!";
+                setTimeout(() => {
+                    btn.innerText = "📋 Copiar Chave Pix";
+                }, 2500);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(chavePix).then(restaurarBotao).catch(() => {
+                    copiarTextoFallback(chavePix);
+                    restaurarBotao();
+                });
+            } else {
+                copiarTextoFallback(chavePix);
+                restaurarBotao();
+            }
+        }
+
+        function copiarTextoFallback(texto) {
+            const tempInput = document.createElement('input');
+            tempInput.value = texto;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
         }
 
         function mudarVolumeOuvinte(valor) {
